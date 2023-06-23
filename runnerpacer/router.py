@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request
-app = Flask(__name__)
+from runnerpacer import app
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -45,5 +45,3 @@ def calc_swim_pace(time, distance):
     pace_100m_formatted = f'{int(pace_100m_min)}:{pace_100m_sec*60:.2f}'
     return pace_100m_formatted
 
-if __name__ == '__main__':
-    app.run(debug=True)
