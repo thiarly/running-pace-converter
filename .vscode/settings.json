@@ -5,6 +5,9 @@
         "Calcular",
         "ciclismo",
         "Convertendo",
+        "gunicorn",
+        "importlib",
+        "itsdangerous",
         "média",
         "milha",
         "minutos",
@@ -13,6 +16,8 @@
         "runnerpacer",
         "segundos",
         "velocidade",
-        "Velocidade"
+        "Velocidade",
+        "Werkzeug",
+        "zipp"
     ]
 }
