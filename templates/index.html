@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Conversor de ritmo</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="center">
+    <h1>Conversor de ritmo</h1>
+    <form method="POST">
+        <label for="time">Tempo:</label><br>
+        <input type="text" id="time" name="time"><br>
+        <label for="distance">Distância:</label><br>
+        <input type="text" id="distance" name="distance"><br>
+        <label for="activity">Atividade:</label><br>
+        <select name="activity" id="activity">
+            <option value="corrida">Corrida</option>
+            <option value="ciclismo">Ciclismo</option>
+            <option value="natacao">Natação</option>
+        </select>
+        <input type="submit" value="Calcular">
+    </form>
+    {% if pace_km %}
+    <p>Pace por quilômetro: {{ pace_km }}</p>
+    <p>Pace por milha: {{ pace_mile }}</p>
+    {% elif avg_speed %}
+    <p>Velocidade média: {{ avg_speed }} km/h</p>
+    {% elif pace_100m %}
+    <p>Pace para cada 100m: {{ pace_100m }}</p>
+    {% endif %}
+    <h2>THIARLY CAVALCANTE</h2>
+</div>
+</body>
+</html>
