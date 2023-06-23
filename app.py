@@ -29,8 +29,8 @@ def convert_pace(time, distance):
     pace_km_min, pace_km_sec = divmod(pace_km, 1)
     pace_mile_min, pace_mile_sec = divmod(pace_mile, 1)
 
-    pace_km_formatted = f'{int(pace_km_min)}:{pace_km_sec*60:.2f}'
-    pace_mile_formatted = f'{int(pace_mile_min)}:{pace_mile_sec*60:.2f}'
+    pace_km_formatted = f'{int(pace_km_min)}:{float(pace_km_sec*60)}'
+    pace_mile_formatted = f'{int(pace_mile_min)}:{float(pace_mile_sec*60)}'
     
     return pace_km_formatted, pace_mile_formatted
 
