@@ -78,7 +78,7 @@ div {
     align-items: center;
     justify-content: center;
     height: 25px; /* Altura reduzida do botão */
-    width: 120px; /* Largura do botão */
+    width: 140px; /* Largura do botão */
     margin: 0 auto; /* Centralizar horizontalmente */
     margin-top: 10px;
     border-radius: 0.5rem;
@@ -91,5 +91,6 @@ div {
     transition-property: transform;
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
     transition-duration: 50ms;
+    white-space: nowrap;
   }
  
