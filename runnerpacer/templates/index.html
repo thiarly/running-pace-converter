@@ -25,12 +25,12 @@
         <input type="submit" value="Calcular">
     </form>
     {% if pace_km %}
-    <p>Pace por quilômetro: {{ pace_km }}</p>
-    <p>Pace por milha: {{ pace_mile }}</p>
+    <p class="center"><span>Pace por quilômetro: {{ pace_km }}</span></p>
+    <p class="center"><span>Pace por milha: {{ pace_mile }}</span></p>
     {% elif avg_speed %}
-    <p>Velocidade média: {{ avg_speed }} km/h</p>
+    <p class="center"><span>média: {{ avg_speed }} km/h</span></p>
     {% elif pace_100m %}
-    <p>Pace para cada 100m: {{ pace_100m }}</p>
+    <p class="center"><span>Pace para cada 100m: {{ pace_100m }}</span></p>
     {% endif %}
    
     <div>
