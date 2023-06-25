@@ -59,6 +59,19 @@ div {
     
   }
   
+  .center-container {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .center-container * {
+    margin-bottom: 10px;
+  }
+  
+  .center-container * {
+    margin-top: 10px;
+  }
+  
   .btn-railway {
     box-sizing: border-box;
     display: flex;
