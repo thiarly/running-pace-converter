@@ -42,7 +42,7 @@ def convert_pace(time, distance):
     pace_mile_minutes, pace_mile_seconds = divmod(int(pace_mile * 60), 60)
 
     pace_km_formatted = f'{pace_km_minutes:02d}:{pace_km_seconds:02d} /km'
-    pace_mile_formatted = f'{pace_mile_minutes:02d}:{pace_mile_seconds:02d} /mile'
+    pace_mile_formatted = f'{pace_mile_minutes:02d}:{pace_mile_seconds:02d} /milha'
 
     return pace_km_formatted, pace_mile_formatted
 
@@ -52,7 +52,7 @@ def convert_pace_mile(time, distance):
 
     pace_mile_minutes, pace_mile_seconds = divmod(int(pace_mile * 60), 60)
 
-    pace_mile_formatted = f'{pace_mile_minutes:02d}:{pace_mile_seconds:02d} /mile'
+    pace_mile_formatted = f'{pace_mile_minutes:02d}:{pace_mile_seconds:02d} /milha'
 
     return pace_mile_formatted
 
