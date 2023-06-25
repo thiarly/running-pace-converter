@@ -51,4 +51,45 @@ div {
     margin-left: 50px;
 }
 
+.center-container {
+    width: 500px; /* largura do conteiner */
+    margin: 0 auto; /* centralizar horizontalmente */
+    padding: 20px; /* espaçamento interno do conteiner */
+    border: 0.5px solid #ccc; /* borda do conteiner */
+    
+  }
+  
+  .center-container {
+    display: flex;
+    flex-direction: column;
+  }
 
+  .center-container * {
+    margin-bottom: 10px;
+  }
+  
+  .center-container * {
+    margin-top: 10px;
+  }
+  
+  .btn-railway {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 25px; /* Altura reduzida do botão */
+    width: 120px; /* Largura do botão */
+    margin: 0 auto; /* Centralizar horizontalmente */
+    margin-top: 10px;
+    border-radius: 0.5rem;
+    border: 1px solid var(--pink-500);
+    background-image: linear-gradient(76.35deg, #801ae6 15.89%, #a21ae6 89.75%);
+    color: #fff;
+    font-size: 14px; /* Tamanho de fonte reduzido */
+    font-weight: 600;
+    line-height: 1.3rem; /* Espaçamento de linha reduzido */
+    transition-property: transform;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 50ms;
+  }
+ 

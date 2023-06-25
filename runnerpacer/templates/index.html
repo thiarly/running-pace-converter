@@ -5,7 +5,7 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-<div class="center">
+<div class="center center-container">
     <h1>Conversor de ritmo</h1>
     <form method="POST">
         <label for="hour">Hora:</label><br>
@@ -22,7 +22,7 @@
             <option value="ciclismo">Ciclismo</option>
             <option value="natacao">Natação</option>
         </select>
-        <input type="submit" value="Calcular">
+        <input class="btn-railway" type="submit" value="Calcular">
     </form>
     {% if pace_km %}
     <p class="center"><span>Pace por quilômetro: {{ pace_km }}</span></p>
@@ -33,11 +33,7 @@
     <p class="center"><span>Pace para cada 100m: {{ pace_100m }}</span></p>
     {% endif %}
    
-    <div>
-        <hr style="border: 1px solid white;">
-    </div>
 </div>
-
 
 <br>
     <div>
@@ -93,3 +89,5 @@
 
 </body>
 </html>
+
+
