@@ -51,4 +51,12 @@ div {
     margin-left: 50px;
 }
 
+.center-container {
+    width: 500px; /* largura do conteiner */
+    margin: 0 auto; /* centralizar horizontalmente */
+    padding: 20px; /* espaçamento interno do conteiner */
+    border: 0.5px solid #ccc; /* borda do conteiner */
+    
+  }
+  
 
