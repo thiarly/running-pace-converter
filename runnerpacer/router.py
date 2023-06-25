@@ -65,5 +65,8 @@ def calc_swim_pace(time, distance):
     pace_100m = (time / distance) * 100
     pace_100m_min, pace_100m_sec = divmod(pace_100m, 60)  # Converter para minutos e segundos
 
-    pace_100m_formatted = f'{int(pace_100m_min)}:{pace_100m_sec:02d}'  # Formato MM:SS
+    pace_100m_formatted = f'{int(pace_100m_min)}:{int(pace_100m_sec):02d}'  # Formato MM:SS
     return pace_100m_formatted
+
+
+
