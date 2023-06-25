@@ -1,24 +1,19 @@
-<!DOCTYPE html>
-<html lang="pt">
-<head>
-    <meta charset="UTF-8">
-    <title>Conversor de ritmo</title>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
-</head>
-<body>
+{% extends "base.html" %}
+
+{% block content %}
     <div class="center center-container">
         <h1>Conversor de ritmo</h1>
         <form method="POST">
             <label for="hour">Hora:</label><br>
-            <input type="number" id="hour" name="hour" min="0" max="23"><br>
+            <input type="number" id="hour" name="hour" min="0" max="23" class="input-field"><br>
             <label for="minute">Minuto:</label><br>
-            <input type="number" id="minute" name="minute" min="0" max="59"><br>
+            <input type="number" id="minute" name="minute" min="0" max="59" class="input-field"><br>
             <label for="second">Segundo:</label><br>
-            <input type="number" id="second" name="second" min="0" max="59"><br>
+            <input type="number" id="second" name="second" min="0" max="59" class="input-field"><br>
             <label for="distance">Distância:</label><br>
-            <input type="text" id="distance" name="distance"><br>
+            <input type="text" id="distance" name="distance" class="input-field"><br>
             <label for="activity">Atividade:</label><br>
-            <select name="activity" id="activity">
+            <select name="activity" id="activity" class="input-field">
                 <option value="corrida">Corrida</option>
                 <option value="ciclismo">Ciclismo</option>
                 <option value="natacao">Natação</option>
@@ -87,8 +82,6 @@
             <p>A Zona 7, ou zona neuromuscular, inclui esforços muito curtos (&lt;10-15 segundos), que são desenhados para <span>ativar todas (ou praticamente todas) as fibras musculares</span>. Mais do que treinar um sistema de energia específico, essas sessões ajudam a <span>forjar novas conexões neurais a fibras musculares</span>, de forma que o atleta se torna mais eficiente em ativar estas fibras durante o treino ou em prova.</p>
     </div>
 
-</body>
-
-</html>
+{% endblock %}
 
 
