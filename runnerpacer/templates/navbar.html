@@ -1,27 +1,21 @@
-<link rel="stylesheet" type="text/css" href="static/css/style.css">
-
-<nav class="w-full flex justify-between items-center py-3 px-4 fixed z-50">
-   
-    <div class="mr-2">
+<nav class="navbar-personalizada w-full flex justify-between items-center px-4 fixed z-50 container-fluid">
+    <div class="item-navbar mr-2">
+        <button class="btn-railway py-1 px-3 rounded-md">
+            <a href="{{url_for('home')}}">Inicio</a>
+        </button>
+    </div>
+    <div class="item-navbar mr-2">
+        <a href="#">
             <button class="btn-railway py-1 px-3 rounded-md">
-                <a href="{{url_for('home')}}">Inicio</a>
+                <a href="{{url_for('moeda')}}">Moeda</a>
             </button>
+        </a>
     </div>
-        <div class="mr-2">
-            <a href="#">
-                <button class="btn-railway py-1 px-3 rounded-md">
-                    <a href="{{url_for('moeda')}}">Moeda</a>
-                </button>
-            </a>
-        </div>
-        <div class="mr-2">
-            <a href="#">
-                <button class="btn-railway py-1 px-3 rounded-md">
-                    <a href="{{url_for('contato')}}">Contato</a>
-                </button>
-            </a>
-        </div>
-
+    <div class="item-navbar mr-2">
+        <a href="#">
+            <button class="btn-railway py-1 px-3 rounded-md button">
+                <a href="{{url_for('contato')}}">Contato</a>
+            </button>
+        </a>
     </div>
-
 </nav>
