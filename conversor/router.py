@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request
-from runnerpacer import app
-from runnerpacer.utils import convert_pace, calc_average_speed_bike, calc_swim_pace
+from conversor import app
+from conversor.utils import convert_pace, calc_average_speed_bike, calc_swim_pace
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
@@ -28,15 +28,32 @@ def home():
     return render_template('home.html')
 
 
-@app.route('/contato')
-def contato():
-    return render_template('contato.html')
+@app.route('/zonas')
+def zonas():
+    return render_template('zonas.html')
+
 
 @app.route('/moeda')
 def moeda():
     return render_template('moeda.html')
 
 
+@app.route('/sobre')
+def sobre():
+    return render_template('sobre.html')
+
+
+@app.route('/contato')
+def contato():
+    return render_template('contato.html')
+
+
+
+# home OK
+# zonas OK
+# moeda OK
+# sobre OK
+# contato OK
 
 
 

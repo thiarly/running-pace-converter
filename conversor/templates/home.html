@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="flex items-center justify-center h-auto sm:h-screen bg-gray-100">
+    <div class="flex flex-col justify-center sm:max-w-sm md:max-w-md p-6 sm:p-12 shadow-lg rounded-3xl sm:px-12 dark:bg-white dark:text-gray-100">
+            <h1 class="text-2xl font-semibold sm:text-3xl dark:text-black mb-8">Conversor de ritmo</h1>
+            <form method="POST">
+                <label for="hour">Hora:</label><br>
+                <input type="number" id="hour" name="hour" min="0" max="20" class="input-field mb-2 py-2 px-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"><br>
+                <label for="minute">Minuto:</label><br>
+                <input type="number" id="minute" name="minute" min="0" max="59" class="input-field mb-2 py-2 px-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"><br>
+                <label for="second">Segundo:</label><br>
+                <input type="number" id="second" name="second" min="0" max="59" class="input-field mb-2 py-2 px-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"><br>
+                <label for="distance">Distância:</label><br>
+                <input type="text" id="distance" name="distance" class="input-field mb-2 py-2 px-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"><br>
+                <label for="activity">Atividade:</label><br>
+                <select name="activity" id="activity" class="input-field mb-2 py-2 px-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    <option value="corrida">Corrida</option>
+                    <option value="ciclismo">Ciclismo</option>
+                    <option value="natacao">Natação</option>
+                </select><br>
+                <input class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded cursor-pointer mt-4 w-full" type="submit" value="Calcular">
+            </form>
+            {% if pace_km or avg_speed or pace_100m %}
+                <div class="mt-8 p-4 bg-gray-200 rounded">
+                    {% if pace_km %}
+                        <p><span>Pace por quilômetro: <strong>{{ pace_km }}</strong></span></p>
+                        <p><span>Pace por milha: <strong>{{ pace_mile }}</strong></span></p>
+                    {% elif avg_speed %}
+                        <p><span>média: <strong>{{ avg_speed }} km/h</strong></span></p>
+                    {% elif pace_100m %}
+                        <p><span>Pace para cada 100m: <strong>{{ pace_100m }}</strong></span></p>
+                    {% endif %}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
