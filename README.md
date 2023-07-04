@@ -2,6 +2,8 @@
 
 Esse é um projeto de um conversor de pace para corrida, velocidade média para bike e pace para natação. Foi desenvolvido para ajudar atletas e entusiastas do esporte a planejar e entender melhor seus treinos.
 
+Você pode acessar o projeto aqui: https://running-pace-converter-production.up.railway.app
+
 📑 Descrição
 
 Este aplicativo web foi construído utilizando Python, Flask, HTML e Tailwind. Possui três páginas principais:
