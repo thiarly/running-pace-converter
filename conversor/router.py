@@ -45,27 +45,9 @@ def zonas():
     return render_template('zonas.html')
 
 
-@app.route('/moeda')
-def moeda():
-    return render_template('moeda.html')
-
-
 @app.route('/sobre')
 def sobre():
     return render_template('sobre.html')
-
-
-@app.route('/contato')
-def contato():
-    return render_template('contato.html')
-
-
-
-# home OK
-# zonas OK
-# moeda OK
-# sobre OK
-# contato OK
 
 
 
