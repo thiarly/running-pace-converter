@@ -1,148 +1,51 @@
-{% extends 'base.html'%}
+{% extends "base.html" %}
 
 {% block content %}
-<div class="container w-screen  mx-auto flex items-center justify-center">
-    <div class="flex flex-col bg-gray-100 shadow-lg shadow-gray-800 py-6 px-12 mx-10 rounded-md">
-        <div class="flex flex-row items-center">
-            <img class="w-24 rounded-full" alt="User Avatar"
-                src="https://avatars.githubusercontent.com/u/13594903?v=4" />
-            <div class="ml-4">
-                <h3 class="font-semibold text-xl">Thiarly Cavalcante</h3>
-                <h4 class="text-indigo-600">Python Programmer and Infrastructure Analyst</h4>
-            </div>
-
+<div class="container mx-auto px-8 py-10 text-justify">
+    <h1 class="text-3xl mb-5">Sobre mim</h1>
+    <div class="grid md:grid-cols-2 gap-5">
+        <!-- Imagem e informações de contato -->
+        <div class="contact-info">
+            <img src="{{ url_for('static', filename='image/romeiros-bike.jpg')}}" alt="Sua Foto" class="rounded-xl banner mb-5">
+            <h2 class="text-2xl mb-3">Thiarly Cavalcante</h2>
+            <p><strong>Email:</strong> thiarly.cavalcante@live.com</p>
+            <p><strong>Telefone:</strong> (11) 971469122</p>
         </div>
-        <div class="mt-6">
-            <h2 class="font-semibold text-2xl mb-2">Bio</h2>
-            <p class="text-gray-300 font-light mtt-1 max-w-2xl text-justify">With a decade of experience in IT
-                Infrastructure, I have expertise in Linux and Windows servers, monitoring with Zabbix,
-                virtualization with VMWare, and backup with Veeam.</p>
-            <p class="text-gray-300 font-light mtt-1 max-w-2xl text-justify">My personal programming projects focus
-                on Python and Flask, using HTML, CSS, and Tailwind for web development, published on the Railway
-                platform and managed on GitHub. I have skills with essential Python libraries and web automation,
-                and experience in Python integration with other tools.</p>
-            <p class="text-gray-300 font-light mtt-1 max-w-2xl text-justify">Although my programming experience is
-                based on personal projects, it has prepared me to contribute to larger scale projects.</p>
-        </div>
-        <div class="mt-6">
-            <h2 class="font-semibold text-2xl mb-2">Carrer</h2>
-            <div class="mt-4">
-                <h3 class="text-yellow-500 font-medium text-lg mt-1">
-                    INTERGARD DO BRASIL
-                </h3>
-                <ul class="list-disc list-inside pl-4">
-                    <li class="list-item">IT Consultant</li>
-                    <li class="list-item">IT Coordinator</li>
-                    <li class="list-item">Senior IT Analyst</li>
-                    <li class="list-item">IT Analyst</li>
-                </ul>
-            </div>
-            <div class="mt-4">
-                <h3 class="text-yellow-500 font-medium text-lg mt-1">
-                    SK AUTOMOTIVE
-                </h3>
-                <ul class="list-disc list-inside pl-4">
-                    <li class="list-item">IT Support Analyst</li>
-                </ul>
-            </div>
-            <div class="mt-4">
-                <h3 class="text-yellow-500 font-medium text-lg mt-1">
-                    TS TREINAMENTOS E SERVIÇOS
-                </h3>
-                <ul class="list-disc list-inside pl-4">
-                    <li class="list-item">Freelance Network and Infrastructure Analyst</li>
-                </ul>
-            </div>
-
-        </div>
-        <div class="mt-6">
-            <h2 class="font-semibold text-2xl mb-2">Qualifications</h2>
-            <div class="mt-4">
-                <h3 class="text-yellow-500 font-medium text-lg mt-1">
-                    FIAP
-                </h3>
-                <ul class="list-disc list-inside pl-4">
-                    <li class="list-item">Bachelor's degree in Computer Network Technology</li>
-                </ul>
-            </div>
-            <div class="mt-4">
-                <h3 class="text-yellow-500 font-medium text-lg mt-1">
-                    SENAC
-                </h3>
-                <ul class="list-disc list-inside pl-4">
-                    <li class="list-item">Postgraduate Degree and Specialization in Information Security</li>
-                    <li class="list-item">Computer Technician</li>
-                </ul>
-            </div>
-        </div>
-        <div class="mt-6">
-            <h2 class="font-semibold text-2xl mb-2">Hobbies</h2>
-            <div class="mt-4">
-                <h3 class="text-yellow-500 font-medium text-lg mt-1">
-                    SPORTS
-                </h3>
-                <ul class="list-disc list-inside pl-4">
-                    <li class="list-item">Triathlon</li>
-                    <li class="list-item">Running</li>
-                    <li class="list-item">Cycling</li>
-                </ul>
-            </div>
-        </div>
-        <div class="mt-6">
-            <h2 class="font-semibold text-2xl mb-2">Contato</h2>
-        </div>
-        <div class="mt-2 flex flex-row mb-2 ml-4">
-            <div class="mr-4 ml-4">
-                <!-- Github -->
-                <a href="https://github.com/thiarly?tab=repositories" target="_blank">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor"
-                        style="color: #0c59b3;" viewBox="0 0 24 24">
-                        <path
-                            d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
-                    </svg>
-                </a>
-            </div>
-            <div class="mr-4 ml-4">
-                <!-- Linkedin -->
-                <a href="https://www.linkedin.com/in/thiarly-cavalcante-b0aa6056/" target="_blank">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor"
-                        style="color: #0c59b3;" viewBox="0 0 24 24">
-                        <path
-                            d="M4.98 3.5c0 1.381-1.11 2.5-2.48 2.5s-2.48-1.119-2.48-2.5c0-1.38 1.11-2.5 2.48-2.5s2.48 1.12 2.48 2.5zm.02 4.5h-5v16h5v-16zm7.982 0h-4.968v16h4.969v-8.399c0-4.67 6.029-5.052 6.029 0v8.399h4.988v-10.131c0-7.88-8.922-7.593-11.018-3.714v-2.155z" />
-                    </svg>
-                </a>
-            </div>
-            <div class="mr-4 ml-4">
-                <!-- Instagram -->
-                <a href="https://www.instagram.com/thiarly_tri/" target="_blank">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor"
-                        style="color: #0c59b3;" viewBox="0 0 24 24">
-                        <path
-                            d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
-                    </svg>
-                </a>
-            </div>
-            <div class="mr-4 ml-4">
-                <!-- Facebook -->
-                <a href="https://www.facebook.com/thiarly.cavalcante/" target="_blank">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor"
-                        style="color: #0c59b3;" viewBox="0 0 24 24">
-                        <path
-                            d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z" />
-                    </svg>
-                </a>
-            </div>
-            <div class="mr-4 ml-4">
-                <!-- Whatsapp -->
-                <a href="https://api.whatsapp.com/send?phone=11971469122" target="_blank">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="currentColor" style="color: #0c59b3;"
-                    viewBox="0 0 24 24">
-                    <path
-                        d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z" />
-                </svg>
-                </a>
-            </div>
+        <!-- Descrição -->
+        <div class="description">
+            <h2 class="text-2xl mb-3 font-bold text-blue-600">Minha História</h2>
+            <p>Comecei minha jornada no esporte em 2017 com corridas de rua. No mesmo ano, participei de diversas corridas, mas duas provas se destacaram: minha primeira maratona na SP City e uma meia maratona em Punta Del Este, no Uruguai. No final de 2017, comecei a andar de bicicleta e a fazer aulas de natação.</p>
+            <h3 class="text-lg font-bold mt-6">Duathlon e Triathlon</h3>
+            <p>Em março de 2018, competi na minha primeira prova de duathlon em Indaiatuba, onde me surpreendi ao conquistar o segundo lugar na minha categoria. Essa experiência me fez apaixonar pelo esporte. Em abril do mesmo ano, competi no meu primeiro triatlo no Triday na estrada velha de Santos. Embora tenha sido uma prova desafiadora, estava determinado a continuar aprimorando minhas habilidades.</p>
+            <h3 class="text-lg font-bold mt-6">Ironman</h3>
+            <p>Em setembro de 2018, participei do meu primeiro Ironman 70.3 no Rio de Janeiro, onde fiquei em terceiro lugar, quase me classificando para o Campeonato Mundial Ironman 70.3 de 2019 em Nice, França. Decidido a me classificar para o Mundial, participei do Ironman 70.3 de Fortaleza em novembro de 2018 e conquistei o quarto lugar, garantindo minha vaga para o Mundial.</p>
+            <h3 class="text-lg font-bold mt-6">2019 - Ano de Conquistas</h3>
+            <p>Em 2019, competi no meu primeiro Ironman em Florianópolis e participei de várias outras provas de triatlo na distância olímpica. No mesmo ano, competi no Campeonato Mundial Ironman 70.3 em Nice, uma experiência que considero mágica. Ao voltar ao Brasil, conquistei o segundo lugar no Ironman 70.3 de São Paulo.</p>
+            <h3 class="text-lg font-bold mt-6">2022 - Continuando a Jornada</h3>
+            <p>Em 2022, participei do Ironman em Florianópolis e de mais duas provas na distância sprint. Tenho muito orgulho de todas as minhas conquistas e estou ansioso para continuar me desafiando no futuro.</p>
         </div>
     </div>
+    <!-- Suas conquistas -->
+    <h2 class="text-2xl mb-3 mt-10">Minhas Conquistas</h2>
+    <ul class="achievements">
+        <li>1º colocado Challenge Salvador (2018)</li>
+        <li>1º colocado Triday Riacho Grande (2018)</li>
+        <li>2º colocado Triday USP (2018)</li>
+        <li>2º colocado Triday Ranking Geral (2018)</li>
+        <li>2º colocado EVTRI Short (2018)</li>
+        <li>2º colocado Powerman Duathlon (2018)</li>
+        <li>3º colocado Ironman 70.3 no Rio de Janeiro (2018)</li>
+        <li>3º colocado Triday Riacho Grande (2018)</li>
+        <li>4º colocado Ironman 70.3 em Fortaleza (2018)</li>
+        <li>4º colocado EVTRI 2019 Long</li>
+        <li>4º colocado 23k IGT Corrida (2019)</li>
+        <li>5º colocado EVTRI Short (2019)</li>
+        <li>1º colocado Corrida Boralá 10k (2019)</li>
+        <li>1º colocado Blue Series EV (2022)</li>
+        <li>1º colocado EVTRI 2018 Short</li>
+        <li>1º colocado Troféu Brasil Sprint (2022)</li>
+        <li>1º colocado Travessia Guarujá (2021)</li>
+        <li>1º colocado Troféu Brasil (2019)</li>
+    </ul>
 </div>
 {% endblock %}
