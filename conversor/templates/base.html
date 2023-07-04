@@ -1,9 +1,27 @@
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="pt">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SEO Tags -->
+    <meta name="description" content="Running Pace Converter é uma ferramenta online que ajuda a converter o ritmo de corrida em diferentes unidades. Desenvolvido por Thiarly Cavalcante.">
+    <meta name="keywords" content="Running, Pace, Converter, Corrida, Ritmo, Ferramenta, Thiarly Cavalcante">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://running-pace-converter-production.up.railway.app">
+    <meta property="og:title" content="Running Pace Converter">
+    <meta property="og:description" content="Running Pace Converter é uma ferramenta online que ajuda a converter o ritmo de corrida em diferentes unidades.">
+    <meta property="og:image" content="https://running-pace-converter-production.up.railway.app/static/image/zonas.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://running-pace-converter-production.up.railway.app">
+    <meta property="twitter:title" content="Running Pace Converter">
+    <meta property="twitter:description" content="Running Pace Converter é uma ferramenta online que ajuda a converter o ritmo de corrida em diferentes unidades.">
+    <meta property="twitter:image" content="https://running-pace-converter-production.up.railway.app/static/image/zonas.png">
 
     <title> 
         {% block titulo %} 
@@ -15,9 +33,10 @@
     <!-- Formatar partes especificas -->
     {% block head %}
     {% endblock %}
-
   
 </head>
+...
+
 
 <body>
     {% include 'navbar.html' %}
