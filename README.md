@@ -1,27 +1,28 @@
-# Nome do Projeto
+🏃‍♂️🚴‍♂️🏊‍♂️ Conversor de Pace e Velocidade Média
 
-Um aplicativo web desenvolvido com Python e Flask que permite aos usuários converter pace de corrida (em km e milhas) e converter moedas.
+Esse é um projeto de um conversor de pace para corrida, velocidade média para bike e pace para natação. Foi desenvolvido para ajudar atletas e entusiastas do esporte a planejar e entender melhor seus treinos.
 
-## Características
+📑 Descrição
 
-Este aplicativo possui três páginas principais:
+Este aplicativo web foi construído utilizando Python, Flask, HTML e Tailwind. Possui três páginas principais:
 
-1. **Home** - Inclui informações sobre esporte e zonas de treinamento.
-2. **Conversor de Pace** - Permite aos usuários converter o pace de corrida de km para milhas e vice-versa.
-3. **Conversor de Moeda** - Permite aos usuários converter diferentes moedas.
+🏠 Home - Apresenta uma interface para os usuários converterem suas medidas. É aqui que a conversão de pace de corrida, velocidade média de bike e pace de natação acontecem.
+🏋️‍♂️ Zona - Contém informações sobre zonas de treinamento, explicando os benefícios de cada intensidade de treino. Uma ferramenta útil para entender e planejar seus treinamentos.
+👤 Sobre - Esta é uma página sobre mim, mostrando meu currículo e histórico no esporte.
+Além disso, no rodapé da página, você encontrará links para minhas redes sociais para entrar em contato ou saber mais sobre mim.
 
-## Instalação
+🏆 Motivação
 
-Detalhes sobre como instalar e executar o projeto serão adicionados aqui.
+Desenvolvi este conversor porque sempre senti a necessidade de usar algo semelhante antes e depois dos treinos para planejar as velocidades e o pace que pretendia executar.
 
-## Uso
+💾 Instalação
 
-Detalhes sobre como usar o projeto e suas funcionalidades serão adicionados aqui.
+Este projeto está hospedado no Railway. Para executá-lo localmente, você precisa ter Python e Flask instalados. As instruções de instalação específicas serão fornecidas em breve.
 
-## Contribuição
+👋 Como Contribuir
 
-Detalhes sobre como contribuir para o projeto serão adicionados aqui.
+Se você tiver sugestões para melhorar este conversor, sinta-se à vontade para abrir um problema ou fazer um pull request.
 
-## Licença
+📜 Licença
 
-Informações sobre a licença serão adicionadas aqui.
+Este projeto está licenciado sob a licença MIT.
