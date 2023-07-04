@@ -2,11 +2,11 @@
 
 {% block content %}
 <div class="flex items-center justify-center h-auto sm:h-screen bg-gray-100">
-    <div class="flex flex-col justify-center sm:max-w-sm md:max-w-md p-6 sm:p-12 shadow-lg rounded-3xl sm:px-12 dark:bg-white dark:text-gray-100">
-            <h1 class="text-2xl font-semibold sm:text-3xl dark:text-black mb-8">Conversor de ritmo</h1>
+    <div class="flex-col justify-center sm:max-w-sm md:max-w-md p-6 sm:p-12 shadow-lg rounded-3xl sm:px-12 dark:bg-white dark:text-gray-100 mb-10">
+            <h1 class="flex text-2xl font-semibold sm:text-3xl dark:text-black mb-6">Conversor de ritmo</h1>
 
             {% if error %}
-            <div class="mb-4 bg-red-200 border-red-500 text-red-700 px-4 py-3 rounded">
+            <div class=" mb-4 bg-red-200 border-red-500 text-red-700 px-4 py-3 rounded">
                 <p>{{ error }}</p>
             </div>
             {% endif %}
@@ -20,7 +20,7 @@
                 <label for="second">Segundo:</label><br>
                 <input type="number" id="second" name="second" min="0" max="59" class="input-field mb-2 py-2 px-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"><br>
                 <label for="distance">Distância:</label><br>
-                <input type="text" id="distance" name="distance" class="input-field mb-2 py-2 px-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"><br>
+                <input type="number" id="distance" name="distance" class="input-field mb-2 py-2 px-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"><br>
                 <label for="activity">Atividade:</label><br>
                 <select name="activity" id="activity" class="input-field mb-2 py-2 px-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                     <option value="corrida">Corrida</option>
