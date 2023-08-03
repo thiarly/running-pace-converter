@@ -17,16 +17,19 @@
 
 
             <form method="POST">
-                <label for="hour">Hora:</label><br>
-                <input type="number" id="hour" name="hour" min="0" max="23" placeholder="00" class="input-field mb-2 py-2 px-4 w-20 text-center border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"><br>
-                <label for="minute">Minuto:</label><br>
-                <input type="number" id="minute" name="minute" min="0" max="59" placeholder="00" class="input-field mb-2 py-2 px-4 w-20 text-center border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"><br>
-                <label for="second">Segundo:</label><br>
-                <input type="number" id="second" name="second" min="0" max="59" placeholder="00" class="input-field mb-2 py-2 px-4 w-20 text-center border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"><br>
-                <label for="distance">Distância:</label><br>
-                <input type="text" id="distance" name="distance" pattern="[0-9]+(\.[0-9]+)?" class="input-field mb-2 py-2 px-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" title="Digite um número válido, como 0.4"><br>
-                <select name="activity" id="activity" class="input-field mb-2 py-2 px-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                    <option value="corrida">Corrida</option>
+                <label class="text-gray-800" for="hour">Hora:</label><br>
+                <input type="number" id="hour" name="hour" min="0" max="23" placeholder="00" class="text-gray-800 input-field mb-2 py-2 px-4 w-20 text-center border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"><br>
+                <label class="text-gray-800" for="minute">Minuto:</label><br>
+                <input type="number" id="minute" name="minute" min="0" max="59" placeholder="00" class="text-gray-800 input-field mb-2 py-2 px-4 w-20 text-center border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"><br>
+                <label class="text-gray-800" for="second">Segundo:</label><br>
+                <input type="number" id="second" name="second" min="0" max="59" placeholder="00" class="text-gray-800 input-field mb-2 py-2 px-4 w-20 text-center border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"><br>
+                <label class="text-gray-800" for="distance">Distância:</label><br>
+                <input type="text" id="distance" name="distance" pattern="[0-9]+(\.[0-9]+)?" class="text-gray-800 input-field mb-2 py-2 px-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" title="Digite um número válido, como 0.4"><br>
+                <select class="text-gray-800" name="activity" id="activity" class="input-field mb-2 py-2 px-4 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    name="activity" 
+                    id="activity"
+                    style="border: 0.5px solid #cecdcd; box-shadow: 0 0 1px #cecdcd; border-radius: 5px;">
+                    <option  value="corrida">Corrida</option>
                     <option value="ciclismo">Ciclismo</option>
                     <option value="natacao">Natação</option>
                 </select><br>
