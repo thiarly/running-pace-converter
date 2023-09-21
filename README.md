@@ -3,10 +3,6 @@
 
 <img width="1414" alt="Screenshot 2023-09-21 at 09 15 50" src="https://github.com/thiarly/running-pace-converter/assets/13594903/f3a9d765-b97e-4bca-ba54-e2a7928f3f2e">
 
-<img width="435" alt="Screenshot 2023-09-21 at 09 16 35" src="https://github.com/thiarly/running-pace-converter/assets/13594903/102ddb06-ce13-42eb-813b-81cd6c10d4b5">
-
-
-
 Esse é um projeto de um conversor de pace para corrida, velocidade média para bike e pace para natação. Foi desenvolvido para ajudar atletas e entusiastas do esporte a planejar e entender melhor seus treinos.
 
 Você pode acessar o projeto aqui: https://running-pace-converter-production.up.railway.app
