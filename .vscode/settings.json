@@ -2,6 +2,7 @@
     "cSpell.words": [
         "aporte",
         "aproximadamente",
+        "atividade",
         "cada",
         "calculadora",
         "Calcular",
@@ -12,7 +13,10 @@
         "decorrido",
         "desejado",
         "dinheiro",
+        "distância",
+        "estimativa",
         "Formato",
+        "forneça",
         "gunicorn",
         "importlib",
         "inicial",
@@ -21,6 +25,7 @@
         "juros",
         "média",
         "milha",
+        "minuto",
         "minutos",
         "montante",
         "natacao",
@@ -29,9 +34,13 @@
         "runnerpacer",
         "salario",
         "segundos",
+        "selecione",
+        "sobre",
+        "valores",
         "velocidade",
         "Velocidade",
         "Werkzeug",
-        "zipp"
+        "zipp",
+        "zonas"
     ]
 }
