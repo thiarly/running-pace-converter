@@ -16,7 +16,7 @@ function toggleDropdown(dropdownId) {
 
 // Event listeners para botões de dropdown
 const dropdownLinks = [
-    { buttonId: '#dropdownNavbarLink1', menuId: '#dropdownNavbar1' },
+    { buttonId: '#dropdownNavbarLink', menuId: '#dropdownNavbar' },
     { buttonId: '#dropdownNavbarLink2', menuId: '#dropdownNavbar2' },
     { buttonId: '#dropdownNavbarLink3', menuId: '#dropdownNavbar3' }
 ];
