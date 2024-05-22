@@ -24,7 +24,7 @@
 
         {% if vo2max %}
         <div class="mt-8 p-4 bg-gray-200 rounded">
-            <p><span>Pace: <strong>{{ paces['pra_morte'] }} /km - (VO2 max: {{ vo2max }})</strong></span></p>
+            <p><span>Pace: <strong>{{ pace_km }} /km - (VO2 max: {{ vo2max }})</strong></span></p>
             <h2 class="text-xl font-semibold mt-4">Pace por faixas de treino</h2>
             <ul>
                 <li>50% (Leve): {{ paces['leve'] }}</li>
@@ -48,7 +48,7 @@
                     <tr>
                         <td class="py-2 px-4 border-b border-gray-200 dark:border-gray-700 text-center">{{ race }}</td>
                         <td class="py-2 px-4 border-b border-gray-200 dark:border-gray-700 text-center">{{ time }}</td>
-                        <td class="py-2 px-4 border-b border-gray-200 dark:border-gray-700 text-center">{{ paces['pra_morte'] }}</td>
+                        <td class="py-2 px-4 border-b border-gray-200 dark:border-gray-700 text-center">{{ pace_km }}</td>
                     </tr>
                     {% endfor %}
                 </tbody>
