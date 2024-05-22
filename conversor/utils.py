@@ -81,3 +81,48 @@ def convert_pace_milha(pace_km):
     pace_mile_min = int(pace_total_minutes_mile)
     pace_mile_sec = int((pace_total_minutes_mile - pace_mile_min) * 60)
     return f'{pace_mile_min:02}:{pace_mile_sec:02}'
+
+
+def convert_km_to_miles(km):
+    miles = km / 1.60934  # 1 milha = 1.60934 km
+    return round(miles, 2)
+
+
+def convert_miles_to_km(miles):
+    km = miles * 1.60934  # 1 milha = 1.60934 km
+    return round(km, 2)
+
+
+# Calculadora de VO2Max
+
+def calculate_vo2max(time_seconds, distance_km):
+    vo2max = (distance_km * 1000) / time_seconds * 3.5
+    return round(vo2max, 1)
+
+def calculate_paces_by_vo2max(time_seconds, distance_km):
+    pace_km = (time_seconds / distance_km) / 60  # Pace em min/km
+
+    paces = {
+        "leve": pace_km / 0.67,
+        "moderado": pace_km / 0.79,
+        "forte": pace_km / 0.90,
+        "muito_forte": pace_km / 1.02,
+        "fortissimo": pace_km / 1.13,
+        "pra_morte": pace_km / 1.24
+    }
+    
+    return {key: f"{int(pace // 1):02}:{int((pace % 1) * 60):02}" for key, pace in paces.items()}
+
+
+def race_predictions(time_seconds, distance_km):
+    pace_km = (time_seconds / distance_km) / 60  # Pace em min/km
+    
+    predictions = {
+        "3 km": pace_km * 3 * 60 / 0.96,
+        "5 km": pace_km * 5 * 60 / 0.95,
+        "10 km": time_seconds,
+        "meia": pace_km * 21.0975 * 60 / 0.93,
+        "maratona": pace_km * 42.195 * 60 / 0.88
+    }
+    
+    return {key: f"{int(pred // 3600):02}:{int((pred % 3600) // 60):02}:{int(pred % 60):02}" for key, pred in predictions.items()}
