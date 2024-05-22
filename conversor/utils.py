@@ -95,34 +95,80 @@ def convert_miles_to_km(miles):
 
 # Calculadora de VO2Max
 
+def calculate_pace_km(time_seconds, distance_km):
+    pace_seconds_per_km = time_seconds / distance_km
+    pace_minutes = int(pace_seconds_per_km // 60)
+    pace_seconds = int(pace_seconds_per_km % 60)
+    return f"{pace_minutes:02}:{pace_seconds:02}"
+
+
 def calculate_vo2max(time_seconds, distance_km):
-    vo2max = (distance_km * 1000) / time_seconds * 3.5
+    velocity_m_per_s = distance_km * 1000 / time_seconds
+    vo2max = (velocity_m_per_s - 5.2) * 1000 / (distance_km / 1.609344)
     return round(vo2max, 1)
 
-def calculate_paces_by_vo2max(time_seconds, distance_km):
-    pace_km = (time_seconds / distance_km) / 60  # Pace em min/km
-
+def calculate_paces_by_vo2max(pace_seconds_per_km):
     paces = {
-        "leve": pace_km / 0.67,
-        "moderado": pace_km / 0.79,
-        "forte": pace_km / 0.90,
-        "muito_forte": pace_km / 1.02,
-        "fortissimo": pace_km / 1.13,
-        "pra_morte": pace_km / 1.24
+        "leve": pace_seconds_per_km / 0.68,
+        "moderado": pace_seconds_per_km / 0.76,
+        "forte": pace_seconds_per_km / 0.84,
+        "muito_forte": pace_seconds_per_km / 0.92,
+        "fortissimo": pace_seconds_per_km / 1.0,
+        "pra_morte": pace_seconds_per_km / 1.08
     }
     
-    return {key: f"{int(pace // 1):02}:{int((pace % 1) * 60):02}" for key, pace in paces.items()}
+    return {key: f"{int(pace // 60):02}:{int(pace % 60):02}" for key, pace in paces.items()}
+
+
+def riegel_prediction(base_time_seconds, base_distance_km, target_distance_km):
+    exponent = 1.06
+    predicted_time_seconds = base_time_seconds * (target_distance_km / base_distance_km) ** exponent
+    return predicted_time_seconds
 
 
 def race_predictions(time_seconds, distance_km):
-    pace_km = (time_seconds / distance_km) / 60  # Pace em min/km
-    
     predictions = {
-        "3 km": pace_km * 3 * 60 / 0.96,
-        "5 km": pace_km * 5 * 60 / 0.95,
+        "3 km": riegel_prediction(time_seconds, distance_km, 3),
+        "5 km": riegel_prediction(time_seconds, distance_km, 5),
         "10 km": time_seconds,
-        "meia": pace_km * 21.0975 * 60 / 0.93,
-        "maratona": pace_km * 42.195 * 60 / 0.88
+        "meia": riegel_prediction(time_seconds, distance_km, 21.0975),
+        "maratona": riegel_prediction(time_seconds, distance_km, 42.195)
     }
     
     return {key: f"{int(pred // 3600):02}:{int((pred % 3600) // 60):02}:{int(pred % 60):02}" for key, pred in predictions.items()}
+
+
+
+def race_predictions_from_3k(time_seconds, distance_km):
+    distance_mapping = {
+        "3 km": 3,
+        "5 km": 5,
+        "10 km": 10,
+        "meia": 21.0975,
+        "maratona": 42.195
+    }
+    
+    predictions = {
+        "3 km": time_seconds,
+        "5 km": riegel_prediction(time_seconds, distance_km, 5),
+        "10 km": riegel_prediction(time_seconds, distance_km, 10),
+        "meia": riegel_prediction(time_seconds, distance_km, 21.0975),
+        "maratona": riegel_prediction(time_seconds, distance_km, 42.195)
+    }
+
+    # Calculando o pace para cada previsão
+    prediction_paces = {
+        key: calculate_pace_km(pred, distance_mapping[key])
+        for key, pred in predictions.items()
+    }
+
+    # Agrupando as previsões e paces
+    formatted_predictions = {
+        key: {
+            'Tempo': f"{int(pred // 3600):02}:{int((pred % 3600) // 60):02}:{int(pred % 60):02}",
+            'Pace': prediction_paces[key]
+        }
+        for key, pred in predictions.items()
+    }
+    
+    return formatted_predictions
