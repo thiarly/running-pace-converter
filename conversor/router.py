@@ -1,6 +1,14 @@
 from flask import Flask, render_template, request
 from conversor import app
-from conversor.utils import convert_pace, calc_average_speed_bike, calc_swim_pace, calculate_estimated_time, calculate_estimated_distance, convert_pace_to_speed, convert_speed_to_pace, convert_milha_pace, convert_pace_milha
+from conversor.utils import (
+    convert_pace, calc_average_speed_bike,
+    calc_swim_pace, calculate_estimated_time,
+    calculate_estimated_distance, convert_pace_to_speed,
+    convert_speed_to_pace, convert_milha_pace,
+    convert_pace_milha, convert_km_to_miles,
+    convert_miles_to_km, calculate_vo2max,
+    calculate_paces_by_vo2max, race_predictions
+)
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
@@ -144,6 +152,74 @@ def conversao_pace_milha():
     return render_template('conversao_pace_milha.html')
 
 
+
+@app.route('/tabela_pace')
+def tabela_pace():
+    pace_table = []
+    for speed_kmh in [x * 0.5 for x in range(16, 47)]:  # De 8 km/h a 23 km/h com intervalo de 0,5 km/h
+        pace_km = convert_speed_to_pace(speed_kmh)
+        pace_mile = convert_pace_milha(pace_km)
+        pace_table.append({
+            "speed_kmh": speed_kmh,
+            "pace_km": pace_km,
+            "pace_mile": pace_mile
+        })
+    return render_template('tabela_pace.html', pace_table=pace_table)
+
+
+@app.route('/conversao_km_para_milhas', methods=['GET', 'POST'])
+def conversao_km_para_milhas():
+    if request.method == 'POST':
+        km = request.form.get('km')
+
+        if not km:
+            return render_template('conversao_km_para_milhas.html', error='Por favor, forneça uma distância em quilômetros.')
+
+        km = float(km)
+        miles = convert_km_to_miles(km)
+        
+        return render_template('conversao_km_para_milhas.html', miles=miles)
+
+    return render_template('conversao_km_para_milhas.html')
+
+
+@app.route('/conversao_milhas_para_km', methods=['GET', 'POST'])
+def conversao_milhas_para_km():
+    if request.method == 'POST':
+        miles = request.form.get('miles')
+
+        if not miles:
+            return render_template('conversao_milhas_para_km.html', error='Por favor, forneça uma distância em milhas.')
+
+        miles = float(miles)
+        km = convert_miles_to_km(miles)
+        
+        return render_template('conversao_milhas_para_km.html', km=km)
+
+    return render_template('conversao_milhas_para_km.html')
+
+
+
+@app.route('/calculadora_vo2max', methods=['GET', 'POST'])
+def calculadora_vo2max():
+    if request.method == 'POST':
+        time = request.form.get('time')
+
+        if not time:
+            return render_template('calculadora_vo2max.html', error='Por favor, forneça um tempo válido.')
+
+        hours, minutes, seconds = map(int, time.split(':'))
+        time_seconds = hours * 3600 + minutes * 60 + seconds
+
+        vo2max = calculate_vo2max(time_seconds, 10)  # Distância de 10 km
+        paces = calculate_paces_by_vo2max(time_seconds, 10)
+        predictions = race_predictions(time_seconds, 10)
+        
+        return render_template('calculadora_vo2max.html', vo2max=vo2max, paces=paces, predictions=predictions)
+
+    return render_template('calculadora_vo2max.html')
+
+
 @app.route('/zonas')
 def zonas():
     return render_template('zonas.html')
@@ -152,3 +228,5 @@ def zonas():
 @app.route('/sobre')
 def sobre():
     return render_template('sobre.html')
+
+
