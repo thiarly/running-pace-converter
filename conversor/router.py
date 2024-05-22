@@ -7,7 +7,8 @@ from conversor.utils import (
     convert_speed_to_pace, convert_milha_pace,
     convert_pace_milha, convert_km_to_miles,
     convert_miles_to_km, calculate_vo2max,
-    calculate_paces_by_vo2max, race_predictions
+    race_predictions, calculate_pace_km, calculate_paces_by_vo2max,
+    race_predictions_from_3k
 )
 
 @app.route('/', methods=['GET', 'POST'])
@@ -199,7 +200,6 @@ def conversao_milhas_para_km():
     return render_template('conversao_milhas_para_km.html')
 
 
-
 @app.route('/calculadora_vo2max', methods=['GET', 'POST'])
 def calculadora_vo2max():
     if request.method == 'POST':
@@ -211,13 +211,34 @@ def calculadora_vo2max():
         hours, minutes, seconds = map(int, time.split(':'))
         time_seconds = hours * 3600 + minutes * 60 + seconds
 
-        vo2max = calculate_vo2max(time_seconds, 10)  # Distância de 10 km
-        paces = calculate_paces_by_vo2max(time_seconds, 10)
+        pace_seconds_per_km = time_seconds / 10  # Distância de 10 km
+        pace_km = calculate_pace_km(time_seconds, 10)
+        vo2max = calculate_vo2max(time_seconds, 10)
+        paces = calculate_paces_by_vo2max(pace_seconds_per_km)
         predictions = race_predictions(time_seconds, 10)
         
-        return render_template('calculadora_vo2max.html', vo2max=vo2max, paces=paces, predictions=predictions)
+        return render_template('calculadora_vo2max.html', vo2max=vo2max, paces=paces, predictions=predictions, pace_km=pace_km)
 
     return render_template('calculadora_vo2max.html')
+
+
+@app.route('/previsao_prova_3k', methods=['GET', 'POST'])
+def previsao_prova_3k():
+    if request.method == 'POST':
+        time = request.form.get('time')
+
+        if not time:
+            return render_template('previsao_prova_3k.html', error='Por favor, forneça um tempo válido.')
+
+        minutes, seconds = map(int, time.split(':'))
+        time_seconds = minutes * 60 + seconds
+
+        predictions = race_predictions_from_3k(time_seconds, 3)
+        pace_km = calculate_pace_km(time_seconds, 3)
+        
+        return render_template('previsao_prova_3k.html', predictions=predictions, pace_km=pace_km)
+
+    return render_template('previsao_prova_3k.html')
 
 
 @app.route('/zonas')
