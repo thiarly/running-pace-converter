@@ -6,12 +6,16 @@
 <div class="container mx-auto px-8 py-10 text-justify">
     <h1 class="text-3xl mb-5">Sobre mim</h1>
     <div class="grid md:grid-cols-2 gap-5">
-        <!-- Imagem e informações de contato -->
-        <div class="contact-info">
-            <img src="{{ url_for('static', filename='image/romeiros-bike.jpg')}}" alt="Sua Foto" class="rounded-xl banner mb-5">
-            <h2 class="text-2xl mb-3">Thiarly Cavalcante</h2>
-            <p><strong>Email:</strong> thiarly.cavalcante@live.com</p>
-            <p><strong>Telefone:</strong> (11) 971469122</p>
+        <!-- Carrossel de Imagens -->
+        <div>
+            <!-- Imagem Principal -->
+            <img id="mainImage" src="{{ url_for('static', filename=images[0]) }}" alt="Sua Foto" class="rounded-xl mb-5 w-full">
+            <!-- Carrossel de Miniaturas -->
+            <div class="flex overflow-x-auto">
+                {% for image in images %}
+                <img onclick="setImage('{{ url_for('static', filename=image) }}')" src="{{ url_for('static', filename=image) }}" alt="Thumbnail" class="h-24 mr-2 cursor-pointer rounded">
+                {% endfor %}
+            </div>
         </div>
         <!-- Descrição -->
         <div class="description">
@@ -50,4 +54,11 @@
         <li>1º colocado Troféu Brasil (2019)</li>
     </ul>
 </div>
+
+
+<script>
+    function setImage(src) {
+        document.getElementById('mainImage').src = src;
+    }
+</script>
 {% endblock %}

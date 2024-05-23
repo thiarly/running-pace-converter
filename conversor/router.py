@@ -246,8 +246,10 @@ def zonas():
     return render_template('zonas.html')
 
 
+import os
+
 @app.route('/sobre')
 def sobre():
-    return render_template('sobre.html')
-
-
+    image_directory = os.path.join(app.root_path, 'static/image')
+    images = [os.path.join('image', image) for image in os.listdir(image_directory) if image.endswith('.jpg')]
+    return render_template('sobre.html', images=images)
