@@ -1,64 +1,26 @@
 {% extends "base.html" %}
 {% block titulo %}
-    Sobre o autor
+    Sobre a TC Sports
 {% endblock %}
 {% block content %}
 <div class="container mx-auto px-8 py-10 text-justify">
-    <h1 class="text-3xl mb-5">Sobre mim</h1>
-    <div class="grid md:grid-cols-2 gap-5">
-        <!-- Carrossel de Imagens -->
-        <div>
-            <!-- Imagem Principal -->
-            <img id="mainImage" src="{{ url_for('static', filename=images[0]) }}" alt="Sua Foto" class="rounded-xl mb-5 w-full">
-            <!-- Carrossel de Miniaturas -->
-            <div class="flex overflow-x-auto">
-                {% for image in images %}
-                <img onclick="setImage('{{ url_for('static', filename=image) }}')" src="{{ url_for('static', filename=image) }}" alt="Thumbnail" class="h-24 mr-2 cursor-pointer rounded">
-                {% endfor %}
-            </div>
-        </div>
-        <!-- Descrição -->
+
+    <!-- Logo no Topo com Largura Total -->
+    <div class="w-full mb-5">
+        <img src="{{ url_for('static', filename='image/LogoTC.png') }}" alt="Logo TC Sports" class="w-full h-auto max-w-xl rounded-lg">
+    </div>
+    <div class="grid md:grid-cols-1 gap-5">
+        <!-- Descrição da Assessoria -->
         <div class="description">
-            <h2 class="text-2xl mb-3 font-bold text-blue-600">Minha História</h2>
-            <p>Comecei minha jornada no esporte em 2017 com corridas de rua. No mesmo ano, participei de diversas corridas, mas duas provas se destacaram: minha primeira maratona na SP City e uma meia maratona em Punta Del Este, no Uruguai. No final de 2017, comecei a andar de bicicleta e a fazer aulas de natação.</p>
-            <h3 class="text-lg font-bold mt-6">Duathlon e Triathlon</h3>
-            <p>Em março de 2018, competi na minha primeira prova de duathlon em Indaiatuba, onde me surpreendi ao conquistar o segundo lugar na minha categoria. Essa experiência me fez apaixonar pelo esporte. Em abril do mesmo ano, competi no meu primeiro triatlo no Triday na estrada velha de Santos. Embora tenha sido uma prova desafiadora, estava determinado a continuar aprimorando minhas habilidades.</p>
-            <h3 class="text-lg font-bold mt-6">Ironman</h3>
-            <p>Em setembro de 2018, participei do meu primeiro Ironman 70.3 no Rio de Janeiro, onde fiquei em terceiro lugar, quase me classificando para o Campeonato Mundial Ironman 70.3 de 2019 em Nice, França. Decidido a me classificar para o Mundial, participei do Ironman 70.3 de Fortaleza em novembro de 2018 e conquistei o quarto lugar, garantindo minha vaga para o Mundial.</p>
-            <h3 class="text-lg font-bold mt-6">2019 - Ano de Conquistas</h3>
-            <p>Em 2019, competi no meu primeiro Ironman em Florianópolis e participei de várias outras provas de triatlo na distância olímpica. No mesmo ano, competi no Campeonato Mundial Ironman 70.3 em Nice, uma experiência que considero mágica. Ao voltar ao Brasil, conquistei o segundo lugar no Ironman 70.3 de São Paulo.</p>
-            <h3 class="text-lg font-bold mt-6">2022 - Continuando a Jornada</h3>
-            <p>Em 2022, participei do Ironman em Florianópolis e de mais duas provas na distância sprint. Tenho muito orgulho de todas as minhas conquistas e estou ansioso para continuar me desafiando no futuro.</p>
+            <h2 class="text-2xl mb-3 font-bold text-blue-600">Nossa Missão</h2>
+            <p>A TC Sports é dedicada a ajudar atletas a alcançarem seus melhores resultados, com ênfase especial em corrida, além de oferecer treinamento personalizado em triatlo e duatlo. Nosso objetivo é proporcionar apoio contínuo e adaptado às necessidades de cada atleta para que atinjam suas metas em competições e melhorem seu desempenho e saúde.</p>
+            <h3 class="text-lg font-bold mt-6">Experiência e Competência</h3>
+            <p>Com uma vasta experiência em competições de triatlo, duatlo e corridas, nosso treinador Thiarly Cavalcante traz conhecimento técnico e prático para preparar os atletas para todo tipo de desafio.</p>
+            <h3 class="text-lg font-bold mt-6">Serviços Oferecidos</h3>
+            <p>Nós oferecemos programas de treinamento personalizados para corrida, triatlo, duatlo, e ciclismo, adaptados para atender às necessidades e objetivos de cada atleta.</p>
+            <h3 class="text-lg font-bold mt-6">Metodologia de Treinamento</h3>
+            <p>Receba seus treinos semanais individualizados e venha conhecer um pouco mais sobre nossa metodologia. Diferentemente de outras assessorias, não somos favoráveis a grandes volumes de treinamento. Acreditamos que o treinamento, quando feito de forma correta a partir do cruzamento dos dados obtidos em seu teste fisiológico, permite gerar as adaptações necessárias para correr desde uma prova de 10 km até uma ultramaratona, com risco mínimo de lesões e conseguindo alcançar a meta estabelecida.</p>
         </div>
     </div>
-    <!-- Suas conquistas -->
-    <h2 class="text-2xl mb-3 mt-10">Minhas Conquistas</h2>
-    <ul class="achievements">
-        <li>1º colocado Challenge Salvador (2018)</li>
-        <li>1º colocado Triday Riacho Grande (2018)</li>
-        <li>2º colocado Triday USP (2018)</li>
-        <li>2º colocado Triday Ranking Geral (2018)</li>
-        <li>2º colocado EVTRI Short (2018)</li>
-        <li>2º colocado Powerman Duathlon (2018)</li>
-        <li>3º colocado Ironman 70.3 no Rio de Janeiro (2018)</li>
-        <li>3º colocado Triday Riacho Grande (2018)</li>
-        <li>4º colocado Ironman 70.3 em Fortaleza (2018)</li>
-        <li>4º colocado EVTRI 2019 Long</li>
-        <li>4º colocado 23k IGT Corrida (2019)</li>
-        <li>5º colocado EVTRI Short (2019)</li>
-        <li>1º colocado Corrida Boralá 10k (2019)</li>
-        <li>1º colocado Blue Series EV (2022)</li>
-        <li>1º colocado EVTRI 2018 Short</li>
-        <li>1º colocado Troféu Brasil Sprint (2022)</li>
-        <li>1º colocado Travessia Guarujá (2021)</li>
-        <li>1º colocado Troféu Brasil (2019)</li>
-    </ul>
 </div>
-
-
-<script>
-    function setImage(src) {
-        document.getElementById('mainImage').src = src;
-    }
-</script>
 {% endblock %}
