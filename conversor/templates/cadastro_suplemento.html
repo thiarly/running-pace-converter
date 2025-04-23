@@ -1,0 +1,140 @@
+{% extends "base.html" %}
+
+{% block titulo %}
+Cadastro de Suplemento
+{% endblock %}
+
+{% block content %}
+<div class="flex items-center justify-center min-h-screen bg-gray-100">
+  <div class="w-full max-w-4xl p-8 bg-white rounded-2xl shadow-xl">
+    <h1 class="text-2xl font-bold text-center mb-8">Cadastro de Suplemento</h1>
+
+    <form method="POST">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          {{ form.nome.label(class="block text-gray-700") }}
+          {{ form.nome(class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-md") }}
+        </div>
+        <div>
+          {{ form.tipo.label(class="block text-gray-700") }}
+          {{ form.tipo(class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-md") }}
+        </div>
+
+        <div>
+          {{ form.marca.label(class="block text-gray-700") }}
+          {{ form.marca(class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-md") }}
+        </div>
+        <div>
+          {{ form.carbo.label(class="block text-gray-700") }}
+          {{ form.carbo(class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-md") }}
+        </div>
+
+        <div>
+          {{ form.sodio.label(class="block text-gray-700") }}
+          {{ form.sodio(class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-md") }}
+        </div>
+        <div>
+          {{ form.magnesio.label(class="block text-gray-700") }}
+          {{ form.magnesio(class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-md") }}
+        </div>
+
+        <div>
+          {{ form.potassio.label(class="block text-gray-700") }}
+          {{ form.potassio(class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-md") }}
+        </div>
+        <div>
+          {{ form.calcio.label(class="block text-gray-700") }}
+          {{ form.calcio(class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-md") }}
+        </div>
+
+        <div>
+          {{ form.cafeina.label(class="block text-gray-700") }}
+          {{ form.cafeina(class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-md") }}
+        </div>
+        <div>
+          {{ form.taurina.label(class="block text-gray-700") }}
+          {{ form.taurina(class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-md") }}
+        </div>
+
+        <div>
+          {{ form.beta_alanina.label(class="block text-gray-700") }}
+          {{ form.beta_alanina(class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-md") }}
+        </div>
+        <div>
+          {{ form.citrulina.label(class="block text-gray-700") }}
+          {{ form.citrulina(class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-md") }}
+        </div>
+
+        <div>
+          {{ form.creatina.label(class="block text-gray-700") }}
+          {{ form.creatina(class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-md") }}
+        </div>
+        <div>
+          {{ form.coq10.label(class="block text-gray-700") }}
+          {{ form.coq10(class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-md") }}
+        </div>
+
+        <div>
+          {{ form.carnitina.label(class="block text-gray-700") }}
+          {{ form.carnitina(class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-md") }}
+        </div>
+        <div>
+          {{ form.leucina.label(class="block text-gray-700") }}
+          {{ form.leucina(class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-md") }}
+        </div>
+
+        <div>
+          {{ form.isoleucina.label(class="block text-gray-700") }}
+          {{ form.isoleucina(class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-md") }}
+        </div>
+        <div>
+          {{ form.valina.label(class="block text-gray-700") }}
+          {{ form.valina(class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-md") }}
+        </div>
+
+        <div>
+          {{ form.arginina.label(class="block text-gray-700") }}
+          {{ form.arginina(class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-md") }}
+        </div>
+
+        <div>
+          {{ form.vit_b1.label(class="block text-gray-700") }}
+          {{ form.vit_b1(class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-md") }}
+        </div>
+        <div>
+          {{ form.vit_b2.label(class="block text-gray-700") }}
+          {{ form.vit_b2(class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-md") }}
+        </div>
+        <div>
+          {{ form.vit_b3.label(class="block text-gray-700") }}
+          {{ form.vit_b3(class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-md") }}
+        </div>
+        <div>
+          {{ form.vit_b6.label(class="block text-gray-700") }}
+          {{ form.vit_b6(class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-md") }}
+        </div>
+        <div>
+          {{ form.vit_b7.label(class="block text-gray-700") }}
+          {{ form.vit_b7(class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-md") }}
+        </div>
+        <div>
+          {{ form.vit_b9.label(class="block text-gray-700") }}
+          {{ form.vit_b9(class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-md") }}
+        </div>
+        <div>
+          {{ form.vit_b12.label(class="block text-gray-700") }}
+          {{ form.vit_b12(class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-md") }}
+        </div>
+        <div>
+          {{ form.vit_c.label(class="block text-gray-700") }}
+          {{ form.vit_c(class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-md") }}
+        </div>
+      </div>
+
+      <div class="mt-6 text-center">
+        <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold px-6 py-2 rounded-md">Salvar</button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
