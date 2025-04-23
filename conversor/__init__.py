@@ -21,9 +21,23 @@ if os.getenv('DATABASE_URL'):
 else:
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + database_path
 
+##############################################################################
 bcrypt = Bcrypt(app)
 login_manager = LoginManager(app)
 login_manager.login_view = "homepage"
+
+from flask_login import UserMixin
+
+class DummyUser(UserMixin):
+    def __init__(self):
+        self.id = 'anon'
+
+@login_manager.user_loader
+def load_user(user_id):
+    return DummyUser()
+###############################################################################
+
+
 
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
