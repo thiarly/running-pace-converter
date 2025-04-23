@@ -1,5 +1,9 @@
-from flask import Flask, render_template, request
-from conversor import app
+from flask import Flask, render_template, request, redirect, url_for, flash
+from conversor import app, db
+
+from conversor.forms import SuplementoForm
+from conversor.models import Suplemento
+
 from conversor.utils import (
     convert_pace, calc_average_speed_bike,
     calc_swim_pace, calculate_estimated_time,
@@ -10,6 +14,8 @@ from conversor.utils import (
     race_predictions, calculate_pace_km, calculate_paces_by_vo2max,
     race_predictions_from_3k
 )
+
+
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
@@ -253,3 +259,44 @@ def sobre():
     image_directory = os.path.join(app.root_path, 'static/image')
     images = [os.path.join('image', image) for image in os.listdir(image_directory) if image.endswith('.jpg')]
     return render_template('sobre.html', images=images)
+
+
+
+@app.route('/suplementos/novo', methods=['GET', 'POST'])
+def novo_suplemento():
+    form = SuplementoForm()
+    if form.validate_on_submit():
+        suplemento = Suplemento(
+            nome=form.nome.data,
+            tipo=form.tipo.data,
+            marca=form.marca.data,
+            carbo=form.carbo.data,
+            sodio=form.sodio.data,
+            magnesio=form.magnesio.data,
+            potassio=form.potassio.data,
+            calcio=form.calcio.data,
+            cafeina=form.cafeina.data,
+            taurina=form.taurina.data,
+            beta_alanina=form.beta_alanina.data,
+            citrulina=form.citrulina.data,
+            creatina=form.creatina.data,
+            coq10=form.coq10.data,
+            carnitina=form.carnitina.data,
+            leucina=form.leucina.data,
+            isoleucina=form.isoleucina.data,
+            valina=form.valina.data,
+            arginina=form.arginina.data,
+            vit_b1=form.vit_b1.data,
+            vit_b2=form.vit_b2.data,
+            vit_b3=form.vit_b3.data,
+            vit_b6=form.vit_b6.data,
+            vit_b7=form.vit_b7.data,
+            vit_b9=form.vit_b9.data,
+            vit_b12=form.vit_b12.data,
+            vit_c=form.vit_c.data
+        )
+        db.session.add(suplemento)
+        db.session.commit()
+        flash('Suplemento cadastrado com sucesso!', 'success')
+        return redirect(url_for('novo_suplemento'))
+    return render_template('cadastro_suplemento.html', form=form)
