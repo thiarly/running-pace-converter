@@ -28,7 +28,7 @@ from conversor.models import Suplemento
 def create_database_if_not_exists():
     engine = sqlalchemy.create_engine(app.config['SQLALCHEMY_DATABASE_URI'])
     inspector = sqlalchemy.inspect(engine)
-    if not inspector.has_table('suplementos'):
+    if not inspector.has_table('suplemento'):
         with app.app_context():
             db.create_all()
             print("Base de dados criada com sucesso")
