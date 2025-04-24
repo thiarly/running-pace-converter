@@ -1,43 +1,43 @@
-from conversor import db
+from conversor import database
 
 
-class Suplemento(db.Model):
+class Suplemento(database.Model):
     __tablename__ = 'suplementos'
 
-    id = db.Column(db.Integer, primary_key=True)
-    nome = db.Column(db.String(100), nullable=False)
-    tipo = db.Column(db.String(50), nullable=False)  # ex: Gel, Garrafa, Cápsula
-    marca = db.Column(db.String(50))
+    id = database.Column(database.Integer, primary_key=True)
+    nome = database.Column(database.String(100), nullable=False)
+    tipo = database.Column(database.String(50), nullable=False)  # ex: Gel, Garrafa, Cápsula
+    marca = database.Column(database.String(50))
 
-    carbo = db.Column(db.Float)
-    sodio = db.Column(db.Float)
-    magnesio = db.Column(db.Float)
-    potassio = db.Column(db.Float)
-    calcio = db.Column(db.Float)
+    carbo = database.Column(database.Float)
+    sodio = database.Column(database.Float)
+    magnesio = database.Column(database.Float)
+    potassio = database.Column(database.Float)
+    calcio = database.Column(database.Float)
 
-    cafeina = db.Column(db.Float)
-    taurina = db.Column(db.Float)
-    beta_alanina = db.Column(db.Float)
-    citrulina = db.Column(db.Float)
-    creatina = db.Column(db.Float)
+    cafeina = database.Column(database.Float)
+    taurina = database.Column(database.Float)
+    beta_alanina = database.Column(database.Float)
+    citrulina = database.Column(database.Float)
+    creatina = database.Column(database.Float)
     
     
-    coq10 = db.Column(db.Float)
-    carnitina = db.Column(db.Float)
+    coq10 = database.Column(database.Float)
+    carnitina = database.Column(database.Float)
 
-    leucina = db.Column(db.Float)
-    isoleucina = db.Column(db.Float)
-    valina = db.Column(db.Float)
-    arginina = db.Column(db.Float)
+    leucina = database.Column(database.Float)
+    isoleucina = database.Column(database.Float)
+    valina = database.Column(database.Float)
+    arginina = database.Column(database.Float)
 
-    vit_b1 = db.Column(db.Float)
-    vit_b2 = db.Column(db.Float)
-    vit_b3 = db.Column(db.Float)
-    vit_b6 = db.Column(db.Float)
-    vit_b7 = db.Column(db.Float)
-    vit_b9 = db.Column(db.Float)
-    vit_b12 = db.Column(db.Float)
-    vit_c = db.Column(db.Float)
+    vit_b1 = database.Column(database.Float)
+    vit_b2 = database.Column(database.Float)
+    vit_b3 = database.Column(database.Float)
+    vit_b6 = database.Column(database.Float)
+    vit_b7 = database.Column(database.Float)
+    vit_b9 = database.Column(database.Float)
+    vit_b12 = database.Column(database.Float)
+    vit_c = database.Column(database.Float)
 
     def __repr__(self):
         return f'<Suplemento {self.nome}>'
