@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
-from conversor import app, db
+from conversor import app, database
 
 from conversor.forms import SuplementoForm
 from conversor.models import Suplemento
