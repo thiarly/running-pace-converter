@@ -9,6 +9,7 @@ app = Flask(__name__)
 
 
 project_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+os.makedirs(os.path.join(project_dir, 'instance'), exist_ok=True)  # Garante que a pasta existe
 database_path = os.path.join(project_dir, 'instance', 'database.db')
 
 
