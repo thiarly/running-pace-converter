@@ -48,3 +48,4 @@ def create_database_if_not_exists():
         print("Base de dados já existe!")
 
 create_database_if_not_exists()
+#
