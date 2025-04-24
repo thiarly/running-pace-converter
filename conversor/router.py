@@ -301,4 +301,3 @@ def novo_suplemento():
         return redirect(url_for('novo_suplemento'))
     return render_template('cadastro_suplemento.html', form=form)
 
-#
