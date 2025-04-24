@@ -14,7 +14,9 @@ database_path = os.path.join(project_dir, 'instance', 'database.db')
 
 
 if os.getenv('DATABASE_URL'):
-    app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
+    uri = os.getenv('DATABASE_URL').replace("postgres://", "postgresql://")
+    app.config['SQLALCHEMY_DATABASE_URI'] = uri
+
 else:
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + database_path
 
@@ -22,14 +24,14 @@ else:
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
-from conversor import router  # importa suas rotas
-from conversor.models import Suplemento
+from conversor import models  # Importa os modelos para garantir que estão registrados no SQLAlchemy
 
 def create_database_if_not_exists():
     engine = sqlalchemy.create_engine(app.config['SQLALCHEMY_DATABASE_URI'])
     inspector = sqlalchemy.inspect(engine)
-    if not inspector.has_table('suplemento'):
+    if not inspector.has_table('suplementos'):
         with app.app_context():
+            db.drop_all()
             db.create_all()
             print("Base de dados criada com sucesso")
     else:
