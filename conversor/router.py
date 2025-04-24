@@ -300,3 +300,5 @@ def novo_suplemento():
         flash('Suplemento cadastrado com sucesso!', 'success')
         return redirect(url_for('novo_suplemento'))
     return render_template('cadastro_suplemento.html', form=form)
+
+#
