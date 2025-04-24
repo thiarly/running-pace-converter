@@ -13,12 +13,10 @@ os.makedirs(os.path.join(project_dir, 'instance'), exist_ok=True)  # Garante que
 database_path = os.path.join(project_dir, 'instance', 'database.db')
 
 
-if os.getenv('DATABASE_URL'):
-    uri = os.getenv('DATABASE_URL').replace("postgres://", "postgresql://")
-    app.config['SQLALCHEMY_DATABASE_URI'] = uri
-
-else:
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + database_path
+db_url = os.getenv('DATABASE_URL')
+if db_url and db_url.startswith("postgres://"):
+    db_url = db_url.replace("postgres://", "postgresql://")  # compatibilidade com SQLAlchemy
+app.config['SQLALCHEMY_DATABASE_URI'] = db_url or 'sqlite:///' + database_path
 
 
 db = SQLAlchemy(app)
