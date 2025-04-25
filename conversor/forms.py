@@ -1,6 +1,7 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, FloatField, SelectField, SubmitField
-from wtforms.validators import DataRequired, Optional
+from wtforms import StringField, FloatField, SelectField, SubmitField, IntegerField
+from wtforms.validators import DataRequired, Optional, NumberRange
+
 
 class SuplementoForm(FlaskForm):
     nome = StringField('Nome', validators=[DataRequired()])
@@ -37,3 +38,10 @@ class SuplementoForm(FlaskForm):
     vit_c = FloatField('Vitamina C (mg)', validators=[Optional()])
 
     submit = SubmitField('Salvar')
+
+
+
+class PlanningItemForm(FlaskForm):
+    suplemento_id = SelectField('Produto', coerce=int, validators=[DataRequired()])
+    quantidade = IntegerField('Quantidade', validators=[DataRequired(), NumberRange(min=1)])
+    submit = SubmitField('Adicionar')
