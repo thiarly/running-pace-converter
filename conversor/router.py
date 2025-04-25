@@ -4,6 +4,7 @@ from conversor import app, database
 from conversor.forms import SuplementoForm
 from conversor.models import Suplemento
 
+
 from conversor.utils import (
     convert_pace, calc_average_speed_bike,
     calc_swim_pace, calculate_estimated_time,
@@ -304,7 +305,30 @@ def novo_suplemento():
 
 
 
-@app.route('/suplementos', methods=['GET'])
+@app.route('/suplementos')
 def listar_suplementos():
     suplementos = Suplemento.query.all()
     return render_template('listar_suplementos.html', suplementos=suplementos)
+
+
+@app.route('/suplementos/excluir/<int:id>', methods=['GET'])
+def excluir_suplemento(id):
+    suplemento = Suplemento.query.get_or_404(id)
+    database.session.delete(suplemento)
+    database.session.commit()
+    flash('Suplemento excluido com sucesso!', 'success')
+    return redirect(url_for('listar_suplementos'))
+
+
+@app.route('/suplementos/editar/<int:id>', methods=['GET', 'POST'])
+def editar_suplemento(id):
+    suplemento = Suplemento.query.get_or_404(id)
+    form = SuplementoForm(obj=suplemento)
+
+    if form.validate_on_submit():
+        form.populate_obj(suplemento)
+        database.session.commit()
+        flash('Suplemento editado com sucesso!', 'success')
+        return redirect(url_for('listar_suplementos'))
+
+    return render_template('editar_suplemento.html', form=form, suplemento=suplemento)
