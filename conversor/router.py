@@ -265,6 +265,7 @@ def sobre():
 @app.route('/suplementos/novo', methods=['GET', 'POST'])
 def novo_suplemento():
     form = SuplementoForm()
+    
     if form.validate_on_submit():
         suplemento = Suplemento(
             nome=form.nome.data,
@@ -295,8 +296,8 @@ def novo_suplemento():
             vit_b12=form.vit_b12.data,
             vit_c=form.vit_c.data
         )
-        db.session.add(suplemento)
-        db.session.commit()
+        database.session.add(suplemento)
+        database.session.commit()
         flash('Suplemento cadastrado com sucesso!', 'success')
         return redirect(url_for('novo_suplemento'))
     return render_template('cadastro_suplemento.html', form=form)
