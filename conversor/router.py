@@ -460,7 +460,6 @@ def agrupar_por_categoria(dados):
         }
     }
 
-
 @app.route('/resumo', methods=['GET', 'POST'])
 def resumo_view():
     form = ResumoForm()
@@ -468,25 +467,28 @@ def resumo_view():
 
     totais_por_hora = {}
     tempo_total = 0
+    resumo_dados = {}
 
     if form.validate_on_submit():
-        tempo_total = sum([
-        form.tempo_natacao.data or 0,
-        form.tempo_bike.data or 0,
-        form.tempo_corrida.data or 0
-    ])
+        if form.limpar.data:
+            return redirect(url_for('resumo_view'))
 
-        for key, valor in totais.items():
-            totais_por_hora[key] = round(valor / tempo_total, 2) if tempo_total else 0
+        # Calcula horas + minutos convertidos
+        tempo_natacao = (form.tempo_natacao_horas.data or 0) + (form.tempo_natacao_minutos.data or 0) / 60
+        tempo_bike = (form.tempo_bike_horas.data or 0) + (form.tempo_bike_minutos.data or 0) / 60
+        tempo_corrida = (form.tempo_corrida_horas.data or 0) + (form.tempo_corrida_minutos.data or 0) / 60
 
-    resumo_dados = agrupar_por_categoria(totais_por_hora)
+        tempo_total = tempo_natacao + tempo_bike + tempo_corrida
+
+        if tempo_total > 0:
+            for key, valor in totais.items():
+                totais_por_hora[key] = round(valor / tempo_total, 2)
+            resumo_dados = agrupar_por_categoria(totais_por_hora)
 
     return render_template(
         "resumo.html",
         form=form,
         totais=totais,
         resumo=resumo_dados,
-        tempo_total=tempo_total
+        tempo_total=round(tempo_total, 2)
     )
-
-
