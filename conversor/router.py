@@ -300,3 +300,10 @@ def novo_suplemento():
         flash('Suplemento cadastrado com sucesso!', 'success')
         return redirect(url_for('novo_suplemento'))
     return render_template('cadastro_suplemento.html', form=form)
+
+
+
+@app.route('/suplementos', methods=['GET'])
+def listar_suplementos():
+    suplementos = Suplemento.query.all()
+    return render_template('listar_suplementos.html', suplementos=suplementos)

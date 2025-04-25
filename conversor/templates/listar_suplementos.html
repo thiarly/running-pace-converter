@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block titulo %}
+    Lista de Suplementos
+{% endblock %}
+
+{% block content %}
+<div class="flex flex-col items-center justify-center mt-8">
+    <div class="w-full max-w-4xl p-6 bg-white rounded-lg shadow-md dark:bg-white">
+        <div class="flex justify-between items-center mb-6">
+            <h1 class="text-2xl font-bold text-gray-900 dark:text-black">Suplementos Cadastrados</h1>
+            <a href="{{ url_for('novo_suplemento') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                Novo Suplemento
+            </a>
+        </div>
+
+        {% if suplementos %}
+        <div class="overflow-x-auto">
+            <table class="min-w-full text-sm text-left">
+                <thead class="text-gray-700 uppercase bg-gray-100">
+                    <tr>
+                        <th scope="col" class="py-3 px-6">Nome</th>
+                        <th scope="col" class="py-3 px-6">Tipo</th>
+                        <th scope="col" class="py-3 px-6">Marca</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for suplemento in suplementos %}
+                    <tr class="border-b">
+                        <td class="py-3 px-6">{{ suplemento.nome }}</td>
+                        <td class="py-3 px-6">{{ suplemento.tipo }}</td>
+                        <td class="py-3 px-6">{{ suplemento.marca }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <p class="text-center text-gray-500">Nenhum suplemento cadastrado ainda.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
