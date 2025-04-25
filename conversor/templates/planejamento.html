@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+
+{% block titulo %}
+Planejamento de Suplementos
+{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto py-8">
+  <h1 class="text-2xl font-bold mb-6">Planejamento de Suplementos</h1>
+
+  <form method="POST" class="flex flex-wrap items-end gap-4 mb-8">
+    {{ form.hidden_tag() }}
+    <div>
+      {{ form.suplemento_id.label(class="block text-sm font-medium text-gray-700") }}
+      {{ form.suplemento_id(class="border border-gray-300 rounded px-2 py-1") }}
+    </div>
+    <div>
+      {{ form.quantidade.label(class="block text-sm font-medium text-gray-700") }}
+      {{ form.quantidade(class="border border-gray-300 rounded px-2 py-1") }}
+    </div>
+    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+      Adicionar
+    </button>
+  </form>
+
+  {% if itens %}
+    <table class="min-w-full bg-white border mb-8">
+      <thead class="bg-gray-100">
+        <tr>
+          <th class="px-4 py-2 text-left border-b">Produto</th>
+          <th class="px-4 py-2 text-left border-b">Quantidade</th>
+          <th class="px-4 py-2 text-left border-b">Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in itens %}
+        <tr>
+          <td class="px-4 py-2 border-b">{{ item.suplemento.nome }}</td>
+          <td class="px-4 py-2 border-b">
+            <form method="POST" action="{{ url_for('atualizar_quantidade', item_id=item.id) }}" class="flex items-center gap-2">
+              <input type="number" name="quantidade" value="{{ item.quantidade }}" class="w-20 px-2 py-1 border rounded">
+              <button type="submit" class="text-blue-600 hover:underline">Atualizar</button>
+            </form>
+          </td>
+          <td class="px-4 py-2 border-b">
+            <form method="POST" action="{{ url_for('remover_item', item_id=item.id) }}" onsubmit="return confirm('Deseja remover este item?')">
+              <button type="submit" class="text-red-600 hover:underline">Remover</button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p class="text-gray-600 mb-8">Nenhum item no planejamento ainda.</p>
+  {% endif %}
+
+  <div class="mt-8">
+    <h2 class="text-2xl font-bold text-left text-gray-800 mb-6 border-b pb-2">Totais</h2>
+
+
+    <div class="bg-white shadow-md rounded-xl p-6">
+        <div class="grid grid-cols-1 md:grid-cols-5 gap-6">
+        <div>
+        <h3 class="font-bold text-gray-700 mb-2">Macronutrientes</h3>
+        <ul class="list-disc pl-5 text-gray-800">
+          <li><strong>Carboidrato:</strong> {{ totais.carbo }}</li>
+        </ul>
+      </div>
+
+      <div>
+        <h3 class="font-bold text-gray-700 mb-2">Eletrólitos</h3>
+        <ul class="list-disc pl-5 text-gray-800">
+          <li><strong>Sódio:</strong> {{ totais.sodio }}</li>
+          <li><strong>Magnésio:</strong> {{ totais.magnesio }}</li>
+          <li><strong>Potássio:</strong> {{ totais.potassio }}</li>
+          <li><strong>Cálcio:</strong> {{ totais.calcio }}</li>
+        </ul>
+      </div>
+
+      <div>
+        <h3 class="font-bold text-gray-700 mb-2">Estimulantes e Compostos</h3>
+        <ul class="list-disc pl-5 text-gray-800">
+          <li><strong>Cafeína:</strong> {{ totais.cafeina }}</li>
+          <li><strong>Taurina:</strong> {{ totais.taurina }}</li>
+          <li><strong>Beta-Alanina:</strong> {{ totais.beta_alanina }}</li>
+          <li><strong>Citrulina:</strong> {{ totais.citrulina }}</li>
+          <li><strong>Creatina:</strong> {{ totais.creatina }}</li>
+          <li><strong>CoQ10:</strong> {{ totais.coq10 }}</li>
+          <li><strong>Carnitina:</strong> {{ totais.carnitina }}</li>
+        </ul>
+      </div>
+
+      <div>
+        <h3 class="font-bold text-gray-700 mb-2">Aminoácidos</h3>
+        <ul class="list-disc pl-5 text-gray-800">
+          <li><strong>Leucina:</strong> {{ totais.leucina }}</li>
+          <li><strong>Isoleucina:</strong> {{ totais.isoleucina }}</li>
+          <li><strong>Valina:</strong> {{ totais.valina }}</li>
+          <li><strong>Arginina:</strong> {{ totais.arginina }}</li>
+        </ul>
+      </div>
+
+      <div>
+        <h3 class="font-bold text-gray-700 mb-2">Vitaminas</h3>
+        <ul class="list-disc pl-5 text-gray-800">
+          <li><strong>Vitamina B1:</strong> {{ totais.vit_b1 }}</li>
+          <li><strong>Vitamina B2:</strong> {{ totais.vit_b2 }}</li>
+          <li><strong>Vitamina B3:</strong> {{ totais.vit_b3 }}</li>
+          <li><strong>Vitamina B6:</strong> {{ totais.vit_b6 }}</li>
+          <li><strong>Vitamina B7:</strong> {{ totais.vit_b7 }}</li>
+          <li><strong>Vitamina B9:</strong> {{ totais.vit_b9 }}</li>
+          <li><strong>Vitamina B12:</strong> {{ totais.vit_b12 }}</li>
+          <li><strong>Vitamina C:</strong> {{ totais.vit_c }}</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
