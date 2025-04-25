@@ -6,7 +6,7 @@
 
 {% block content %}
 <div class="flex flex-col items-center justify-center mt-8">
-    <div class="w-full max-w-4xl p-6 bg-white rounded-lg shadow-md dark:bg-white">
+    <div class="w-full max-w-8xl p-6 bg-white rounded-lg shadow-md dark:bg-white">
         <div class="flex justify-between items-center mb-6">
             <h1 class="text-2xl font-bold text-gray-900 dark:text-black">Suplementos Cadastrados</h1>
             <a href="{{ url_for('novo_suplemento') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
@@ -22,14 +22,66 @@
                         <th scope="col" class="py-3 px-6">Nome</th>
                         <th scope="col" class="py-3 px-6">Tipo</th>
                         <th scope="col" class="py-3 px-6">Marca</th>
+                        <th scope="col" class="py-3 px-6">Carboidrato</th>
+                        <th scope="col" class="py-3 px-6">Sódio</th>
+                        <th scope="col" class="py-3 px-6">Magnésio</th>
+                        <th scope="col" class="py-3 px-6">Potássio</th>
+                        <th scope="col" class="py-3 px-6">Cálcio</th>
+                        <th scope="col" class="py-3 px-6">Cafeína</th>
+                        <th scope="col" class="py-3 px-6">Taurina</th>
+                        <th scope="col" class="py-3 px-6">Beta-Alanina</th>
+                        <th scope="col" class="py-3 px-6">Citrulina</th>
+                        <th scope="col" class="py-3 px-6">Arginina</th>
+                        <th scope="col" class="py-3 px-6">Creatina</th>
+                        <th scope="col" class="py-3 px-6">CoQ10</th>
+                        <th scope="col" class="py-3 px-6">Carnitina</th>
+                        <th scope="col" class="py-3 px-6">Leucina</th>
+                        <th scope="col" class="py-3 px-6">Isoleucina</th>
+                        <th scope="col" class="py-3 px-6">Valina</th>
+                        <th scope="col" class="py-3 px-6">Arginina</th>
+                        <th scope="col" class="py-3 px-6">Vitamina B1</th>
+                        <th scope="col" class="py-3 px-6">Vitamina B2</th>
+                        <th scope="col" class="py-3 px-6">Vitamina B3</th>
+                        <th scope="col" class="py-3 px-6">Vitamina B6</th>
+                        <th scope="col" class="py-3 px-6">Vitamina B7</th>
+                        <th scope="col" class="py-3 px-6">Vitamina B9</th>
+                        <th scope="col" class="py-3 px-6">Vitamina B12</th>
+                        <th scope="col" class="py-3 px-6">Vitamina C</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for suplemento in suplementos %}
                     <tr class="border-b">
-                        <td class="py-3 px-6">{{ suplemento.nome }}</td>
-                        <td class="py-3 px-6">{{ suplemento.tipo }}</td>
-                        <td class="py-3 px-6">{{ suplemento.marca }}</td>
+                        <td class="py-3 px-6">{{ suplemento.nome or 0 }}</td>
+                        <td class="py-3 px-6">{{ suplemento.tipo or 0 }}</td>
+                        <td class="py-3 px-6">{{ suplemento.marca or 0 }}</td>
+                        <td class="py-3 px-6">{{ suplemento.carbo or 0 }}</td>
+                        <td class="py-3 px-6">{{ suplemento.sodio or 0 }}</td>
+                        <td class="py-3 px-6">{{ suplemento.magnesio or 0 }}</td>
+                        <td class="py-3 px-6">{{ suplemento.potassio or 0 }}</td>
+                        <td class="py-3 px-6">{{ suplemento.calcio or 0 }}</td>
+                        <td class="py-3 px-6">{{ suplemento.cafeina or 0 }}</td>
+                        <td class="py-3 px-6">{{ suplemento.taurina or 0 }}</td>
+                        <td class="py-3 px-6">{{ suplemento.beta_alanina or 0 }}</td>
+                        <td class="py-3 px-6">{{ suplemento.citrulina or 0 }}</td>
+                        <td class="py-3 px-6">{{ suplemento.arginina or 0 }}</td>
+                        <td class="py-3 px-6">{{ suplemento.creatina or 0 }}</td>
+                        <td class="py-3 px-6">{{ suplemento.coq10 or 0 }}</td>
+                        <td class="py-3 px-6">{{ suplemento.carnitina or 0 }}</td>
+                        <td class="py-3 px-6">{{ suplemento.leucina or 0 }}</td>
+                        <td class="py-3 px-6">{{ suplemento.isoleucina or 0 }}</td>
+                        <td class="py-3 px-6">{{ suplemento.valina or 0 }}</td>
+                        <td class="py-3 px-6">{{ suplemento.arginina or 0 }}</td>
+                        <td class="py-3 px-6">{{ suplemento.vit_b1 or 0 }}</td>
+                        <td class="py-3 px-6">{{ suplemento.vit_b2 or 0 }}</td>
+                        <td class="py-3 px-6">{{ suplemento.vit_b3 or 0 }}</td>
+                        <td class="py-3 px-6">{{ suplemento.vit_b6 or 0 }}</td>
+                        <td class="py-3 px-6">{{ suplemento.vit_b7 or 0 }}</td>
+                        <td class="py-3 px-6">{{ suplemento.vit_b9 or 0 }}</td>
+                        <td class="py-3 px-6">{{ suplemento.vit_b12 or 0 }}</td>
+                        <td class="py-3 px-6">{{ suplemento.vit_c or 0 }}</td>
+
+                        
                     </tr>
                     {% endfor %}
                 </tbody>
