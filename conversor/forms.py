@@ -45,3 +45,10 @@ class PlanningItemForm(FlaskForm):
     suplemento_id = SelectField('Produto', coerce=int, validators=[DataRequired()])
     quantidade = IntegerField('Quantidade', validators=[DataRequired(), NumberRange(min=1)])
     submit = SubmitField('Adicionar')
+    
+    
+class ResumoForm(FlaskForm):
+    tempo_natacao = FloatField('Tempo de Natação (h)', validators=[DataRequired()])
+    tempo_bike = FloatField('Tempo de Ciclismo (h)', validators=[DataRequired()])
+    tempo_corrida = FloatField('Tempo de Corrida (h)', validators=[DataRequired()])
+    submit = SubmitField('Calcular Resumo')
