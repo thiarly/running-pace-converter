@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block titulo %}
+Resumo do Planejamento
+{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto py-8">
+  <h1 class="text-2xl font-bold mb-6">Resumo do Planejamento</h1>
+
+  <form method="POST" class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+    {{ form.hidden_tag() }}
+
+    <div>
+      {{ form.tempo_natacao.label(class="block text-sm font-medium text-gray-700") }}
+      {{ form.tempo_natacao(class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-md") }}
+    </div>
+    <div>
+      {{ form.tempo_bike.label(class="block text-sm font-medium text-gray-700") }}
+      {{ form.tempo_bike(class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-md") }}
+    </div>
+    <div>
+      {{ form.tempo_corrida.label(class="block text-sm font-medium text-gray-700") }}
+      {{ form.tempo_corrida(class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-md") }}
+    </div>
+    <div class="md:col-span-3 text-center">
+      <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded-md">
+        Calcular Resumo
+      </button>
+    </div>
+  </form>
+
+  {% if totais %}
+  <div class="text-center text-lg font-medium mb-6">
+    Tempo Total de Treino: <strong>{{ tempo_total }}h</strong>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-5 gap-6">
+    {% for categoria, dados in resumo.items() %}
+    <div class="bg-white rounded-xl shadow p-4">
+      <h3 class="font-bold text-gray-700 mb-2">{{ categoria }}</h3>
+      <ul class="list-disc pl-5 text-gray-800">
+        {% for nome, valor in dados.items() %}
+        <li><strong>{{ nome }}:</strong> {{ valor }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+</div>
+{% endblock %}
