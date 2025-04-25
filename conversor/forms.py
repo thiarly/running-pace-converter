@@ -48,7 +48,14 @@ class PlanningItemForm(FlaskForm):
     
     
 class ResumoForm(FlaskForm):
-    tempo_natacao = FloatField('Tempo de Natação (h)', validators=[DataRequired()])
-    tempo_bike = FloatField('Tempo de Ciclismo (h)', validators=[DataRequired()])
-    tempo_corrida = FloatField('Tempo de Corrida (h)', validators=[DataRequired()])
+    tempo_natacao_horas = IntegerField('Horas Natação', validators=[Optional()])
+    tempo_natacao_minutos = IntegerField('Minutos Natação', validators=[Optional()])
+
+    tempo_bike_horas = IntegerField('Horas Bike', validators=[Optional()])
+    tempo_bike_minutos = IntegerField('Minutos Bike', validators=[Optional()])
+
+    tempo_corrida_horas = IntegerField('Horas Corrida', validators=[Optional()])
+    tempo_corrida_minutos = IntegerField('Minutos Corrida', validators=[Optional()])
+
     submit = SubmitField('Calcular Resumo')
+    limpar = SubmitField('Limpar Tela')
