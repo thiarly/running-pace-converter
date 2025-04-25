@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
 from conversor import app, database
 
-from conversor.forms import SuplementoForm, PlanningItemForm
+from conversor.forms import SuplementoForm, PlanningItemForm, ResumoForm
 from conversor.models import Suplemento, PlanejamentoItem
 
 
@@ -397,3 +397,96 @@ def remover_item(item_id):
     database.session.commit()
     flash('Item removido do planejamento.', 'success')
     return redirect(url_for('planejamento'))
+
+
+
+
+def calcular_totais_planejamento():
+    totais = {
+        'carbo': 0, 'sodio': 0, 'magnesio': 0, 'potassio': 0, 'calcio': 0,
+        'cafeina': 0, 'taurina': 0, 'beta_alanina': 0, 'citrulina': 0,
+        'creatina': 0, 'coq10': 0, 'carnitina': 0,
+        'leucina': 0, 'isoleucina': 0, 'valina': 0, 'arginina': 0,
+        'vit_b1': 0, 'vit_b2': 0, 'vit_b3': 0, 'vit_b6': 0,
+        'vit_b7': 0, 'vit_b9': 0, 'vit_b12': 0, 'vit_c': 0
+    }
+
+    itens = PlanejamentoItem.query.all()
+
+    for item in itens:
+        suplemento = item.suplemento
+        for key in totais:
+            valor = getattr(suplemento, key) or 0
+            totais[key] += valor * item.quantidade
+
+    return totais
+
+
+def agrupar_por_categoria(dados):
+    return {
+        "Macronutrientes": {
+            "Carboidrato": dados.get("carbo", 0),
+        },
+        "Eletrólitos": {
+            "Sódio": dados.get("sodio", 0),
+            "Magnésio": dados.get("magnesio", 0),
+            "Potássio": dados.get("potassio", 0),
+            "Cálcio": dados.get("calcio", 0),
+        },
+        "Estimulantes e Compostos": {
+            "Cafeína": dados.get("cafeina", 0),
+            "Taurina": dados.get("taurina", 0),
+            "Beta-Alanina": dados.get("beta_alanina", 0),
+            "Citrulina": dados.get("citrulina", 0),
+            "Creatina": dados.get("creatina", 0),
+            "CoQ10": dados.get("coq10", 0),
+            "Carnitina": dados.get("carnitina", 0),
+        },
+        "Aminoácidos": {
+            "Leucina": dados.get("leucina", 0),
+            "Isoleucina": dados.get("isoleucina", 0),
+            "Valina": dados.get("valina", 0),
+            "Arginina": dados.get("arginina", 0),
+        },
+        "Vitaminas": {
+            "Vitamina B1": dados.get("vit_b1", 0),
+            "Vitamina B2": dados.get("vit_b2", 0),
+            "Vitamina B3": dados.get("vit_b3", 0),
+            "Vitamina B6": dados.get("vit_b6", 0),
+            "Vitamina B7": dados.get("vit_b7", 0),
+            "Vitamina B9": dados.get("vit_b9", 0),
+            "Vitamina B12": dados.get("vit_b12", 0),
+            "Vitamina C": dados.get("vit_c", 0),
+        }
+    }
+
+
+@app.route('/resumo', methods=['GET', 'POST'])
+def resumo_view():
+    form = ResumoForm()
+    totais = calcular_totais_planejamento()
+
+    totais_por_hora = {}
+    tempo_total = 0
+
+    if form.validate_on_submit():
+        tempo_total = sum([
+        form.tempo_natacao.data or 0,
+        form.tempo_bike.data or 0,
+        form.tempo_corrida.data or 0
+    ])
+
+        for key, valor in totais.items():
+            totais_por_hora[key] = round(valor / tempo_total, 2) if tempo_total else 0
+
+    resumo_dados = agrupar_por_categoria(totais_por_hora)
+
+    return render_template(
+        "resumo.html",
+        form=form,
+        totais=totais,
+        resumo=resumo_dados,
+        tempo_total=tempo_total
+    )
+
+
