@@ -1,8 +1,8 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
 from conversor import app, database
 
-from conversor.forms import SuplementoForm
-from conversor.models import Suplemento
+from conversor.forms import SuplementoForm, PlanningItemForm
+from conversor.models import Suplemento, PlanejamentoItem
 
 
 from conversor.utils import (
@@ -332,3 +332,68 @@ def editar_suplemento(id):
         return redirect(url_for('listar_suplementos'))
 
     return render_template('editar_suplemento.html', form=form, suplemento=suplemento)
+
+
+
+
+# Atualização da rota de planejamento com edição e exclusão
+
+@app.route('/planejamento', methods=['GET', 'POST'])
+def planejamento():
+    form = PlanningItemForm()
+    form.suplemento_id.choices = [(s.id, s.nome) for s in Suplemento.query.all()]
+
+    if form.validate_on_submit():
+        item_existente = PlanejamentoItem.query.filter_by(suplemento_id=form.suplemento_id.data).first()
+        if item_existente:
+            item_existente.quantidade += form.quantidade.data
+        else:
+            novo_item = PlanejamentoItem(
+                suplemento_id=form.suplemento_id.data,
+                quantidade=form.quantidade.data
+            )
+            database.session.add(novo_item)
+
+        database.session.commit()
+        flash('Item adicionado/atualizado com sucesso!', 'success')
+        return redirect(url_for('planejamento'))
+
+    itens = PlanejamentoItem.query.all()
+    totais = {
+        'carbo': 0, 'sodio': 0, 'magnesio': 0, 'potassio': 0, 'calcio': 0,
+        'cafeina': 0, 'taurina': 0, 'beta_alanina': 0, 'citrulina': 0,
+        'creatina': 0, 'coq10': 0, 'carnitina': 0, 'leucina': 0,
+        'isoleucina': 0, 'valina': 0, 'arginina': 0,
+        'vit_b1': 0, 'vit_b2': 0, 'vit_b3': 0, 'vit_b6': 0,
+        'vit_b7': 0, 'vit_b9': 0, 'vit_b12': 0, 'vit_c': 0
+    }
+    
+    
+    for item in itens:
+        suplemento = item.suplemento
+        for key in totais:
+            valor = getattr(suplemento, key) or 0
+            totais[key] += valor * item.quantidade
+
+    return render_template('planejamento.html', form=form, itens=itens, totais=totais)
+
+
+@app.route('/planejamento/atualizar/<int:item_id>', methods=['POST'])
+def atualizar_quantidade(item_id):
+    item = PlanejamentoItem.query.get_or_404(item_id)
+    nova_quantidade = request.form.get('quantidade', type=int)
+    if nova_quantidade and nova_quantidade > 0:
+        item.quantidade = nova_quantidade
+        database.session.commit()
+        flash('Quantidade atualizada com sucesso!', 'success')
+    else:
+        flash('Quantidade inválida.', 'danger')
+    return redirect(url_for('planejamento'))
+
+@app.route('/planejamento/remover/<int:item_id>', methods=['POST'])
+def remover_item(item_id):
+    item = PlanejamentoItem.query.get_or_404(item_id)
+    database.session.delete(item)
+    database.session.commit()
+    flash('Item removido do planejamento.', 'success')
+    return redirect(url_for('planejamento'))
