@@ -300,7 +300,7 @@ def novo_suplemento():
         database.session.add(suplemento)
         database.session.commit()
         flash('Suplemento cadastrado com sucesso!', 'success')
-        return redirect(url_for('novo_suplemento'))
+        return redirect(url_for('listar_suplementos'))
     return render_template('cadastro_suplemento.html', form=form)
 
 
