@@ -16,9 +16,10 @@ function toggleDropdown(dropdownId) {
 // Função para fechar dropdowns se clicar fora
 function closeDropdowns(event) {
     dropdownLinks.forEach(link => {
+        const button = document.querySelector(link.buttonId);
         const dropdownMenu = document.querySelector(link.menuId);
-        if (!dropdownMenu.contains(event.target) && !document.querySelector(link.buttonId).contains(event.target) && !dropdownMenu.classList.contains('hidden')) {
-            // @ts-ignore
+        
+        if (!button.contains(event.target) && !dropdownMenu.contains(event.target)) {
             dropdownMenu.classList.add('hidden');
         }
     });
@@ -28,12 +29,16 @@ function closeDropdowns(event) {
 const dropdownLinks = [
     { buttonId: '#dropdownNavbarLink1', menuId: '#dropdownNavbar1' },
     { buttonId: '#dropdownNavbarLink2', menuId: '#dropdownNavbar2' },
-    { buttonId: '#dropdownNavbarLink3', menuId: '#dropdownNavbar3' }
+    { buttonId: '#dropdownNavbarLink3', menuId: '#dropdownNavbar3' },
+    { buttonId: '#dropdownNavbarLink4', menuId: '#dropdownNavbar4' }
 ];
 
 dropdownLinks.forEach(link => {
     const button = document.querySelector(link.buttonId);
-    button.addEventListener('click', () => toggleDropdown(link.menuId));
+    button.addEventListener('click', (event) => {
+        event.stopPropagation();  // <<--- Adicionado para não fechar imediatamente
+        toggleDropdown(link.menuId);
+    });
 });
 
 // Adiciona o listener ao documento para fechar os dropdowns ao clicar fora
