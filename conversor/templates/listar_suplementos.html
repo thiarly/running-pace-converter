@@ -24,10 +24,37 @@
     <div class="w-full max-w-8xl p-6 bg-white rounded-lg shadow-md">
         <div class="flex justify-between items-center mb-6">
             <h1 class="text-2xl font-bold text-gray-900">Suplementos Cadastrados</h1>
-            <a href="{{ url_for('novo_suplemento') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            <a href="{{ url_for('novo_suplemento') }}" class="bg-blue-500 hover:bg-blue-700 text-white  px-4 py-1 rounded">
                 Novo Suplemento
             </a>
         </div>
+
+        <div class="flex flex-wrap gap-4 mb-6">
+            <form method="GET" class="flex items-center gap-2">
+              <input type="text" name="filtro" placeholder="Buscar suplemento..." value="{{ filtro }}" class="border px-2 py-1 rounded">
+              
+              <select name="ordenar" class="border px-2 py-1 rounded">
+                <option value="">Ordenar por</option>
+                <option value="carbo" {% if ordenar == 'carbo' %}selected{% endif %}>Carboidrato</option>
+                <option value="sodio" {% if ordenar == 'sodio' %}selected{% endif %}>Sódio</option>
+              </select>
+              
+              <select name="direcao" class="border px-2 py-1 rounded">
+                <option value="desc" {% if direcao == 'desc' %}selected{% endif %}>Maior para Menor</option>
+                <option value="asc" {% if direcao == 'asc' %}selected{% endif %}>Menor para Maior</option>
+              </select>
+          
+              <button type="submit" class="bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-700">
+                Filtrar
+              </button>
+          
+              <a href="{{ url_for('listar_suplementos') }}" class="bg-gray-500 text-white px-4 py-1 rounded hover:bg-gray-700">
+                Limpar
+              </a>
+            </form>
+          </div>
+          
+          
 
         {% if suplementos %}
         <div class="overflow-x-auto">

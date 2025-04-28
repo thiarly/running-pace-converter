@@ -307,8 +307,37 @@ def novo_suplemento():
 
 @app.route('/suplementos')
 def listar_suplementos():
-    suplementos = Suplemento.query.all()
-    return render_template('listar_suplementos.html', suplementos=suplementos)
+    filtro = request.args.get('filtro', '')
+    ordenar = request.args.get('ordenar', '')
+    direcao = request.args.get('direcao', 'desc')  # nova opção: asc ou desc
+
+    query = Suplemento.query
+
+    if filtro:
+        query = query.filter(
+            Suplemento.nome.ilike(f'%{filtro}%') | Suplemento.tipo.ilike(f'%{filtro}%')
+        )
+
+    if ordenar == 'carbo':
+        if direcao == 'asc':
+            query = query.order_by(Suplemento.carbo.asc())
+        else:
+            query = query.order_by(Suplemento.carbo.desc())
+    elif ordenar == 'sodio':
+        if direcao == 'asc':
+            query = query.order_by(Suplemento.sodio.asc())
+        else:
+            query = query.order_by(Suplemento.sodio.desc())
+
+    suplementos = query.all()
+    return render_template(
+        'listar_suplementos.html',
+        suplementos=suplementos,
+        filtro=filtro,
+        ordenar=ordenar,
+        direcao=direcao
+    )
+
 
 
 @app.route('/suplementos/excluir/<int:id>', methods=['GET'])
