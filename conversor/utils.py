@@ -172,3 +172,42 @@ def race_predictions_from_3k(time_seconds, distance_km):
     }
     
     return formatted_predictions
+
+
+def agrupar_por_categoria(dados):
+    return {
+        "Macronutrientes": {
+            "Carboidrato": dados.get("carbo", 0),
+        },
+        "Eletrólitos": {
+            "Sódio": dados.get("sodio", 0),
+            "Magnésio": dados.get("magnesio", 0),
+            "Potássio": dados.get("potassio", 0),
+            "Cálcio": dados.get("calcio", 0),
+        },
+        "Estimulantes e Compostos": {
+            "Cafeína": dados.get("cafeina", 0),
+            "Taurina": dados.get("taurina", 0),
+            "Beta-Alanina": dados.get("beta_alanina", 0),
+            "Citrulina": dados.get("citrulina", 0),
+            "Creatina": dados.get("creatina", 0),
+            "CoQ10": dados.get("coq10", 0),
+            "Carnitina": dados.get("carnitina", 0),
+        },
+        "Aminoácidos": {
+            "Leucina": dados.get("leucina", 0),
+            "Isoleucina": dados.get("isoleucina", 0),
+            "Valina": dados.get("valina", 0),
+            "Arginina": dados.get("arginina", 0),
+        },
+        "Vitaminas": {
+            "Vitamina B1": dados.get("vit_b1", 0),
+            "Vitamina B2": dados.get("vit_b2", 0),
+            "Vitamina B3": dados.get("vit_b3", 0),
+            "Vitamina B6": dados.get("vit_b6", 0),
+            "Vitamina B7": dados.get("vit_b7", 0),
+            "Vitamina B9": dados.get("vit_b9", 0),
+            "Vitamina B12": dados.get("vit_b12", 0),
+            "Vitamina C": dados.get("vit_c", 0),
+        }
+    }

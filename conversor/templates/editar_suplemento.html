@@ -1,63 +1,75 @@
 {% extends "base.html" %}
 
 {% block content %}
+<div class="max-w-5xl mx-auto mt-10">
+  <h1 class="text-2xl font-bold text-center mb-8">Editar Suplemento</h1>
 
-{% with messages = get_flashed_messages(with_categories=true) %}
-  {% if messages %}
-    <div class="mb-4">
-      {% for category, message in messages %}
-        <div class="p-4 rounded text-white {{ 'bg-green-500' if category == 'success' else 'bg-red-500' }}">
-          {{ message }}
-        </div>
-      {% endfor %}
-    </div>
-  {% endif %}
-{% endwith %}
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div class="mb-6">
+        {% for category, message in messages %}
+          <div class="p-4 rounded text-white text-center font-semibold
+                      {{ 'bg-green-500' if category == 'success' else 'bg-red-500' }}">
+            {{ message }}
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
 
-
-<div class="max-w-6xl mx-auto mt-10">
-  <h1 class="text-2xl font-bold text-center mb-6">Editar Suplemento</h1>
-  <form method="POST" class="grid grid-cols-3 gap-4 bg-white p-6 rounded shadow">
+  <form method="POST" class="bg-white p-6 rounded-lg shadow space-y-6 mb-8">
     {{ form.hidden_tag() }}
 
-    <div class="col-span-1">{{ form.nome.label }} {{ form.nome(class="w-full") }}</div>
-    <div class="col-span-1">{{ form.tipo.label }} {{ form.tipo(class="w-full") }}</div>
-    <div class="col-span-1">{{ form.marca.label }} {{ form.marca(class="w-full") }}</div>
-    
-    <div>{{ form.carbo.label }} {{ form.carbo(class="w-full") }}</div>
-    <div>{{ form.sodio.label }} {{ form.sodio(class="w-full") }}</div>
-    <div>{{ form.magnesio.label }} {{ form.magnesio(class="w-full") }}</div>
-    
-    <div>{{ form.potassio.label }} {{ form.potassio(class="w-full") }}</div>
-    <div>{{ form.calcio.label }} {{ form.calcio(class="w-full") }}</div>
-    <div>{{ form.cafeina.label }} {{ form.cafeina(class="w-full") }}</div>
-    
-    <div>{{ form.taurina.label }} {{ form.taurina(class="w-full") }}</div>
-    <div>{{ form.beta_alanina.label }} {{ form.beta_alanina(class="w-full") }}</div>
-    <div>{{ form.citrulina.label }} {{ form.citrulina(class="w-full") }}</div>
-    
-    <div>{{ form.arginina.label }} {{ form.arginina(class="w-full") }}</div>
-    <div>{{ form.creatina.label }} {{ form.creatina(class="w-full") }}</div>
-    <div>{{ form.coq10.label }} {{ form.coq10(class="w-full") }}</div>
-    
-    <div>{{ form.carnitina.label }} {{ form.carnitina(class="w-full") }}</div>
-    <div>{{ form.leucina.label }} {{ form.leucina(class="w-full") }}</div>
-    <div>{{ form.isoleucina.label }} {{ form.isoleucina(class="w-full") }}</div>
-    
-    <div>{{ form.valina.label }} {{ form.valina(class="w-full") }}</div>
-    <div>{{ form.vit_b1.label }} {{ form.vit_b1(class="w-full") }}</div>
-    <div>{{ form.vit_b2.label }} {{ form.vit_b2(class="w-full") }}</div>
-    
-    <div>{{ form.vit_b3.label }} {{ form.vit_b3(class="w-full") }}</div>
-    <div>{{ form.vit_b6.label }} {{ form.vit_b6(class="w-full") }}</div>
-    <div>{{ form.vit_b7.label }} {{ form.vit_b7(class="w-full") }}</div>
-    
-    <div>{{ form.vit_b9.label }} {{ form.vit_b9(class="w-full") }}</div>
-    <div>{{ form.vit_b12.label }} {{ form.vit_b12(class="w-full") }}</div>
-    <div>{{ form.vit_c.label }} {{ form.vit_c(class="w-full") }}</div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div>{{ form.nome.label(class="block text-sm font-semibold text-gray-700") }} {{ form.nome(class="w-full px-2 py-1 border rounded") }}</div>
+      <div>{{ form.tipo.label(class="block text-sm font-semibold text-gray-700") }} {{ form.tipo(class="w-full px-2 py-1 border rounded") }}</div>
+      <div>{{ form.marca.label(class="block text-sm font-semibold text-gray-700") }} {{ form.marca(class="w-full px-2 py-1 border rounded") }}</div>
+    </div>
 
-    <div class="col-span-3 text-center mt-4">
-      <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+    <hr>
+
+    <h2 class="font-semibold text-lg text-gray-800 mt-4">Macronutrientes e Eletrólitos</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      {{ form.carbo.label(class="block text-sm text-gray-700") }} {{ form.carbo(class="w-full px-2 py-1 border rounded") }}
+      {{ form.sodio.label(class="block text-sm text-gray-700") }} {{ form.sodio(class="w-full px-2 py-1 border rounded") }}
+      {{ form.magnesio.label(class="block text-sm text-gray-700") }} {{ form.magnesio(class="w-full px-2 py-1 border rounded") }}
+      {{ form.potassio.label(class="block text-sm text-gray-700") }} {{ form.potassio(class="w-full px-2 py-1 border rounded") }}
+      {{ form.calcio.label(class="block text-sm text-gray-700") }} {{ form.calcio(class="w-full px-2 py-1 border rounded") }}
+    </div>
+
+    <h2 class="font-semibold text-lg text-gray-800 mt-6">Estimulantes e Compostos</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      {{ form.cafeina.label(class="block text-sm text-gray-700") }} {{ form.cafeina(class="w-full px-2 py-1 border rounded") }}
+      {{ form.taurina.label(class="block text-sm text-gray-700") }} {{ form.taurina(class="w-full px-2 py-1 border rounded") }}
+      {{ form.beta_alanina.label(class="block text-sm text-gray-700") }} {{ form.beta_alanina(class="w-full px-2 py-1 border rounded") }}
+      {{ form.citrulina.label(class="block text-sm text-gray-700") }} {{ form.citrulina(class="w-full px-2 py-1 border rounded") }}
+      {{ form.creatina.label(class="block text-sm text-gray-700") }} {{ form.creatina(class="w-full px-2 py-1 border rounded") }}
+      {{ form.coq10.label(class="block text-sm text-gray-700") }} {{ form.coq10(class="w-full px-2 py-1 border rounded") }}
+      {{ form.carnitina.label(class="block text-sm text-gray-700") }} {{ form.carnitina(class="w-full px-2 py-1 border rounded") }}
+    </div>
+
+    <h2 class="font-semibold text-lg text-gray-800 mt-6">Aminoácidos</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      {{ form.leucina.label(class="block text-sm text-gray-700") }} {{ form.leucina(class="w-full px-2 py-1 border rounded") }}
+      {{ form.isoleucina.label(class="block text-sm text-gray-700") }} {{ form.isoleucina(class="w-full px-2 py-1 border rounded") }}
+      {{ form.valina.label(class="block text-sm text-gray-700") }} {{ form.valina(class="w-full px-2 py-1 border rounded") }}
+      {{ form.arginina.label(class="block text-sm text-gray-700") }} {{ form.arginina(class="w-full px-2 py-1 border rounded") }}
+    </div>
+
+    <h2 class="font-semibold text-lg text-gray-800 mt-6">Vitaminas</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      {{ form.vit_b1.label(class="block text-sm text-gray-700") }} {{ form.vit_b1(class="w-full px-2 py-1 border rounded") }}
+      {{ form.vit_b2.label(class="block text-sm text-gray-700") }} {{ form.vit_b2(class="w-full px-2 py-1 border rounded") }}
+      {{ form.vit_b3.label(class="block text-sm text-gray-700") }} {{ form.vit_b3(class="w-full px-2 py-1 border rounded") }}
+      {{ form.vit_b6.label(class="block text-sm text-gray-700") }} {{ form.vit_b6(class="w-full px-2 py-1 border rounded") }}
+      {{ form.vit_b7.label(class="block text-sm text-gray-700") }} {{ form.vit_b7(class="w-full px-2 py-1 border rounded") }}
+      {{ form.vit_b9.label(class="block text-sm text-gray-700") }} {{ form.vit_b9(class="w-full px-2 py-1 border rounded") }}
+      {{ form.vit_b12.label(class="block text-sm text-gray-700") }} {{ form.vit_b12(class="w-full px-2 py-1 border rounded") }}
+      {{ form.vit_c.label(class="block text-sm text-gray-700") }} {{ form.vit_c(class="w-full px-2 py-1 border rounded") }}
+    </div>
+
+    <div class="text-center mt-6">
+      <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded shadow">
         Salvar Alterações
       </button>
     </div>

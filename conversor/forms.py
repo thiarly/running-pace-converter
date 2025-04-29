@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, FloatField, SelectField, SubmitField, IntegerField
-from wtforms.validators import DataRequired, Optional, NumberRange
+from wtforms import StringField, FloatField, SelectField, SubmitField, IntegerField, PasswordField
+from wtforms.validators import DataRequired, Optional, NumberRange, InputRequired, Email, Length, EqualTo
 
 
 class SuplementoForm(FlaskForm):
@@ -59,3 +59,19 @@ class ResumoForm(FlaskForm):
 
     submit = SubmitField('Calcular Resumo')
     limpar = SubmitField('Limpar Tela')
+
+
+
+class LoginForm(FlaskForm):
+    email = StringField('Email', validators=[InputRequired(), Email(), Length(max=150)])
+    senha = PasswordField('Senha', validators=[InputRequired()])
+    submit = SubmitField('Entrar')
+
+
+class RegisterForm(FlaskForm):
+    email = StringField('Email', validators=[InputRequired(), Email(), Length(max=150)])
+    senha = PasswordField('Senha', validators=[InputRequired(), Length(min=6)])
+    confirmar_senha = PasswordField('Confirmar Senha', validators=[
+        InputRequired(), EqualTo('senha', message='As senhas precisam ser iguais.')
+    ])
+    submit = SubmitField('Cadastrar')

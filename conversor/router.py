@@ -1,8 +1,11 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
 from conversor import app, database
 
-from conversor.forms import SuplementoForm, PlanningItemForm, ResumoForm
-from conversor.models import Suplemento, PlanejamentoItem
+from conversor.forms import SuplementoForm, PlanningItemForm, ResumoForm, LoginForm, RegisterForm
+from conversor.models import Suplemento, PlanejamentoItem, User
+
+from werkzeug.security import generate_password_hash, check_password_hash
+from flask_login import login_user, login_required, logout_user, current_user
 
 
 from conversor.utils import (
@@ -13,8 +16,51 @@ from conversor.utils import (
     convert_pace_milha, convert_km_to_miles,
     convert_miles_to_km, calculate_vo2max,
     race_predictions, calculate_pace_km, calculate_paces_by_vo2max,
-    race_predictions_from_3k
+    race_predictions_from_3k, agrupar_por_categoria
 )
+
+
+
+
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(email=form.email.data).first()
+        if user and check_password_hash(user.senha_hash, form.senha.data):
+            login_user(user)
+            flash('Login realizado com sucesso!', 'success')
+            return redirect(url_for('listar_suplementos'))
+        else:
+            flash('Email ou senha inválidos.', 'danger')
+    return render_template('login.html', form=form)
+
+
+@app.route('/cadastro', methods=['GET', 'POST'])
+def cadastro():
+    form = RegisterForm()
+    if form.validate_on_submit():
+        hashed_password = generate_password_hash(form.senha.data)
+        novo_usuario = User(email=form.email.data, senha_hash=hashed_password)
+        database.session.add(novo_usuario)
+        database.session.commit()
+        flash('Cadastro realizado! Faça login.', 'success')
+        return redirect(url_for('login'))
+    return render_template('cadastro.html', form=form)
+
+
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    flash('Logout realizado.', 'success')
+    return redirect(url_for('login'))
+
+
+
+
+ 
 
 
 
@@ -263,7 +309,9 @@ def sobre():
 
 
 
+# Cadastro de suplemento
 @app.route('/suplementos/novo', methods=['GET', 'POST'])
+@login_required
 def novo_suplemento():
     form = SuplementoForm()
     
@@ -295,7 +343,8 @@ def novo_suplemento():
             vit_b7=form.vit_b7.data,
             vit_b9=form.vit_b9.data,
             vit_b12=form.vit_b12.data,
-            vit_c=form.vit_c.data
+            vit_c=form.vit_c.data,
+            user_id=current_user.id  # 👈 liga ao usuário
         )
         database.session.add(suplemento)
         database.session.commit()
@@ -305,13 +354,16 @@ def novo_suplemento():
 
 
 
+
+# Lista de suplementos
 @app.route('/suplementos')
+@login_required
 def listar_suplementos():
     filtro = request.args.get('filtro', '')
     ordenar = request.args.get('ordenar', '')
-    direcao = request.args.get('direcao', 'desc')  # nova opção: asc ou desc
+    direcao = request.args.get('direcao', 'desc')
 
-    query = Suplemento.query
+    query = Suplemento.query.filter_by(user_id=current_user.id)  # 👈 só do usuário logado
 
     if filtro:
         query = query.filter(
@@ -319,15 +371,9 @@ def listar_suplementos():
         )
 
     if ordenar == 'carbo':
-        if direcao == 'asc':
-            query = query.order_by(Suplemento.carbo.asc())
-        else:
-            query = query.order_by(Suplemento.carbo.desc())
+        query = query.order_by(Suplemento.carbo.asc() if direcao == 'asc' else Suplemento.carbo.desc())
     elif ordenar == 'sodio':
-        if direcao == 'asc':
-            query = query.order_by(Suplemento.sodio.asc())
-        else:
-            query = query.order_by(Suplemento.sodio.desc())
+        query = query.order_by(Suplemento.sodio.asc() if direcao == 'asc' else Suplemento.sodio.desc())
 
     suplementos = query.all()
     return render_template(
@@ -338,20 +384,22 @@ def listar_suplementos():
         direcao=direcao
     )
 
-
-
+# Excluir suplemento
 @app.route('/suplementos/excluir/<int:id>', methods=['GET'])
+@login_required
 def excluir_suplemento(id):
-    suplemento = Suplemento.query.get_or_404(id)
+    suplemento = Suplemento.query.filter_by(id=id, user_id=current_user.id).first_or_404()
     database.session.delete(suplemento)
     database.session.commit()
-    flash('Suplemento excluido com sucesso!', 'success')
+    flash('Suplemento excluído com sucesso!', 'success')
     return redirect(url_for('listar_suplementos'))
 
 
+# Editar suplemento
 @app.route('/suplementos/editar/<int:id>', methods=['GET', 'POST'])
+@login_required
 def editar_suplemento(id):
-    suplemento = Suplemento.query.get_or_404(id)
+    suplemento = Suplemento.query.filter_by(id=id, user_id=current_user.id).first_or_404()
     form = SuplementoForm(obj=suplemento)
 
     if form.validate_on_submit():
@@ -362,24 +410,24 @@ def editar_suplemento(id):
 
     return render_template('editar_suplemento.html', form=form, suplemento=suplemento)
 
-
-
-
-# Atualização da rota de planejamento com edição e exclusão
-
+# Planejamento
 @app.route('/planejamento', methods=['GET', 'POST'])
+@login_required
 def planejamento():
     form = PlanningItemForm()
-    form.suplemento_id.choices = [(s.id, s.nome) for s in Suplemento.query.all()]
+    form.suplemento_id.choices = [(s.id, s.nome) for s in Suplemento.query.filter_by(user_id=current_user.id)]
 
     if form.validate_on_submit():
-        item_existente = PlanejamentoItem.query.filter_by(suplemento_id=form.suplemento_id.data).first()
+        item_existente = PlanejamentoItem.query.filter_by(
+            suplemento_id=form.suplemento_id.data, user_id=current_user.id
+        ).first()
         if item_existente:
             item_existente.quantidade += form.quantidade.data
         else:
             novo_item = PlanejamentoItem(
                 suplemento_id=form.suplemento_id.data,
-                quantidade=form.quantidade.data
+                quantidade=form.quantidade.data,
+                user_id=current_user.id
             )
             database.session.add(novo_item)
 
@@ -387,29 +435,17 @@ def planejamento():
         flash('Item adicionado/atualizado com sucesso!', 'success')
         return redirect(url_for('planejamento'))
 
-    itens = PlanejamentoItem.query.all()
-    totais = {
-        'carbo': 0, 'sodio': 0, 'magnesio': 0, 'potassio': 0, 'calcio': 0,
-        'cafeina': 0, 'taurina': 0, 'beta_alanina': 0, 'citrulina': 0,
-        'creatina': 0, 'coq10': 0, 'carnitina': 0, 'leucina': 0,
-        'isoleucina': 0, 'valina': 0, 'arginina': 0,
-        'vit_b1': 0, 'vit_b2': 0, 'vit_b3': 0, 'vit_b6': 0,
-        'vit_b7': 0, 'vit_b9': 0, 'vit_b12': 0, 'vit_c': 0
-    }
-    
-    
-    for item in itens:
-        suplemento = item.suplemento
-        for key in totais:
-            valor = getattr(suplemento, key) or 0
-            totais[key] += valor * item.quantidade
+    itens = PlanejamentoItem.query.filter_by(user_id=current_user.id).all()
+    totais = calcular_totais_planejamento(itens)
 
     return render_template('planejamento.html', form=form, itens=itens, totais=totais)
 
 
+# Atualizar quantidade no planejamento
 @app.route('/planejamento/atualizar/<int:item_id>', methods=['POST'])
+@login_required
 def atualizar_quantidade(item_id):
-    item = PlanejamentoItem.query.get_or_404(item_id)
+    item = PlanejamentoItem.query.filter_by(id=item_id, user_id=current_user.id).first_or_404()
     nova_quantidade = request.form.get('quantidade', type=int)
     if nova_quantidade and nova_quantidade > 0:
         item.quantidade = nova_quantidade
@@ -419,18 +455,20 @@ def atualizar_quantidade(item_id):
         flash('Quantidade inválida.', 'danger')
     return redirect(url_for('planejamento'))
 
+
+# Remover item do planejamento
 @app.route('/planejamento/remover/<int:item_id>', methods=['POST'])
+@login_required
 def remover_item(item_id):
-    item = PlanejamentoItem.query.get_or_404(item_id)
+    item = PlanejamentoItem.query.filter_by(id=item_id, user_id=current_user.id).first_or_404()
     database.session.delete(item)
     database.session.commit()
     flash('Item removido do planejamento.', 'success')
     return redirect(url_for('planejamento'))
 
 
-
-
-def calcular_totais_planejamento():
+# Cálculo de totais do planejamento
+def calcular_totais_planejamento(itens):
     totais = {
         'carbo': 0, 'sodio': 0, 'magnesio': 0, 'potassio': 0, 'calcio': 0,
         'cafeina': 0, 'taurina': 0, 'beta_alanina': 0, 'citrulina': 0,
@@ -439,9 +477,7 @@ def calcular_totais_planejamento():
         'vit_b1': 0, 'vit_b2': 0, 'vit_b3': 0, 'vit_b6': 0,
         'vit_b7': 0, 'vit_b9': 0, 'vit_b12': 0, 'vit_c': 0
     }
-
-    itens = PlanejamentoItem.query.all()
-
+    
     for item in itens:
         suplemento = item.suplemento
         for key in totais:
@@ -451,58 +487,23 @@ def calcular_totais_planejamento():
     return totais
 
 
-def agrupar_por_categoria(dados):
-    return {
-        "Macronutrientes": {
-            "Carboidrato": dados.get("carbo", 0),
-        },
-        "Eletrólitos": {
-            "Sódio": dados.get("sodio", 0),
-            "Magnésio": dados.get("magnesio", 0),
-            "Potássio": dados.get("potassio", 0),
-            "Cálcio": dados.get("calcio", 0),
-        },
-        "Estimulantes e Compostos": {
-            "Cafeína": dados.get("cafeina", 0),
-            "Taurina": dados.get("taurina", 0),
-            "Beta-Alanina": dados.get("beta_alanina", 0),
-            "Citrulina": dados.get("citrulina", 0),
-            "Creatina": dados.get("creatina", 0),
-            "CoQ10": dados.get("coq10", 0),
-            "Carnitina": dados.get("carnitina", 0),
-        },
-        "Aminoácidos": {
-            "Leucina": dados.get("leucina", 0),
-            "Isoleucina": dados.get("isoleucina", 0),
-            "Valina": dados.get("valina", 0),
-            "Arginina": dados.get("arginina", 0),
-        },
-        "Vitaminas": {
-            "Vitamina B1": dados.get("vit_b1", 0),
-            "Vitamina B2": dados.get("vit_b2", 0),
-            "Vitamina B3": dados.get("vit_b3", 0),
-            "Vitamina B6": dados.get("vit_b6", 0),
-            "Vitamina B7": dados.get("vit_b7", 0),
-            "Vitamina B9": dados.get("vit_b9", 0),
-            "Vitamina B12": dados.get("vit_b12", 0),
-            "Vitamina C": dados.get("vit_c", 0),
-        }
-    }
-
+# Resumo
 @app.route('/resumo', methods=['GET', 'POST'])
+@login_required
 def resumo_view():
     form = ResumoForm()
-    totais = calcular_totais_planejamento()
+
+    if request.method == 'POST' and 'limpar' in request.form:
+        return redirect(url_for('resumo_view'))
+
+    itens = PlanejamentoItem.query.filter_by(user_id=current_user.id).all()
+    totais = calcular_totais_planejamento(itens)
 
     totais_por_hora = {}
     tempo_total = 0
     resumo_dados = {}
 
     if form.validate_on_submit():
-        if form.limpar.data:
-            return redirect(url_for('resumo_view'))
-
-        # Calcula horas + minutos convertidos
         tempo_natacao = (form.tempo_natacao_horas.data or 0) + (form.tempo_natacao_minutos.data or 0) / 60
         tempo_bike = (form.tempo_bike_horas.data or 0) + (form.tempo_bike_minutos.data or 0) / 60
         tempo_corrida = (form.tempo_corrida_horas.data or 0) + (form.tempo_corrida_minutos.data or 0) / 60

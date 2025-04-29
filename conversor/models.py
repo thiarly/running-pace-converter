@@ -1,12 +1,31 @@
 from conversor import database
+from flask_login import UserMixin
+from conversor import login_manager
+
+
+
+class User(database.Model, UserMixin):
+    __tablename__ = 'user'
+
+    id = database.Column(database.Integer, primary_key=True)
+    email = database.Column(database.String(150), unique=True, nullable=False)
+    senha_hash = database.Column(database.String(150), nullable=False)
+
+    suplementos = database.relationship('Suplemento', backref='usuario', lazy=True)
+    planejamentos = database.relationship('PlanejamentoItem', backref='usuario', lazy=True)
+
+    def __repr__(self):
+        return f'<User {self.email}>'
 
 
 class Suplemento(database.Model):
     __tablename__ = 'suplementos'
 
     id = database.Column(database.Integer, primary_key=True)
+    user_id = database.Column(database.Integer, database.ForeignKey('user.id'), nullable=False)
+
     nome = database.Column(database.String(100), nullable=False)
-    tipo = database.Column(database.String(50), nullable=False)  # ex: Gel, Garrafa, Cápsula
+    tipo = database.Column(database.String(50), nullable=False)
     marca = database.Column(database.String(50))
 
     carbo = database.Column(database.Float)
@@ -20,7 +39,6 @@ class Suplemento(database.Model):
     beta_alanina = database.Column(database.Float)
     citrulina = database.Column(database.Float)
     creatina = database.Column(database.Float)
-    
     
     coq10 = database.Column(database.Float)
     carnitina = database.Column(database.Float)
@@ -43,14 +61,15 @@ class Suplemento(database.Model):
         return f'<Suplemento {self.nome}>'
 
 
-
 class PlanejamentoItem(database.Model):
     __tablename__ = 'planejamento_itens'
+
     id = database.Column(database.Integer, primary_key=True)
+    user_id = database.Column(database.Integer, database.ForeignKey('user.id'), nullable=False)
     suplemento_id = database.Column(database.Integer, database.ForeignKey('suplementos.id'), nullable=False)
     quantidade = database.Column(database.Integer, nullable=False)
 
-    suplemento = database.relationship('Suplemento')
+    suplemento = database.relationship('Suplemento', lazy=True)
 
     def calcular_totais(self):
         def multi(valor):
@@ -83,3 +102,10 @@ class PlanejamentoItem(database.Model):
             'vit_c': multi(self.suplemento.vit_c),
         }
 
+    def __repr__(self):
+        return f'<PlanejamentoItem {self.suplemento.nome} x {self.quantidade}>'
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
