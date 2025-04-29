@@ -1,31 +1,13 @@
-// @ts-nocheck
+// Botão do menu mobile
 const btNav = document.querySelector('#btNav');
 const divNav = document.querySelector('#divNav');
 
-// Alternar visibilidade do menu principal em dispositivos móveis
-btNav.addEventListener('click', function() {
-    divNav.classList.toggle('hidden');
+// Toggle do menu mobile
+btNav?.addEventListener('click', () => {
+    divNav?.classList.toggle('hidden');
 });
 
-// Função para alternar a visibilidade do dropdown
-function toggleDropdown(dropdownId) {
-    const dropdownMenu = document.querySelector(dropdownId);
-    dropdownMenu.classList.toggle('hidden');
-}
-
-// Função para fechar dropdowns se clicar fora
-function closeDropdowns(event) {
-    dropdownLinks.forEach(link => {
-        const button = document.querySelector(link.buttonId);
-        const dropdownMenu = document.querySelector(link.menuId);
-        
-        if (!button.contains(event.target) && !dropdownMenu.contains(event.target)) {
-            dropdownMenu.classList.add('hidden');
-        }
-    });
-}
-
-// Event listeners para botões de dropdown
+// Lista dos dropdowns
 const dropdownLinks = [
     { buttonId: '#dropdownNavbarLink1', menuId: '#dropdownNavbar1' },
     { buttonId: '#dropdownNavbarLink2', menuId: '#dropdownNavbar2' },
@@ -33,13 +15,36 @@ const dropdownLinks = [
     { buttonId: '#dropdownNavbarLink4', menuId: '#dropdownNavbar4' }
 ];
 
+// Fecha todos os dropdowns
+function closeAllDropdowns(exceptId = null) {
+    dropdownLinks.forEach(link => {
+        if (link.menuId !== exceptId) {
+            const el = document.querySelector(link.menuId);
+            el?.classList.add('hidden');
+        }
+    });
+}
+
+// Alterna dropdown (fechando os demais)
+function toggleDropdown(dropdownId) {
+    const menu = document.querySelector(dropdownId);
+    const isHidden = menu?.classList.contains('hidden');
+    closeAllDropdowns(dropdownId);
+    if (isHidden) {
+        menu?.classList.remove('hidden');
+    } else {
+        menu?.classList.add('hidden');
+    }
+}
+
+// Adiciona listeners aos botões
 dropdownLinks.forEach(link => {
     const button = document.querySelector(link.buttonId);
-    button.addEventListener('click', (event) => {
-        event.stopPropagation();  // <<--- Adicionado para não fechar imediatamente
+    button?.addEventListener('click', e => {
+        e.stopPropagation();
         toggleDropdown(link.menuId);
     });
 });
 
-// Adiciona o listener ao documento para fechar os dropdowns ao clicar fora
-document.addEventListener('click', closeDropdowns);
+// Fecha dropdowns ao clicar fora
+document.addEventListener('click', () => closeAllDropdowns());
