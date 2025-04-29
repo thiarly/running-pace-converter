@@ -46,5 +46,13 @@ dropdownLinks.forEach(link => {
     });
 });
 
+document.getElementById('userDropdown')?.addEventListener('click', () => {
+    const menu = document.getElementById('dropdownUserMenu');
+    if (menu) {
+        menu.classList.toggle('hidden');
+    }
+});
+
+
 // Fecha dropdowns ao clicar fora
 document.addEventListener('click', () => closeAllDropdowns());
