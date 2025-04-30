@@ -1,11 +1,14 @@
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, flash, session
 from conversor import app, database
 
-from conversor.forms import SuplementoForm, PlanningItemForm, ResumoForm, LoginForm, RegisterForm
-from conversor.models import Suplemento, PlanejamentoItem, User
+from conversor.forms import SuplementoForm, PlanningItemForm, ResumoForm, LoginForm, RegisterForm, ResumoForm, SalvarResumoForm
+from conversor.models import Suplemento, PlanejamentoItem, User, ResumoSalvo
 
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, login_required, logout_user, current_user, logout_user
+
+import json
+from datetime import date
 
 
 
@@ -477,7 +480,7 @@ def calcular_totais_planejamento(itens):
         'carbo': 0, 'sodio': 0, 'magnesio': 0, 'potassio': 0, 'calcio': 0,
         'cafeina': 0, 'taurina': 0, 'beta_alanina': 0, 'citrulina': 0,
         'creatina': 0, 'coq10': 0, 'carnitina': 0,
-        'leucina': 0, 'isoleucina': 0, 'valina': 0, 'arginina': 0,
+        'leucina': 0, 'isoleucina': 0, 'valina': 0, 'arginina': 0,                           
         'vit_b1': 0, 'vit_b2': 0, 'vit_b3': 0, 'vit_b6': 0,
         'vit_b7': 0, 'vit_b9': 0, 'vit_b12': 0, 'vit_c': 0
     }
@@ -519,10 +522,90 @@ def resumo_view():
                 totais_por_hora[key] = round(valor / tempo_total, 2)
             resumo_dados = agrupar_por_categoria(totais_por_hora)
 
+        session['resumo_dados'] = json.dumps(resumo_dados)
+        flash("Resumo calculado com sucesso!", "success")
+
+    # 🔽 Adicione isso aqui
+    resumos = ResumoSalvo.query.filter_by(user_id=current_user.id).order_by(ResumoSalvo.data.desc()).all()
+    print("Tipo de resumo:", type(resumo_dados), resumo_dados)
+
     return render_template(
         "resumo.html",
         form=form,
-        totais=totais,
+        totais=totais_por_hora,
         resumo=resumo_dados,
-        tempo_total=round(tempo_total, 2)
+        tempo_total=round(tempo_total, 2),
+        current_date=date.today().isoformat(),
+        resumos=resumos  # <-- novo contexto
     )
+            
+    
+@app.route('/salvar_resumo', methods=['GET', 'POST'])
+@login_required
+def salvar_resumo():
+    form = SalvarResumoForm()
+
+    def parse_float(value):
+        try:
+            return float(value)
+        except (ValueError, TypeError):
+            return 0.0
+
+    if form.validate_on_submit():
+        print("Formulário validado")
+    else:
+        print("Formulário NÃO validado")
+        print(form.errors)
+
+    resumo_json = session.get('resumo_dados')
+    if not resumo_json:
+        flash("Nenhum resumo disponível para salvar. Por favor, calcule um resumo antes.", "danger")
+        return redirect(url_for('resumo_view'))
+
+    if form.validate_on_submit():
+        tempo_natacao = parse_float(request.form.get("tempo_natacao_horas")) + parse_float(request.form.get("tempo_natacao_minutos")) / 60
+        tempo_bike = parse_float(request.form.get("tempo_bike_horas")) + parse_float(request.form.get("tempo_bike_minutos")) / 60
+        tempo_corrida = parse_float(request.form.get("tempo_corrida_horas")) + parse_float(request.form.get("tempo_corrida_minutos")) / 60
+        tempo_total = tempo_natacao + tempo_bike + tempo_corrida
+
+        novo_resumo = ResumoSalvo(
+            user_id=current_user.id,
+            nome_treino=form.nome_treino.data,
+            data=form.data.data,
+            comentario=form.comentario.data,
+            resumo_dados=json.loads(request.form["resumo_dados"]),
+            tempo_natacao=tempo_natacao,
+            tempo_bike=tempo_bike,
+            tempo_corrida=tempo_corrida,
+            tempo_total=tempo_total
+        )
+
+        database.session.add(novo_resumo)
+        database.session.commit()
+        flash("Resumo salvo com sucesso!", "success")
+        return redirect(url_for('resumo_view'))
+
+    return render_template("salvar_resumo.html", form=form, dados=json.loads(resumo_json))
+
+
+
+@app.route('/resumos')
+@login_required
+def listar_resumos():
+    resumos = ResumoSalvo.query.filter_by(user_id=current_user.id).order_by(ResumoSalvo.criado_em.desc()).all()
+    return render_template('resumos.html', resumos=resumos)
+
+
+
+@app.route('/deletar_resumo/<int:id>', methods=['POST'])
+@login_required
+def deletar_resumo(id):
+    resumo = ResumoSalvo.query.get_or_404(id)
+    if resumo.user_id != current_user.id:
+        flash("Você não tem permissão para excluir esse resumo.", "danger")
+        return redirect(url_for('resumo_view'))
+
+    database.session.delete(resumo)
+    database.session.commit()
+    flash("Resumo excluído com sucesso!", "success")
+    return redirect(url_for('resumo_view'))
