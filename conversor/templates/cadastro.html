@@ -27,6 +27,20 @@
       {% endfor %}
     </div>
 
+    <div class="mb-4">{{ form.nome.label }} 
+        {{ form.nome(class="w-full p-2 border rounded") }}
+        {% for error in form.nome.errors %}
+        <div class="text-red-500 text-sm mt-1">{{ error }}</div>
+      {% endfor %}
+      </div>
+  
+      <div class="mb-4">{{ form.sobrenome.label }} 
+          {{ form.sobrenome(class="w-full p-2 border rounded") }}
+          {% for error in form.sobrenome.errors %}
+          <div class="text-red-500 text-sm mt-1">{{ error }}</div>
+        {% endfor %}
+      </div>
+
     <div class="mb-4">
       {{ form.senha.label }} 
       {{ form.senha(class="w-full p-2 border rounded") }}
