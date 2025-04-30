@@ -43,18 +43,17 @@ def login():
 def cadastro():
     form = RegisterForm()
     if form.validate_on_submit():
-        usuario_existente = User.query.filter_by(email=form.email.data).first()
-        if usuario_existente:
-            flash('Email já cadastrado. Faça login ou use outro.', 'danger')
-            return redirect(url_for('cadastro'))
-        
         hashed_password = generate_password_hash(form.senha.data)
-        novo_usuario = User(email=form.email.data, senha_hash=hashed_password)
+        novo_usuario = User(
+            nome=form.nome.data,
+            sobrenome=form.sobrenome.data,
+            email=form.email.data,
+            senha_hash=hashed_password
+        )
         database.session.add(novo_usuario)
         database.session.commit()
         flash('Cadastro realizado! Faça login.', 'success')
         return redirect(url_for('login'))
-    
     return render_template('cadastro.html', form=form)
 
 
