@@ -6,6 +6,7 @@ import time
 import os
 from flask_migrate import Migrate
 import sqlalchemy
+from flask_wtf.csrf import CSRFProtect
 
 # Configurar fuso horário
 os.environ['TZ'] = 'America/Sao_Paulo'
@@ -14,6 +15,7 @@ time.tzset()
 # Inicializar app
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'b2d8e4b8f1b6e9d1b4b0c0f2d2e8f6d4'
+csrf = CSRFProtect(app)
 
 # Configurar banco de dados
 project_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
