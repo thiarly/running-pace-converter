@@ -12,7 +12,7 @@ class User(database.Model, UserMixin):
     email = database.Column(database.String(150), unique=True, nullable=False)
     nome = database.Column(database.String(150), nullable=False)
     sobrenome = database.Column(database.String(150), nullable=False)
-    senha_hash = database.Column(database.String(150), nullable=False)
+    senha_hash = database.Column(database.String(300), nullable=False)
 
     suplementos = database.relationship('Suplemento', backref='usuario', lazy=True)
     planejamentos = database.relationship('PlanejamentoItem', backref='usuario', lazy=True)
