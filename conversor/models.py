@@ -9,13 +9,15 @@ class User(database.Model, UserMixin):
 
     id = database.Column(database.Integer, primary_key=True)
     email = database.Column(database.String(150), unique=True, nullable=False)
+    nome = database.Column(database.String(150), nullable=False)
+    sobrenome = database.Column(database.String(150), nullable=False)
     senha_hash = database.Column(database.String(150), nullable=False)
 
     suplementos = database.relationship('Suplemento', backref='usuario', lazy=True)
     planejamentos = database.relationship('PlanejamentoItem', backref='usuario', lazy=True)
 
-    def __repr__(self):
-        return f'<User {self.email}>'
+    def nome_completo(self):
+        return f"{self.nome} {self.sobrenome}"
 
 
 class Suplemento(database.Model):
