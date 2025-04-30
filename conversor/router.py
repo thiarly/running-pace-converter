@@ -609,3 +609,5 @@ def deletar_resumo(id):
     database.session.commit()
     flash("Resumo excluído com sucesso!", "success")
     return redirect(url_for('resumo_view'))
+
+#
