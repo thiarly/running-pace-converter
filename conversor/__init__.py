@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, redirect, url_for, request, flash
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
@@ -32,7 +32,14 @@ bcrypt = Bcrypt(app)
 # LOGIN MANAGER novo
 login_manager = LoginManager(app)
 login_manager.login_view = 'login'  # nome da função da rota de login
-login_manager.login_message_category = 'info'
+login_manager.login_message = "Você precisa estar logado para acessar esta página. Faça login ou cadastre-se gratuitamente."
+login_manager.login_message_category = "info"
+
+
+@login_manager.unauthorized_handler
+def unauthorized():
+    flash("🔒 Você precisa estar logado para acessar esta página. Faça login ou cadastre-se gratuitamente.", "info")
+    return redirect(url_for('login', next=request.path))
 
 # Importações internas
 from conversor import router
