@@ -1,6 +1,7 @@
 from conversor import database
 from flask_login import UserMixin
 from conversor import login_manager
+from datetime import datetime
 
 
 
@@ -111,3 +112,26 @@ class PlanejamentoItem(database.Model):
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
+
+
+
+class ResumoSalvo(database.Model):
+    __tablename__ = 'resumos_salvos'
+
+    id = database.Column(database.Integer, primary_key=True)
+    user_id = database.Column(database.Integer, database.ForeignKey('user.id'), nullable=False)
+    nome_treino = database.Column(database.String(100), nullable=False)
+    data = database.Column(database.Date, nullable=False)
+    comentario = database.Column(database.Text)
+    resumo_dados = database.Column(database.JSON, nullable=False)
+    tempo_natacao = database.Column(database.Float)
+    tempo_bike = database.Column(database.Float)
+    tempo_corrida = database.Column(database.Float)
+    tempo_total = database.Column(database.Float)
+    criado_em = database.Column(database.DateTime, default=datetime.utcnow)
+
+    def __repr__(self):
+        return f'<ResumoSalvo {self.nome_treino} - {self.data}>'
+    
+    
+    
