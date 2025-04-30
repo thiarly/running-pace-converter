@@ -1,6 +1,8 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, FloatField, SelectField, SubmitField, IntegerField, PasswordField
+from wtforms import StringField, FloatField, SelectField, SubmitField, IntegerField, PasswordField, ValidationError
 from wtforms.validators import DataRequired, Optional, NumberRange, InputRequired, Email, Length, EqualTo
+from conversor.models import User
+
 
 
 class SuplementoForm(FlaskForm):
@@ -67,11 +69,24 @@ class LoginForm(FlaskForm):
     senha = PasswordField('Senha', validators=[InputRequired()])
     submit = SubmitField('Entrar')
 
-
 class RegisterForm(FlaskForm):
-    email = StringField('Email', validators=[InputRequired(), Email(), Length(max=150)])
-    senha = PasswordField('Senha', validators=[InputRequired(), Length(min=6)])
+    nome = StringField('Nome', validators=[DataRequired(message="O nome é obrigatório.")])
+    sobrenome = StringField('Sobrenome', validators=[DataRequired(message="O sobrenome é obrigatório.")])
+    email = StringField('Email', validators=[
+        DataRequired(message="O e-mail é obrigatório."),
+        Email(message="Informe um e-mail válido.")
+    ])
+    senha = PasswordField('Senha', validators=[
+        DataRequired(message="A senha é obrigatória."),
+        Length(min=6, message="A senha deve ter no mínimo 6 caracteres.")
+    ])
     confirmar_senha = PasswordField('Confirmar Senha', validators=[
-        InputRequired(), EqualTo('senha', message='As senhas precisam ser iguais.')
+        DataRequired(message="Confirme a senha."),
+        EqualTo('senha', message="As senhas devem ser iguais.")
     ])
     submit = SubmitField('Cadastrar')
+
+    def validate_email(self, email):
+        user = User.query.filter_by(email=email.data).first()
+        if user:
+            raise ValidationError("Este e-mail já está cadastrado.")
