@@ -139,7 +139,7 @@
             </svg>
           </button>
           <div id="dropdownUserMenu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded shadow z-50">
-            <div class="px-4 py-2 text-sm text-gray-700">{{ current_user.nome_completo }}</div>
+            <div class="px-4 py-2 text-sm text-gray-700">{{ current_user.nome}}</div>
             <div class="border-t"></div>
             <a href="{{ url_for('logout') }}" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">Sair</a>
           </div>
