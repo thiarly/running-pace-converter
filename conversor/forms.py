@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, FloatField, SelectField, SubmitField, IntegerField, PasswordField, ValidationError
+from wtforms import StringField, FloatField, SelectField, SubmitField, IntegerField, PasswordField, ValidationError, TextAreaField, DateField
 from wtforms.validators import DataRequired, Optional, NumberRange, InputRequired, Email, Length, EqualTo
 from conversor.models import User
 
@@ -68,6 +68,7 @@ class LoginForm(FlaskForm):
     email = StringField('Email', validators=[InputRequired(), Email(), Length(max=150)])
     senha = PasswordField('Senha', validators=[InputRequired()])
     submit = SubmitField('Entrar')
+    
 
 class RegisterForm(FlaskForm):
     nome = StringField('Nome', validators=[DataRequired(message="O nome é obrigatório.")])
@@ -90,3 +91,25 @@ class RegisterForm(FlaskForm):
         user = User.query.filter_by(email=email.data).first()
         if user:
             raise ValidationError("Este e-mail já está cadastrado.")
+        
+
+class SalvarResumoForm(FlaskForm):
+    nome_treino = StringField('Nome do Treino', validators=[DataRequired()])
+    data = DateField("Data", format="%Y-%m-%d", validators=[DataRequired()])
+    comentario = TextAreaField('Comentário')
+    submit = SubmitField('Salvar Resumo')
+
+        
+class ResumoForm(FlaskForm):
+    tempo_natacao_horas = IntegerField('Horas Natação', validators=[Optional(), NumberRange(min=0)])
+    tempo_bike_horas = IntegerField('Horas Bike', validators=[Optional(), NumberRange(min=0)])
+    tempo_corrida_horas = IntegerField('Horas Corrida', validators=[Optional(), NumberRange(min=0)])
+    tempo_natacao_minutos = IntegerField('Minutos Natação', validators=[Optional(), NumberRange(min=0, max=59)])
+    tempo_bike_minutos = IntegerField('Minutos Bike', validators=[Optional(), NumberRange(min=0, max=59)])
+    tempo_corrida_minutos = IntegerField('Minutos Corrida', validators=[Optional(), NumberRange(min=0, max=59)])
+
+    submit_calcular = SubmitField('Calcular Resumo')
+    submit_limpar = SubmitField('Limpar Tela')
+    submit_salvar = SubmitField('Salvar Resumo')  # se já quiser prever esse botão
+
+
