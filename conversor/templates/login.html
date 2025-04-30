@@ -9,8 +9,9 @@
         <div class="p-3 mb-4 rounded text-sm font-medium
                     {% if category == 'success' %} bg-green-100 text-green-800
                     {% elif category == 'danger' or category == 'error' %} bg-red-100 text-red-800
+                    {% elif category == 'info' %} bg-blue-50 text-blue-800 border border-blue-200
                     {% else %} bg-gray-100 text-gray-800 {% endif %}">
-          {{ message }}
+          {{ message | safe }}
         </div>
       {% endfor %}
     {% endif %}
