@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="max-w-xl mx-auto p-6 bg-white rounded shadow mt-12">
+  <h1 class="text-2xl font-bold mb-4">Salvar Resumo</h1>
+  <form method="POST">
+    {{ form.hidden_tag() }}
+    <div class="mb-4">{{ form.nome_treino.label }} {{ form.nome_treino(class="w-full border rounded p-2") }}</div>
+    <div class="mb-4">{{ form.data.label }} {{ form.data(class="w-full border rounded p-2") }}</div>
+    <div class="mb-4">{{ form.comentario.label }} {{ form.comentario(class="w-full border rounded p-2") }}</div>
+    <div class="text-center">{{ form.submit(class="bg-blue-500 text-white px-4 py-2 rounded") }}</div>
+  </form>
+</div>              p
+
+<div class="max-w-4xl mx-auto mt-10">
+  <h1 class="text-2xl font-bold mb-6">Meus Resumos</h1>
+  {% for resumo in resumos %}
+    <div class="bg-white shadow rounded p-4 mb-4">
+      <h2 class="font-bold text-lg">{{ resumo.nome_treino }} ({{ resumo.data.strftime('%d/%m/%Y') }})</h2>
+      <p class="text-sm text-gray-600 mb-2">{{ resumo.comentario }}</p>
+      <pre class="bg-gray-50 p-2 rounded text-xs">{{ resumo.resumo_dados | tojson(indent=2) }}</pre>
+    </div>
+  {% else %}
+    <p class="text-gray-600">Nenhum resumo salvo ainda.</p>
+  {% endfor %}
+</div>
+{% endblock %}
