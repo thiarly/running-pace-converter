@@ -9,7 +9,7 @@ from flask_login import login_user, login_required, logout_user, current_user, l
 
 import json
 from datetime import date
-
+from sqlalchemy import desc
 
 
 
@@ -526,7 +526,7 @@ def resumo_view():
         flash("Resumo calculado com sucesso!", "success")
 
     # 🔽 Adicione isso aqui
-    resumos = ResumoSalvo.query.filter_by(user_id=current_user.id).order_by(ResumoSalvo.data.desc()).all()
+    resumos = ResumoSalvo.query.filter_by(user_id=current_user.id).order_by(desc(ResumoSalvo.data), desc(ResumoSalvo.id)).all()
     print("Tipo de resumo:", type(resumo_dados), resumo_dados)
 
     return render_template(
@@ -592,7 +592,7 @@ def salvar_resumo():
 @app.route('/resumos')
 @login_required
 def listar_resumos():
-    resumos = ResumoSalvo.query.filter_by(user_id=current_user.id).order_by(ResumoSalvo.criado_em.desc()).all()
+    resumos = ResumoSalvo.query.filter_by(user_id=current_user.id).order_by(ResumoSalvo.criado_em.asc()).all()
     return render_template('resumos.html', resumos=resumos)
 
 
