@@ -39,15 +39,16 @@ Planejamento de Suplementos
           <td class="px-4 py-2 border-b">{{ item.suplemento.nome }}</td>
           <td class="px-4 py-2 border-b">
             <form method="POST" action="{{ url_for('atualizar_quantidade', item_id=item.id) }}" class="flex items-center gap-2">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
               <input type="number" name="quantidade" value="{{ item.quantidade }}" class="w-20 px-2 py-1 border rounded">
               <button type="submit" class="text-blue-600 hover:underline">Atualizar</button>
             </form>
           </td>
           <td class="px-4 py-2 border-b">
             <form method="POST" action="{{ url_for('remover_item', item_id=item.id) }}" onsubmit="return confirm('Deseja remover este item?')">
-              {{ csrf_token() }}
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
               <button type="submit" class="text-red-600 hover:underline">Remover</button>
-            </form>
+            </form>            
           </td>
         </tr>
         {% endfor %}
