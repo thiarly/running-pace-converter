@@ -10,6 +10,7 @@ Planejamento de Suplementos
 
   <form method="POST" class="flex flex-wrap items-end gap-4 mb-8">
     {{ form.hidden_tag() }}
+
     <div>
       {{ form.suplemento_id.label(class="block text-sm font-medium text-gray-700") }}
       {{ form.suplemento_id(class="border border-gray-300 rounded px-2 py-1") }}
@@ -44,6 +45,7 @@ Planejamento de Suplementos
           </td>
           <td class="px-4 py-2 border-b">
             <form method="POST" action="{{ url_for('remover_item', item_id=item.id) }}" onsubmit="return confirm('Deseja remover este item?')">
+              {{ csrf_token() }}
               <button type="submit" class="text-red-600 hover:underline">Remover</button>
             </form>
           </td>
