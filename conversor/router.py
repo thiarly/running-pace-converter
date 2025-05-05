@@ -21,7 +21,8 @@ from conversor.utils import (
     convert_pace_milha, convert_km_to_miles,
     convert_miles_to_km, calculate_vo2max,
     race_predictions, calculate_pace_km, calculate_paces_by_vo2max,
-    race_predictions_from_3k, agrupar_por_categoria
+    race_predictions_from_3k, agrupar_por_categoria,
+    calcular_zonas_ftp, calcular_zonas_fc, calcular_zonas_pace
 )
 
 
@@ -299,6 +300,50 @@ def previsao_prova_3k():
         return render_template('previsao_prova_3k.html', predictions=predictions, pace_km=pace_km)
 
     return render_template('previsao_prova_3k.html')
+
+
+@app.route('/zonas/calculadora', methods=['GET', 'POST'])
+def calculadora_zonas():
+    zonas = None
+    metodo = None
+    valor = None
+    pace_min_km = None
+
+    if request.method == 'POST':
+        metodo = request.form.get('metodo')
+        valor = request.form.get('valor')
+
+        if metodo == 'ftp':
+            try:
+                ftp = float(valor)
+                zonas = calcular_zonas_ftp(ftp)
+            except ValueError:
+                zonas = None
+
+        elif metodo == 'fc':
+            try:
+                fc = float(valor)
+                zonas = calcular_zonas_fc(fc)
+            except ValueError:
+                zonas = None
+
+        elif metodo == 'pace':
+            try:
+                if ':' not in valor:
+                    raise ValueError("Formato inválido")
+                minutos, segundos = map(int, valor.strip().split(':'))
+                pace_threshold = minutos * 60 + segundos
+                zonas = calcular_zonas_pace(pace_threshold)
+            except (ValueError, AttributeError):
+                zonas = None
+
+    return render_template(
+        'calculadora_zonas.html',
+        zonas=zonas,
+        metodo=metodo,
+        valor=valor,
+        pace_min_km=pace_min_km
+    )
 
 
 @app.route('/zonas')
