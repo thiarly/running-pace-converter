@@ -5,22 +5,21 @@
 {% block content %}
 <div class="container mx-auto px-8 py-10 text-justify">
 
-    <!-- Logo no Topo com Largura Total -->
-    <div class="w-full mb-5">
-        <img src="{{ url_for('static', filename='image/TCt.png') }}" alt="Logo TC Sports" class="h-12 mr-8">
-    </div>
-    <div class="grid md:grid-cols-1 gap-5">
-        <!-- Descrição da Assessoria -->
-        <div class="description">
-            <h2 class="text-2xl mb-3 font-bold text-blue-600">Nossa Missão</h2>
-            <p>A TC Sports é dedicada a ajudar atletas a alcançarem seus melhores resultados, com ênfase especial em corrida, além de oferecer treinamento personalizado em triatlo e duatlo. Nosso objetivo é proporcionar apoio contínuo e adaptado às necessidades de cada atleta para que atinjam suas metas em competições e melhorem seu desempenho e saúde.</p>
-            <h3 class="text-lg font-bold mt-6">Experiência e Competência</h3>
-            <p>Com uma vasta experiência em competições de triatlo, duatlo e corridas, nosso treinador Thiarly Cavalcante traz conhecimento técnico e prático para preparar os atletas para todo tipo de desafio.</p>
-            <h3 class="text-lg font-bold mt-6">Serviços Oferecidos</h3>
-            <p>Nós oferecemos programas de treinamento personalizados para corrida, triatlo, duatlo, e ciclismo, adaptados para atender às necessidades e objetivos de cada atleta.</p>
-            <h3 class="text-lg font-bold mt-6">Metodologia de Treinamento</h3>
-            <p>Receba seus treinos semanais individualizados e venha conhecer um pouco mais sobre nossa metodologia. Diferentemente de outras assessorias, não somos favoráveis a grandes volumes de treinamento. Acreditamos que o treinamento, quando feito de forma correta a partir do cruzamento dos dados obtidos em seu teste fisiológico, permite gerar as adaptações necessárias para correr desde uma prova de 10 km até uma ultramaratona, com risco mínimo de lesões e conseguindo alcançar a meta estabelecida.</p>
-        </div>
-    </div>
+
+    <div class="max-w-2xl mx-auto px-6 py-12 text-center">
+        <h2 class="text-3xl font-bold text-blue-600 mb-6">Sobre o Projeto</h2>
+        <p class="text-lg leading-relaxed text-gray-800 mb-4">
+          Este site foi desenvolvido por <strong>Thiarly Cavalcante</strong>, atleta amador, empresário e programador, com o objetivo de contribuir com a comunidade esportiva.
+        </p>
+        <p class="text-lg leading-relaxed text-gray-800 mb-4">
+          Todas as funcionalidades surgiram de necessidades reais durante sua jornada como atleta — da <strong>conversão de pace</strong> à <strong>calculadora de zonas</strong> e o <strong>planejamento de suplementação</strong>.
+        </p>
+        <p class="text-lg leading-relaxed text-gray-800 mb-6">
+          Aqui, tudo está em um só lugar. Um projeto feito com dedicação para apoiar atletas que, como ele, buscam performance com clareza e praticidade.
+        </p>
+        <a href="https://tccavalcante.com" target="_blank" class="text-blue-500 hover:underline font-semibold">
+          Visite também: tccavalcante.com
+        </a>
+      </div>
 </div>
 {% endblock %}
