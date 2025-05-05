@@ -49,15 +49,16 @@
         {% if suplementos %}
         <div class="w-full overflow-x-auto">
             <table class="w-full text-xs sm:text-sm text-left min-w-[600px]">
-                <thead class="text-gray-700 uppercase bg-gray-100">
-                    <tr>
-                        <th class="py-3 px-4 whitespace-nowrap">Nome</th>
-                        <th class="py-3 px-4 whitespace-nowrap">Marca</th>
-                        <th class="py-3 px-4 whitespace-nowrap">Tipo</th>
-                        <th class="py-3 px-4 whitespace-nowrap">Carboidrato (g)</th>
-                        <th class="py-3 px-4 whitespace-nowrap">Sódio (mg)</th>
-                        <th class="py-3 px-4 whitespace-nowrap">Ações</th>
-                    </tr>
+              <thead class="text-gray-700 uppercase bg-gray-100">
+                <tr>
+                  <th class="py-3 px-4 cursor-pointer" onclick="sortTable(0)">Nome ⬍</th>
+                  <th class="py-3 px-4 cursor-pointer" onclick="sortTable(1)">Marca ⬍</th>
+                  <th class="py-3 px-4 cursor-pointer" onclick="sortTable(2)">Tipo ⬍</th>
+                  <th class="py-3 px-4 cursor-pointer" onclick="sortTable(3, true)">Carboidrato (g) ⬍</th>
+                  <th class="py-3 px-4 cursor-pointer" onclick="sortTable(4, true)">Sódio (mg) ⬍</th>
+                  <th class="py-3 px-4">Ações</th>
+                </tr>
+              </thead>
                 </thead>
                 <tbody>
                     {% for suplemento in suplementos %}
@@ -119,4 +120,38 @@ function toggleDetails(id) {
     row.classList.toggle('hidden');
 }
 </script>
+
+
+<script>
+  let sortDirection = true;
+  
+  function sortTable(columnIndex, isNumeric = false) {
+    const tbody = document.querySelector("table tbody");
+    const rows = Array.from(tbody.querySelectorAll("tr"))
+      .filter((_, i) => i % 2 === 0); // Apenas linhas principais (linha 0, 2, 4...)
+  
+    const pairs = rows.map(row => [row, row.nextElementSibling]);
+  
+    pairs.sort((a, b) => {
+      const aText = a[0].cells[columnIndex].innerText.trim();
+      const bText = b[0].cells[columnIndex].innerText.trim();
+  
+      const aVal = isNumeric ? parseFloat(aText) || 0 : aText.toLowerCase();
+      const bVal = isNumeric ? parseFloat(bText) || 0 : bText.toLowerCase();
+  
+      if (aVal < bVal) return sortDirection ? -1 : 1;
+      if (aVal > bVal) return sortDirection ? 1 : -1;
+      return 0;
+    });
+  
+    sortDirection = !sortDirection;
+  
+    pairs.forEach(([main, detail]) => {
+      tbody.appendChild(main);
+      tbody.appendChild(detail);
+    });
+  }
+  </script>
+
+
 {% endblock %}
