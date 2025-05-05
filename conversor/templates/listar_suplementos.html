@@ -18,66 +18,56 @@
   {% endif %}
 {% endwith %}
 
-
-
-<div class="flex flex-col items-center justify-center mt-8 px-4 sm:px-0">
+<div class="flex flex-col items-center justify-center mt-8 px-4">
     <div class="w-full max-w-8xl p-6 bg-white rounded-lg shadow-md">
-        <div class="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4 sm:gap-0">
+        <div class="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4">
             <h1 class="text-2xl font-bold text-gray-900">Suplementos Cadastrados</h1>
-            <a href="{{ url_for('novo_suplemento') }}" class="bg-blue-500 hover:bg-blue-700 text-white  px-4 py-1 rounded">
+            <a href="{{ url_for('novo_suplemento') }}" class="bg-blue-500 hover:bg-blue-700 text-white px-4 py-1 rounded text-center">
                 Novo Suplemento
             </a>
         </div>
 
-        <div class="flex flex-wrap gap-4 mb-6">
-            <form method="GET" class="flex flex-col sm:flex-row items-center gap-2 w-full sm:w-auto">
-              <input type="text" name="filtro" placeholder="Buscar suplemento..." value="{{ filtro }}" class="border px-2 py-1 rounded w-full sm:w-auto">
-              
-              <select name="ordenar" class="border px-2 py-1 rounded w-full sm:w-auto">
+        <form method="GET" class="flex flex-col sm:flex-row flex-wrap gap-2 mb-6 w-full">
+            <input type="text" name="filtro" placeholder="Buscar suplemento..." value="{{ filtro }}" class="border px-2 py-1 rounded w-full sm:w-auto">
+            <select name="ordenar" class="border px-2 py-1 rounded w-full sm:w-auto">
                 <option value="">Ordenar por</option>
                 <option value="carbo" {% if ordenar == 'carbo' %}selected{% endif %}>Carboidrato</option>
                 <option value="sodio" {% if ordenar == 'sodio' %}selected{% endif %}>Sódio</option>
-              </select>
-              
-              <select name="direcao" class="border px-2 py-1 rounded w-full sm:w-auto">
+            </select>
+            <select name="direcao" class="border px-2 py-1 rounded w-full sm:w-auto">
                 <option value="desc" {% if direcao == 'desc' %}selected{% endif %}>Maior para Menor</option>
                 <option value="asc" {% if direcao == 'asc' %}selected{% endif %}>Menor para Maior</option>
-              </select>
-          
-              <button type="submit" class="bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-700 w-full sm:w-auto">
+            </select>
+            <button type="submit" class="bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-700 w-full sm:w-auto">
                 Filtrar
-              </button>
-          
-              <a href="{{ url_for('listar_suplementos') }}" class="bg-gray-500 text-white px-4 py-1 rounded hover:bg-gray-700 w-full sm:w-auto text-center">
+            </button>
+            <a href="{{ url_for('listar_suplementos') }}" class="bg-gray-500 text-white px-4 py-1 rounded hover:bg-gray-700 w-full sm:w-auto text-center">
                 Limpar
-              </a>
-            </form>
-          </div>
-          
-          
+            </a>
+        </form>
 
         {% if suplementos %}
-        <div class="overflow-x-auto">
-            <table class="min-w-full text-xs sm:text-sm text-left">
+        <div class="w-full overflow-x-auto">
+            <table class="w-full text-xs sm:text-sm text-left min-w-[600px]">
                 <thead class="text-gray-700 uppercase bg-gray-100">
                     <tr>
-                        <th class="py-3 px-6 text-xs sm:text-sm">Nome</th>
-                        <th class="py-3 px-6 text-xs sm:text-sm">Marca</th>
-                        <th class="py-3 px-6 text-xs sm:text-sm">Tipo</th>
-                        <th class="py-3 px-6 text-xs sm:text-sm">Carboidrato (g)</th>
-                        <th class="py-3 px-6 text-xs sm:text-sm">Sódio (mg)</th>
-                        <th class="py-3 px-6 text-xs sm:text-sm">Ações</th>
+                        <th class="py-3 px-4 whitespace-nowrap">Nome</th>
+                        <th class="py-3 px-4 whitespace-nowrap">Marca</th>
+                        <th class="py-3 px-4 whitespace-nowrap">Tipo</th>
+                        <th class="py-3 px-4 whitespace-nowrap">Carboidrato (g)</th>
+                        <th class="py-3 px-4 whitespace-nowrap">Sódio (mg)</th>
+                        <th class="py-3 px-4 whitespace-nowrap">Ações</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for suplemento in suplementos %}
                     <tr class="border-b">
-                        <td class="py-3 px-6 text-xs sm:text-sm">{{ suplemento.nome }}</td>
-                        <td class="py-3 px-6 text-xs sm:text-sm">{{ suplemento.marca }}</td>
-                        <td class="py-3 px-6 text-xs sm:text-sm">{{ suplemento.tipo }}</td>
-                        <td class="py-3 px-6 text-xs sm:text-sm">{{ suplemento.carbo or 0 }}</td>
-                        <td class="py-3 px-6 text-xs sm:text-sm">{{ suplemento.sodio or 0 }}</td>
-                        <td class="py-3 px-6 text-xs sm:text-sm">
+                        <td class="py-3 px-4 whitespace-nowrap">{{ suplemento.nome }}</td>
+                        <td class="py-3 px-4 whitespace-nowrap">{{ suplemento.marca }}</td>
+                        <td class="py-3 px-4 whitespace-nowrap">{{ suplemento.tipo }}</td>
+                        <td class="py-3 px-4 whitespace-nowrap">{{ suplemento.carbo or 0 }}</td>
+                        <td class="py-3 px-4 whitespace-nowrap">{{ suplemento.sodio or 0 }}</td>
+                        <td class="py-3 px-4 whitespace-nowrap">
                             <a href="{{ url_for('editar_suplemento', id=suplemento.id) }}" class="text-blue-600 hover:underline">Editar</a>
                             <span class="mx-1">|</span>
                             <a href="{{ url_for('excluir_suplemento', id=suplemento.id) }}" class="text-red-600 hover:underline" onclick="return confirm('Tem certeza que deseja excluir?')">Excluir</a>
@@ -87,7 +77,7 @@
                     </tr>
                     <tr id="details-{{ suplemento.id }}" class="hidden bg-gray-50">
                         <td colspan="6" class="p-4">
-                            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2 text-xs sm:text-sm">
                                 <div><strong>Magnésio:</strong> {{ suplemento.magnesio or 0 }} mg</div>
                                 <div><strong>Potássio:</strong> {{ suplemento.potassio or 0 }} mg</div>
                                 <div><strong>Cálcio:</strong> {{ suplemento.calcio or 0 }} mg</div>
