@@ -5,7 +5,7 @@ Resumo do Planejamento
 {% endblock %}
 
 {% block content %}
-<div class="max-w-4xl mx-auto py-8">
+<div class="max-w-4xl mx-auto py-8 px-4 sm:px-6">
   <h1 class="text-2xl font-bold mb-6">Resumo do Planejamento</h1>
 
   <form method="POST" class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
@@ -32,7 +32,7 @@ Resumo do Planejamento
       {{ form.tempo_corrida_minutos(class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-md") }}
     </div>
 
-    <div class="md:col-span-3 flex justify-center gap-4 mt-4">
+    <div class="md:col-span-3 flex flex-col sm:flex-row justify-center gap-4 mt-4">
       <button type="submit" name="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded-md">Calcular Resumo</button>
       <button type="submit" name="limpar" class="bg-red-500 hover:bg-red-600 text-white font-semibold px-6 py-2 rounded-md">Limpar Tela</button>
     </div>
@@ -43,7 +43,7 @@ Resumo do Planejamento
     Tempo Total de Treino: <strong>{{ tempo_total }}h</strong>
   </div>
 
-  <div class="grid grid-cols-1 md:grid-cols-5 gap-6">
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
     {% set ordem = ["Macronutrientes", "Eletrólitos", "Vitaminas", "Estimulantes e Compostos", "Aminoácidos"] %}
     {% set ordem_eletrolitos = ["Sódio", "Magnésio", "Potássio", "Cálcio"] %}
     {% for categoria in ordem %}
@@ -100,17 +100,17 @@ Resumo do Planejamento
 {% endif %}
 
 {% if resumos %}
-<div class="mt-10 max-w-4xl mx-auto">
+<div class="mt-10 max-w-4xl mx-auto px-4 sm:px-6">
   <h2 class="text-xl font-bold mb-4">Resumos Salvos</h2>
   {% for resumo in resumos %}
   <div class="bg-white rounded shadow p-4 mb-6 border border-gray-200">
-    <div class="flex justify-between items-start">
+    <div class="flex flex-col sm:flex-row justify-between items-start">
       <div onclick="toggleResumo('resumo-{{ loop.index }}')" class="cursor-pointer w-full">
         <h3 class="text-lg font-semibold">{{ resumo.nome_treino }} ({{ resumo.data.strftime('%d/%m/%Y') }})</h3>
         <p class="text-sm text-gray-600">{{ resumo.comentario }}</p>
         <div class="text-sm text-blue-600 mt-1">Ver detalhes ⬇</div>
       </div>
-      <form method="POST" action="{{ url_for('deletar_resumo', id=resumo.id) }}" onsubmit="return confirm('Tem certeza que deseja excluir este resumo?');" class="ml-4">
+      <form method="POST" action="{{ url_for('deletar_resumo', id=resumo.id) }}" onsubmit="return confirm('Tem certeza que deseja excluir este resumo?');" class="mt-4 sm:mt-0 sm:ml-4">
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
         <button type="submit" class="text-sm text-red-600">Excluir 🗑</button>
       </form>
