@@ -35,7 +35,7 @@ def login():
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
         if user and check_password_hash(user.senha_hash, form.senha.data):
-            login_user(user)
+            login_user(user, remember=True)
             flash('Login realizado com sucesso!', 'success')
             return redirect(url_for('listar_suplementos'))
         else:
