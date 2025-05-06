@@ -551,21 +551,18 @@ def calcular_totais_planejamento(itens):
     return totais
 
 
-# Resumo
 @app.route('/resumo', methods=['GET', 'POST'])
 @login_required
 def resumo_view():
     form = ResumoForm()
+    totais_por_hora = {}
+    resumo_dados = {}
+    tempo_total = 0
 
     if request.method == 'POST' and 'limpar' in request.form:
+        session.pop('resumo_dados', None)
+        flash("Resumo limpo com sucesso!", "success")
         return redirect(url_for('resumo_view'))
-
-    itens = PlanejamentoItem.query.filter_by(user_id=current_user.id).all()
-    totais = calcular_totais_planejamento(itens)
-
-    totais_por_hora = {}
-    tempo_total = 0
-    resumo_dados = {}
 
     if form.validate_on_submit():
         tempo_natacao = (form.tempo_natacao_horas.data or 0) + (form.tempo_natacao_minutos.data or 0) / 60
@@ -574,17 +571,31 @@ def resumo_view():
 
         tempo_total = tempo_natacao + tempo_bike + tempo_corrida
 
+        itens = PlanejamentoItem.query.filter_by(user_id=current_user.id).all()
+        totais = calcular_totais_planejamento(itens)
+
         if tempo_total > 0:
             for key, valor in totais.items():
                 totais_por_hora[key] = round(valor / tempo_total, 2)
             resumo_dados = agrupar_por_categoria(totais_por_hora)
 
-        session['resumo_dados'] = json.dumps(resumo_dados)
-        flash("Resumo calculado com sucesso!", "success")
+        session['resumo_dados'] = json.dumps({
+            "totais": totais_por_hora,
+            "resumo": resumo_dados,
+            "tempo_total": tempo_total
+        })
 
-    # 🔽 Adicione isso aqui
+        flash("Resumo calculado com sucesso!", "success")
+        return redirect(url_for('resumo_view'))
+
+    # Recarrega dados da sessão no GET
+    if 'resumo_dados' in session:
+        dados = json.loads(session['resumo_dados'])
+        totais_por_hora = dados.get("totais", {})
+        resumo_dados = dados.get("resumo", {})
+        tempo_total = dados.get("tempo_total", 0)
+
     resumos = ResumoSalvo.query.filter_by(user_id=current_user.id).order_by(desc(ResumoSalvo.data), desc(ResumoSalvo.id)).all()
-    print("Tipo de resumo:", type(resumo_dados), resumo_dados)
 
     return render_template(
         "resumo.html",
@@ -593,9 +604,9 @@ def resumo_view():
         resumo=resumo_dados,
         tempo_total=round(tempo_total, 2),
         current_date=date.today().isoformat(),
-        resumos=resumos  # <-- novo contexto
+        resumos=resumos
     )
-            
+ 
     
 @app.route('/salvar_resumo', methods=['GET', 'POST'])
 @login_required
