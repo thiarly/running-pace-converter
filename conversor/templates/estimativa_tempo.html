@@ -18,19 +18,23 @@
         <form method="POST">
             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
             <label class="text-gray-800" for="distance">Distância (km):</label><br>
-            <input type="text" id="distance" name="distance" pattern="[0-9]+(\.[0-9]+)?" class="text-gray-800 input-field mb-2 py-2 px-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" title="Digite um número válido, como 0.4"><br>
+            <input type="text" id="distance" name="distance" pattern="[0-9]+(\.[0-9]+)?" value="{{ distance or '' }}" class="text-gray-800 input-field mb-2 py-2 px-4 border border-gray-300 rounded-md"><br>
             
             <label class="text-gray-800" for="pace">Pace (min/km, formato MM:SS):</label><br>
-            <input type="text" id="pace" name="pace" pattern="[0-9]{1,2}:[0-9]{2}" class="text-gray-800 input-field mb-2 py-2 px-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" title="Digite um pace válido, como 05:30"><br>
+            <input type="text" id="pace" name="pace" pattern="[0-9]{1,2}:[0-9]{2}" value="{{ pace or '' }}" class="text-gray-800 input-field mb-2 py-2 px-4 border border-gray-300 rounded-md"><br>
             
             <input class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded cursor-pointer mt-4 w-full" type="submit" value="Calcular">
         </form>
 
         {% if estimated_time %}
         <div class="mt-8 p-4 bg-gray-200 rounded">
-            <p><span>Tempo Estimado: <strong>{{ estimated_time }}</strong></span></p>
+            <p><strong>Distância:</strong> {{ distance }} km</p>
+            <p><strong>Pace:</strong> {{ pace }} min/km</p>
+            <p><strong>Tempo Estimado:</strong> {{ estimated_time }}</p>
         </div>
         {% endif %}
+        
+        
     </div>
 </div>
 {% endblock %}

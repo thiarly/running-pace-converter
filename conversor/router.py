@@ -112,19 +112,31 @@ def home():
 
 @app.route('/estimativa-tempo', methods=['GET', 'POST'])
 def estimativa_tempo():
+    distance = ''
+    pace = ''
+    estimated_time = None
+    error = None
+
     if request.method == 'POST':
         distance = request.form.get('distance')
         pace = request.form.get('pace')
 
         if not distance or not pace:
-            return render_template('estimativa_tempo.html', error='Por favor, forneça valores para a distância e o pace.')
+            error = 'Por favor, forneça valores para a distância e o pace.'
+        else:
+            try:
+                distance_float = float(distance)
+                estimated_time = calculate_estimated_time(distance_float, pace)
+            except ValueError:
+                error = 'Distância inválida.'
 
-        distance = float(distance)
-        estimated_time = calculate_estimated_time(distance, pace)
-        
-        return render_template('estimativa_tempo.html', estimated_time=estimated_time)
-
-    return render_template('estimativa_tempo.html')
+    return render_template(
+        'estimativa_tempo.html',
+        estimated_time=estimated_time,
+        distance=distance,
+        pace=pace,
+        error=error
+    )
 
 
 @app.route('/estimativa_distancia', methods=['GET', 'POST'])
