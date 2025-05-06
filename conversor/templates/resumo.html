@@ -14,7 +14,7 @@ Resumo do Planejamento
   {% if messages %}
     <div class="mb-6">
       {% for category, message in messages %}
-        <div class="p-4 rounded-md text-white {{ 'bg-green-500' if category == 'success' else 'bg-red-500' }}">
+        <div class="p-4 rounded-md text-white {{ 'bg-green-500' if category == 'success' else 'bg-red-500' }} flash-message ">
           {{ message }}
         </div>
       {% endfor %}
@@ -167,11 +167,5 @@ Resumo do Planejamento
 </div>
 {% endif %}
 
-<script>
-  function toggleResumo(id) {
-    const el = document.getElementById(id);
-    el.classList.toggle("hidden");
-  }
-</script>
 
 {% endblock %}
