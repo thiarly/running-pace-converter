@@ -49,7 +49,7 @@ Resumo do Planejamento
 
   {% if totais %}
   <div class="text-center text-lg font-medium mb-6">
-    Tempo Total de Treino: <strong>{{ tempo_total }}h</strong>
+    Tempo Total de Treino: <strong>{{ tempo_total }}</strong>
   </div>
   
   <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
@@ -63,11 +63,11 @@ Resumo do Planejamento
       "Aminoácidos": "🧬"
     } %}
     {% set cores = {
-      "Macronutrientes": "bg-green-100",
-      "Eletrólitos": "bg-blue-100",
-      "Vitaminas": "bg-purple-100",
-      "Estimulantes e Compostos": "bg-yellow-100",
-      "Aminoácidos": "bg-pink-100"
+      "Macronutrientes": "bg-green-200",
+      "Eletrólitos": "bg-blue-200",
+      "Vitaminas": "bg-purple-200",
+      "Estimulantes e Compostos": "bg-yellow-200",
+      "Aminoácidos": "bg-pink-200"
     } %}
   
     {% if resumo and 'resumo' in resumo %}

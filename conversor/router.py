@@ -552,6 +552,7 @@ def resumo_view():
     totais_por_hora = {}
     resumo_dados = {}
     tempo_total = 0
+    resumo_completo = {}
 
     if request.method == 'POST' and 'limpar' in request.form:
         session.pop('resumo_dados', None)
@@ -591,32 +592,27 @@ def resumo_view():
                 "produtos": produtos_utilizados
             })
 
-
-
-
         flash("Resumo calculado com sucesso!", "success")
         return redirect(url_for('resumo_view'))
 
-    # Recarrega dados da sessão no GET
-    if 'resumo_dados' in session:
-        dados = json.loads(session['resumo_dados'])
-        totais_por_hora = dados.get("totais", {})
-        resumo_dados = dados.get("resumo", {})
-        tempo_total = dados.get("tempo_total", 0)
-
-    resumos = ResumoSalvo.query.filter_by(user_id=current_user.id).order_by(desc(ResumoSalvo.data), desc(ResumoSalvo.id)).all()
-
     if 'resumo_dados' in session:
         resumo_completo = json.loads(session['resumo_dados'])
+
+        tempo_total_float = resumo_completo.get("tempo_total", 0)
+        horas = int(tempo_total_float)
+        minutos = round((tempo_total_float - horas) * 60)
+        tempo_formatado = f"{horas}h {minutos}min"
     else:
-        resumo_completo = {}
+        tempo_formatado = "0h 00min"
+
+    resumos = ResumoSalvo.query.filter_by(user_id=current_user.id).order_by(desc(ResumoSalvo.data), desc(ResumoSalvo.id)).all()
 
     return render_template(
         "resumo.html",
         form=form,
         totais=resumo_completo.get("totais", {}),
-        resumo=resumo_completo,  # agora contém: totais, resumo, tempo_total, produtos
-        tempo_total=round(resumo_completo.get("tempo_total", 0), 2),
+        resumo=resumo_completo,
+        tempo_total=tempo_formatado,
         current_date=date.today().isoformat(),
         resumos=resumos
     )
