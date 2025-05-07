@@ -1,3 +1,5 @@
+from flask import flash
+
 def convert_pace(time, distance):
     time_minutes = time // 60  # Obter a parte inteira dos minutos
     time_seconds = time % 60  # Obter os segundos restantes
@@ -249,3 +251,27 @@ def calcular_zonas_pace(pace_threshold_segundos):
         zonas_formatadas[nome] = (int(min_seg), int(max_seg))
 
     return zonas_formatadas
+
+
+
+def calcular_totais_planejamento(itens):
+    totais = {
+        'carbo': 0, 'sodio': 0, 'magnesio': 0, 'potassio': 0, 'calcio': 0,
+        'cafeina': 0, 'taurina': 0, 'beta_alanina': 0, 'citrulina': 0,
+        'creatina': 0, 'coq10': 0, 'carnitina': 0,
+        'leucina': 0, 'isoleucina': 0, 'valina': 0, 'arginina': 0,                           
+        'vit_b1': 0, 'vit_b2': 0, 'vit_b3': 0, 'vit_b6': 0,
+        'vit_b7': 0, 'vit_b9': 0, 'vit_b12': 0, 'vit_c': 0
+    }
+
+    for item in itens:
+        suplemento = item.suplemento
+        if suplemento is None:
+            flash("Um suplemento usado neste planejamento foi removido e será ignorado.", "warning")
+            continue
+
+        for key in totais:
+            valor = getattr(suplemento, key, 0) or 0
+            totais[key] += valor * item.quantidade
+
+    return totais

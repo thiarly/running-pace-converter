@@ -69,7 +69,7 @@ class PlanejamentoItem(database.Model):
 
     id = database.Column(database.Integer, primary_key=True)
     user_id = database.Column(database.Integer, database.ForeignKey('user.id'), nullable=False)
-    suplemento_id = database.Column(database.Integer, database.ForeignKey('suplementos.id'), nullable=False)
+    suplemento_id = database.Column(database.Integer, database.ForeignKey('suplementos.id', ondelete='SET NULL'))
     quantidade = database.Column(database.Integer, nullable=False)
 
     suplemento = database.relationship('Suplemento', lazy=True)

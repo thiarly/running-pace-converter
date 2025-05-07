@@ -22,7 +22,8 @@ from conversor.utils import (
     convert_miles_to_km, calculate_vo2max,
     race_predictions, calculate_pace_km, calculate_paces_by_vo2max,
     race_predictions_from_3k, agrupar_por_categoria,
-    calcular_zonas_ftp, calcular_zonas_fc, calcular_zonas_pace
+    calcular_zonas_ftp, calcular_zonas_fc, calcular_zonas_pace,
+    calcular_totais_planejamento
 )
 
 
@@ -479,7 +480,9 @@ def editar_suplemento(id):
 @login_required
 def planejamento():
     form = PlanningItemForm()
-    form.suplemento_id.choices = [(s.id, s.nome) for s in Suplemento.query.filter_by(user_id=current_user.id)]
+    form.suplemento_id.choices = [
+        (s.id, s.nome) for s in Suplemento.query.filter_by(user_id=current_user.id)
+    ]
 
     if form.validate_on_submit():
         item_existente = PlanejamentoItem.query.filter_by(
@@ -499,10 +502,21 @@ def planejamento():
         flash('Item adicionado/atualizado com sucesso!', 'success')
         return redirect(url_for('planejamento'))
 
+    # 🔽 Limpa automaticamente os itens com suplemento excluído
     itens = PlanejamentoItem.query.filter_by(user_id=current_user.id).all()
-    totais = calcular_totais_planejamento(itens)
+    itens_validos = []
 
-    return render_template('planejamento.html', form=form, itens=itens, totais=totais)
+    for item in itens:
+        if item.suplemento is None:
+            database.session.delete(item)
+        else:
+            itens_validos.append(item)
+
+    database.session.commit()  # aplica exclusões
+    totais = calcular_totais_planejamento(itens_validos)
+
+    return render_template('planejamento.html', form=form, itens=itens_validos, totais=totais)
+
 
 
 # Atualizar quantidade no planejamento
@@ -529,26 +543,6 @@ def remover_item(item_id):
     database.session.commit()
     flash('Item removido do planejamento.', 'success')
     return redirect(url_for('planejamento'))
-
-
-# Cálculo de totais do planejamento
-def calcular_totais_planejamento(itens):
-    totais = {
-        'carbo': 0, 'sodio': 0, 'magnesio': 0, 'potassio': 0, 'calcio': 0,
-        'cafeina': 0, 'taurina': 0, 'beta_alanina': 0, 'citrulina': 0,
-        'creatina': 0, 'coq10': 0, 'carnitina': 0,
-        'leucina': 0, 'isoleucina': 0, 'valina': 0, 'arginina': 0,                           
-        'vit_b1': 0, 'vit_b2': 0, 'vit_b3': 0, 'vit_b6': 0,
-        'vit_b7': 0, 'vit_b9': 0, 'vit_b12': 0, 'vit_c': 0
-    }
-    
-    for item in itens:
-        suplemento = item.suplemento
-        for key in totais:
-            valor = getattr(suplemento, key) or 0
-            totais[key] += valor * item.quantidade
-
-    return totais
 
 
 @app.route('/resumo', methods=['GET', 'POST'])
