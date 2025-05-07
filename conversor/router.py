@@ -573,11 +573,15 @@ def resumo_view():
                 totais_por_hora[key] = round(valor / tempo_total, 2)
             resumo_dados = agrupar_por_categoria(totais_por_hora)
 
-        session['resumo_dados'] = json.dumps({
-            "totais": totais_por_hora,
-            "resumo": resumo_dados,
-            "tempo_total": tempo_total
-        })
+            session['resumo_dados'] = json.dumps({
+                "totais": totais_por_hora,
+                "resumo": resumo_dados,
+                "tempo_total": tempo_total,
+                "tempo_natacao": tempo_natacao,
+                "tempo_bike": tempo_bike,
+                "tempo_corrida": tempo_corrida
+            })
+
 
         flash("Resumo calculado com sucesso!", "success")
         return redirect(url_for('resumo_view'))
@@ -625,10 +629,12 @@ def salvar_resumo():
         return redirect(url_for('resumo_view'))
 
     if form.validate_on_submit():
-        tempo_natacao = parse_float(request.form.get("tempo_natacao_horas")) + parse_float(request.form.get("tempo_natacao_minutos")) / 60
-        tempo_bike = parse_float(request.form.get("tempo_bike_horas")) + parse_float(request.form.get("tempo_bike_minutos")) / 60
-        tempo_corrida = parse_float(request.form.get("tempo_corrida_horas")) + parse_float(request.form.get("tempo_corrida_minutos")) / 60
-        tempo_total = tempo_natacao + tempo_bike + tempo_corrida
+        resumo_dict = json.loads(session.get('resumo_dados'))
+        tempo_natacao = parse_float(resumo_dict.get("tempo_natacao"))
+        tempo_bike = parse_float(resumo_dict.get("tempo_bike"))
+        tempo_corrida = parse_float(resumo_dict.get("tempo_corrida"))
+        tempo_total = parse_float(resumo_dict.get("tempo_total"))
+
 
         novo_resumo = ResumoSalvo(
             user_id=current_user.id,
