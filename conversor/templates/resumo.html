@@ -4,50 +4,43 @@
 Resumo do Planejamento
 {% endblock %}
 
-
-
 {% block content %}
-
 <div class="max-w-4xl mx-auto py-8 px-4 sm:px-6">
 
   {% with messages = get_flashed_messages(with_categories=true) %}
-  {% if messages %}
-    <div class="mb-6">
-      {% for category, message in messages %}
-        <div class="p-4 rounded-md text-white {{ 'bg-green-500' if category == 'success' else 'bg-red-500' }} flash-message ">
-          {{ message }}
-        </div>
-      {% endfor %}
-    </div>
-  {% endif %}
-{% endwith %}
+    {% if messages %}
+      <div class="mb-6">
+        {% for category, message in messages %}
+          <div class="p-4 rounded-md text-white {{ 'bg-green-500' if category == 'success' else 'bg-red-500' }} flash-message ">
+            {{ message }}
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
 
   <h1 class="text-2xl font-bold mb-6">Resumo do Planejamento</h1>
 
   <form method="POST" class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
     {{ form.hidden_tag() }}
-
     <div>
       {{ form.tempo_natacao_horas.label(class="block text-sm font-medium text-gray-700") }}
       {{ form.tempo_natacao_horas(class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-md") }}
       {{ form.tempo_natacao_minutos.label(class="block text-sm font-medium text-gray-700 mt-2") }}
       {{ form.tempo_natacao_minutos(class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-md") }}
     </div>
-
     <div>
       {{ form.tempo_bike_horas.label(class="block text-sm font-medium text-gray-700") }}
       {{ form.tempo_bike_horas(class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-md") }}
       {{ form.tempo_bike_minutos.label(class="block text-sm font-medium text-gray-700 mt-2") }}
       {{ form.tempo_bike_minutos(class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-md") }}
     </div>
-
     <div>
       {{ form.tempo_corrida_horas.label(class="block text-sm font-medium text-gray-700") }}
       {{ form.tempo_corrida_horas(class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-md") }}
       {{ form.tempo_corrida_minutos.label(class="block text-sm font-medium text-gray-700 mt-2") }}
       {{ form.tempo_corrida_minutos(class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-md") }}
     </div>
-
     <div class="md:col-span-3 flex flex-col sm:flex-row justify-center gap-4 mt-4">
       <button type="submit" name="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded-md">Calcular Resumo</button>
       <button type="submit" name="limpar" class="bg-red-500 hover:bg-red-600 text-white font-semibold px-6 py-2 rounded-md">Limpar Tela</button>
@@ -62,24 +55,26 @@ Resumo do Planejamento
   <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
     {% set ordem = ["Macronutrientes", "Eletrólitos", "Vitaminas", "Estimulantes e Compostos", "Aminoácidos"] %}
     {% set ordem_eletrolitos = ["Sódio", "Magnésio", "Potássio", "Cálcio"] %}
-    {% for categoria in ordem %}
-      {% if resumo[categoria] %}
-        <div class="bg-white rounded-xl shadow p-4">
-          <h3 class="font-bold text-gray-700 mb-2">{{ categoria }}</h3>
-          <ul class="list-disc pl-5 text-gray-800">
-            {% if categoria == "Eletrólitos" %}
-              {% for item in ordem_eletrolitos %}
-                <li><strong>{{ item }}:</strong> {{ resumo[categoria][item] }}</li>
-              {% endfor %}
-            {% else %}
-              {% for nome, valor in resumo[categoria].items() %}
-                <li><strong>{{ nome }}:</strong> {{ valor }}</li>
-              {% endfor %}
-            {% endif %}
-          </ul>
-        </div>
-      {% endif %}
-    {% endfor %}
+    {% if resumo and 'resumo' in resumo %}
+      {% for categoria in ordem %}
+        {% if categoria in resumo['resumo'] %}
+          <div class="bg-white rounded-xl shadow p-4">
+            <h3 class="font-bold text-gray-700 mb-2">{{ categoria }}</h3>
+            <ul class="list-disc pl-5 text-gray-800">
+              {% if categoria == "Eletrólitos" %}
+                {% for item in ordem_eletrolitos %}
+                  <li><strong>{{ item }}:</strong> {{ resumo['resumo'][categoria].get(item, 0) }}</li>
+                {% endfor %}
+              {% else %}
+                {% for nome, valor in resumo['resumo'][categoria].items() %}
+                  <li><strong>{{ nome }}:</strong> {{ valor }}</li>
+                {% endfor %}
+              {% endif %}
+            </ul>
+          </div>
+        {% endif %}
+      {% endfor %}
+    {% endif %}
   </div>
   {% endif %}
 </div>
@@ -87,13 +82,7 @@ Resumo do Planejamento
 {% if totais %}
 <form method="POST" action="{{ url_for('salvar_resumo') }}" class="mt-8 max-w-xl mx-auto bg-gray-100 p-4 rounded shadow">
   <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-  <input type="hidden" name="tempo_natacao_horas" value="{{ form.tempo_natacao_horas.data }}">
-  <input type="hidden" name="tempo_natacao_minutos" value="{{ form.tempo_natacao_minutos.data }}">
-  <input type="hidden" name="tempo_bike_horas" value="{{ form.tempo_bike_horas.data }}">
-  <input type="hidden" name="tempo_bike_minutos" value="{{ form.tempo_bike_minutos.data }}">
-  <input type="hidden" name="tempo_corrida_horas" value="{{ form.tempo_corrida_horas.data }}">
-  <input type="hidden" name="tempo_corrida_minutos" value="{{ form.tempo_corrida_minutos.data }}">
-
+  <input type="hidden" name="resumo_dados" value='{{ resumo | tojson }}'>
   <h2 class="text-lg font-semibold mb-4">Salvar Resumo</h2>
   <div class="mb-3">
     <label class="block font-medium text-gray-700 mb-1">Nome do Treino</label>
@@ -105,10 +94,8 @@ Resumo do Planejamento
   </div>
   <div class="mb-3">
     <label class="block font-medium text-gray-700 mb-1">Comentário</label>
-    <textarea name="comentario" rows="3" class="w-full border rounded px-3 py-2" placeholder="Ex: Usei esse combo e me senti muito bem."></textarea>
+    <textarea name="comentario" rows="3" class="w-full border rounded px-3 py-2"></textarea>
   </div>
-
-  <input type="hidden" name="resumo_dados" value='{{ resumo | tojson }}'>
   <div class="text-right">
     <button type="submit" class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded">Salvar Resumo</button>
   </div>
@@ -118,6 +105,8 @@ Resumo do Planejamento
 {% if resumos %}
 <div class="mt-10 max-w-4xl mx-auto px-4 sm:px-6">
   <h2 class="text-xl font-bold mb-4">Resumos Salvos</h2>
+  {% set ordem = ["Macronutrientes", "Eletrólitos", "Vitaminas", "Estimulantes e Compostos", "Aminoácidos"] %}
+  {% set ordem_eletrolitos = ["Sódio", "Magnésio", "Potássio", "Cálcio"] %}
   {% for resumo in resumos %}
   <div class="bg-white rounded shadow p-4 mb-6 border border-gray-200">
     <div class="flex flex-col sm:flex-row justify-between items-start">
@@ -134,6 +123,17 @@ Resumo do Planejamento
 
     <div id="resumo-{{ loop.index }}" class="mt-4 hidden">
       <div class="text-sm text-gray-700 mb-4">
+        {% if resumo.resumo_dados['produtos'] %}
+        <div class="mb-2">
+          <p class="font-semibold text-gray-800">Produtos utilizados:</p>
+          <ul class="list-disc pl-5 text-sm text-gray-700">
+            {% for produto in resumo.resumo_dados['produtos'] %}
+              <li>{{ produto.nome }} ({{ produto.quantidade }})</li>
+            {% endfor %}
+          </ul>
+        </div>
+        {% endif %}
+
         <p><strong>Tempo total:</strong> {{ "{:.2f}".format(resumo.tempo_total or 0) }}h</p>
         <p>
           <strong>Natação:</strong> {{ "{:.2f}".format(resumo.tempo_natacao or 0) }}h |
@@ -142,32 +142,29 @@ Resumo do Planejamento
         </p>
       </div>
 
-      {% set ordem = ["Macronutrientes", "Eletrólitos", "Vitaminas", "Estimulantes e Compostos", "Aminoácidos"] %}
-      {% set ordem_eletrolitos = ["Sódio", "Magnésio", "Potássio", "Cálcio"] %}
-
-      {% for categoria in ordem %}
-        {% if resumo.resumo_dados[categoria] %}
-        <div class="mb-2">
-          <h4 class="font-semibold text-gray-700">{{ categoria }}</h4>
-          <ul class="list-disc pl-5 text-sm text-gray-800">
-            {% if categoria == "Eletrólitos" %}
-              {% for item in ordem_eletrolitos %}
-                <li><strong>{{ item }}:</strong> {{ resumo.resumo_dados[categoria][item] }}</li>
-              {% endfor %}
-            {% else %}
-              {% for item, valor in resumo.resumo_dados[categoria].items() %}
-                <li><strong>{{ item }}:</strong> {{ valor }}</li>
-              {% endfor %}
-            {% endif %}
-          </ul>
-        </div>
-        {% endif %}
-      {% endfor %}
+      {% if 'resumo' in resumo.resumo_dados %}
+        {% for categoria in ordem %}
+          {% if categoria in resumo.resumo_dados['resumo'] %}
+          <div class="mb-2">
+            <h4 class="font-semibold text-gray-700">{{ categoria }}</h4>
+            <ul class="list-disc pl-5 text-sm text-gray-800">
+              {% if categoria == "Eletrólitos" %}
+                {% for item in ordem_eletrolitos %}
+                  <li><strong>{{ item }}:</strong> {{ resumo.resumo_dados['resumo'][categoria].get(item, 0) }}</li>
+                {% endfor %}
+              {% else %}
+                {% for item, valor in resumo.resumo_dados['resumo'][categoria].items() %}
+                  <li><strong>{{ item }}:</strong> {{ valor }}</li>
+                {% endfor %}
+              {% endif %}
+            </ul>
+          </div>
+          {% endif %}
+        {% endfor %}
+      {% endif %}
     </div>
   </div>
   {% endfor %}
 </div>
 {% endif %}
-
-
 {% endblock %}

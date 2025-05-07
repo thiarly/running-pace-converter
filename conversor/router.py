@@ -573,14 +573,25 @@ def resumo_view():
                 totais_por_hora[key] = round(valor / tempo_total, 2)
             resumo_dados = agrupar_por_categoria(totais_por_hora)
 
+            produtos_utilizados = []
+            for item in itens:
+                if item.suplemento:
+                    produtos_utilizados.append({
+                        "nome": item.suplemento.nome,
+                        "quantidade": item.quantidade
+                    })
+
             session['resumo_dados'] = json.dumps({
                 "totais": totais_por_hora,
                 "resumo": resumo_dados,
                 "tempo_total": tempo_total,
                 "tempo_natacao": tempo_natacao,
                 "tempo_bike": tempo_bike,
-                "tempo_corrida": tempo_corrida
+                "tempo_corrida": tempo_corrida,
+                "produtos": produtos_utilizados
             })
+
+
 
 
         flash("Resumo calculado com sucesso!", "success")
@@ -616,7 +627,7 @@ def salvar_resumo():
             return float(value)
         except (ValueError, TypeError):
             return 0.0
-
+ 
     if form.validate_on_submit():
         print("Formulário validado")
     else:
@@ -641,12 +652,13 @@ def salvar_resumo():
             nome_treino=form.nome_treino.data,
             data=form.data.data,
             comentario=form.comentario.data,
-            resumo_dados=json.loads(request.form["resumo_dados"]),
+            resumo_dados=resumo_dict,  # usa o dicionário completo da sessão
             tempo_natacao=tempo_natacao,
             tempo_bike=tempo_bike,
             tempo_corrida=tempo_corrida,
             tempo_total=tempo_total
         )
+
 
         database.session.add(novo_resumo)
         database.session.commit()
