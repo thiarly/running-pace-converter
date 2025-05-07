@@ -606,15 +606,21 @@ def resumo_view():
 
     resumos = ResumoSalvo.query.filter_by(user_id=current_user.id).order_by(desc(ResumoSalvo.data), desc(ResumoSalvo.id)).all()
 
+    if 'resumo_dados' in session:
+        resumo_completo = json.loads(session['resumo_dados'])
+    else:
+        resumo_completo = {}
+
     return render_template(
         "resumo.html",
         form=form,
-        totais=totais_por_hora,
-        resumo=resumo_dados,
-        tempo_total=round(tempo_total, 2),
+        totais=resumo_completo.get("totais", {}),
+        resumo=resumo_completo,  # agora contém: totais, resumo, tempo_total, produtos
+        tempo_total=round(resumo_completo.get("tempo_total", 0), 2),
         current_date=date.today().isoformat(),
         resumos=resumos
     )
+
  
     
 @app.route('/salvar_resumo', methods=['GET', 'POST'])

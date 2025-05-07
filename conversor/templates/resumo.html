@@ -11,7 +11,7 @@ Resumo do Planejamento
     {% if messages %}
       <div class="mb-6">
         {% for category, message in messages %}
-          <div class="p-4 rounded-md text-white {{ 'bg-green-500' if category == 'success' else 'bg-red-500' }} flash-message ">
+          <div class="p-4 rounded-md text-white {{ 'bg-green-500' if category == 'success' else 'bg-red-500' }} flash-message">
             {{ message }}
           </div>
         {% endfor %}
@@ -51,98 +51,112 @@ Resumo do Planejamento
   <div class="text-center text-lg font-medium mb-6">
     Tempo Total de Treino: <strong>{{ tempo_total }}h</strong>
   </div>
-
+  
   <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
     {% set ordem = ["Macronutrientes", "Eletrólitos", "Vitaminas", "Estimulantes e Compostos", "Aminoácidos"] %}
     {% set ordem_eletrolitos = ["Sódio", "Magnésio", "Potássio", "Cálcio"] %}
+    {% set icones = {
+      "Macronutrientes": "🔥",
+      "Eletrólitos": "💧",
+      "Vitaminas": "💊",
+      "Estimulantes e Compostos": "⚡",
+      "Aminoácidos": "🧬"
+    } %}
+    {% set cores = {
+      "Macronutrientes": "bg-green-100",
+      "Eletrólitos": "bg-blue-100",
+      "Vitaminas": "bg-purple-100",
+      "Estimulantes e Compostos": "bg-yellow-100",
+      "Aminoácidos": "bg-pink-100"
+    } %}
+  
     {% if resumo and 'resumo' in resumo %}
       {% for categoria in ordem %}
         {% if categoria in resumo['resumo'] %}
-          <div class="bg-white rounded-xl shadow p-4">
-            <h3 class="font-bold text-gray-700 mb-2">{{ categoria }}</h3>
-            <ul class="list-disc pl-5 text-gray-800">
-              {% if categoria == "Eletrólitos" %}
-                {% for item in ordem_eletrolitos %}
-                  <li><strong>{{ item }}:</strong> {{ resumo['resumo'][categoria].get(item, 0) }}</li>
-                {% endfor %}
-              {% else %}
-                {% for nome, valor in resumo['resumo'][categoria].items() %}
-                  <li><strong>{{ nome }}:</strong> {{ valor }}</li>
-                {% endfor %}
-              {% endif %}
-            </ul>
-          </div>
+        <div class="rounded-xl shadow p-4 {{ cores[categoria] }}">
+          <h3 class="font-bold text-gray-700 mb-2">{{ icones[categoria] }} {{ categoria }}</h3>
+          <ul class="list-disc pl-5 text-gray-800 text-sm">
+            {% if categoria == "Eletrólitos" %}
+              {% for item in ordem_eletrolitos %}
+                <li><strong>{{ item }}:</strong> {{ resumo['resumo'][categoria].get(item, 0) }}</li>
+              {% endfor %}
+            {% else %}
+              {% for nome, valor in resumo['resumo'][categoria].items() %}
+                <li><strong>{{ nome }}:</strong> {{ valor }}</li>
+              {% endfor %}
+            {% endif %}
+          </ul>
+        </div>
         {% endif %}
       {% endfor %}
     {% endif %}
   </div>
   {% endif %}
-</div>
+  
 
-{% if totais %}
-<form method="POST" action="{{ url_for('salvar_resumo') }}" class="mt-8 max-w-xl mx-auto bg-gray-100 p-4 rounded shadow">
-  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-  <input type="hidden" name="resumo_dados" value='{{ resumo | tojson }}'>
-  <h2 class="text-lg font-semibold mb-4">Salvar Resumo</h2>
-  <div class="mb-3">
-    <label class="block font-medium text-gray-700 mb-1">Nome do Treino</label>
-    <input type="text" name="nome_treino" required class="w-full border rounded px-3 py-2">
-  </div>
-  <div class="mb-3">
-    <label class="block font-medium text-gray-700 mb-1">Data</label>
-    <input type="date" name="data" required class="w-full border rounded px-3 py-2" value="{{ current_date }}">
-  </div>
-  <div class="mb-3">
-    <label class="block font-medium text-gray-700 mb-1">Comentário</label>
-    <textarea name="comentario" rows="3" class="w-full border rounded px-3 py-2"></textarea>
-  </div>
-  <div class="text-right">
-    <button type="submit" class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded">Salvar Resumo</button>
-  </div>
-</form>
-{% endif %}
-
-{% if resumos %}
-<div class="mt-10 max-w-4xl mx-auto px-4 sm:px-6">
-  <h2 class="text-xl font-bold mb-4">Resumos Salvos</h2>
-  {% set ordem = ["Macronutrientes", "Eletrólitos", "Vitaminas", "Estimulantes e Compostos", "Aminoácidos"] %}
-  {% set ordem_eletrolitos = ["Sódio", "Magnésio", "Potássio", "Cálcio"] %}
-  {% for resumo in resumos %}
-  <div class="bg-white rounded shadow p-4 mb-6 border border-gray-200">
-    <div class="flex flex-col sm:flex-row justify-between items-start">
-      <div onclick="toggleResumo('resumo-{{ loop.index }}')" class="cursor-pointer w-full">
-        <h3 class="text-lg font-semibold">{{ resumo.nome_treino }} ({{ resumo.data.strftime('%d/%m/%Y') }})</h3>
-        <p class="text-sm text-gray-600">{{ resumo.comentario }}</p>
-        <div class="text-sm text-blue-600 mt-1">Ver detalhes ⬇</div>
-      </div>
-      <form method="POST" action="{{ url_for('deletar_resumo', id=resumo.id) }}" onsubmit="return confirm('Tem certeza que deseja excluir este resumo?');" class="mt-4 sm:mt-0 sm:ml-4">
-        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-        <button type="submit" class="text-sm text-red-600">Excluir 🗑</button>
-      </form>
+  {% if totais %}
+  <form method="POST" action="{{ url_for('salvar_resumo') }}" class="mt-8 max-w-xl mx-auto bg-gray-100 p-4 rounded shadow">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <input type="hidden" name="resumo_dados" value='{{ resumo | tojson }}'>
+    <h2 class="text-lg font-semibold mb-4">Salvar Resumo</h2>
+    <div class="mb-3">
+      <label class="block font-medium text-gray-700 mb-1">Nome do Treino</label>
+      <input type="text" name="nome_treino" required class="w-full border rounded px-3 py-2">
     </div>
+    <div class="mb-3">
+      <label class="block font-medium text-gray-700 mb-1">Data</label>
+      <input type="date" name="data" required class="w-full border rounded px-3 py-2" value="{{ current_date }}">
+    </div>
+    <div class="mb-3">
+      <label class="block font-medium text-gray-700 mb-1">Comentário</label>
+      <textarea name="comentario" rows="3" class="w-full border rounded px-3 py-2"></textarea>
+    </div>
+    <div class="text-right">
+      <button type="submit" class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded">Salvar Resumo</button>
+    </div>
+  </form>
+  {% endif %}
 
-    <div id="resumo-{{ loop.index }}" class="mt-4 hidden">
-      <div class="text-sm text-gray-700 mb-4">
-        {% if resumo.resumo_dados['produtos'] %}
-        <div class="mb-2">
-          <p class="font-semibold text-gray-800">Produtos utilizados:</p>
-          <ul class="list-disc pl-5 text-sm text-gray-700">
-            {% for produto in resumo.resumo_dados['produtos'] %}
-              <li>{{ produto.nome }} ({{ produto.quantidade }})</li>
-            {% endfor %}
-          </ul>
+  {% if resumos %}
+  <div class="mt-10 max-w-4xl mx-auto px-4 sm:px-6">
+    <h2 class="text-xl font-bold mb-4">Resumos Salvos</h2>
+    {% for resumo in resumos %}
+    <div class="bg-white rounded shadow p-4 mb-6 border border-gray-200">
+      <div class="flex flex-col sm:flex-row justify-between items-start">
+        <div onclick="toggleResumo('resumo-{{ loop.index }}')" class="cursor-pointer w-full">
+          <h3 class="text-lg font-semibold">{{ resumo.nome_treino }} ({{ resumo.data.strftime('%d/%m/%Y') }})</h3>
+          <p class="text-sm text-gray-600">{{ resumo.comentario }}</p>
+          <div class="text-sm text-blue-600 mt-1">Ver detalhes ⬇</div>
         </div>
-        {% endif %}
-
-        <p><strong>Tempo total:</strong> {{ "{:.2f}".format(resumo.tempo_total or 0) }}h</p>
-        <p>
-          <strong>Natação:</strong> {{ "{:.2f}".format(resumo.tempo_natacao or 0) }}h |
-          <strong>Bike:</strong> {{ "{:.2f}".format(resumo.tempo_bike or 0) }}h |
-          <strong>Corrida:</strong> {{ "{:.2f}".format(resumo.tempo_corrida or 0) }}h
-        </p>
+        <form method="POST" action="{{ url_for('deletar_resumo', id=resumo.id) }}" onsubmit="return confirm('Tem certeza que deseja excluir este resumo?');" class="mt-4 sm:mt-0 sm:ml-4">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <button type="submit" class="text-sm text-red-600">Excluir 🗑</button>
+        </form>
       </div>
 
-      {% if 'resumo' in resumo.resumo_dados %}
+      <div id="resumo-{{ loop.index }}" class="mt-4 hidden">
+        <div class="text-sm text-gray-700 mb-4">
+          {% if resumo.resumo_dados['produtos'] %}
+          <div class="mb-2">
+            <p class="font-semibold text-gray-800">Produtos utilizados:</p>
+            <ul class="list-disc pl-5 text-sm text-gray-700">
+              {% for produto in resumo.resumo_dados['produtos'] %}
+                <li>{{ produto.nome }} ({{ produto.quantidade }})</li>
+              {% endfor %}
+            </ul>
+          </div>
+          {% endif %}
+
+          <p><strong>Tempo total:</strong> {{ "{:.2f}".format(resumo.tempo_total or 0) }}h</p>
+       
+
+          <p>
+            <strong>Natação:</strong> {{ "{:.2f}".format(resumo.tempo_natacao or 0) }}h |
+            <strong>Bike:</strong> {{ "{:.2f}".format(resumo.tempo_bike or 0) }}h |
+            <strong>Corrida:</strong> {{ "{:.2f}".format(resumo.tempo_corrida or 0) }}h
+          </p>
+        </div>
+
         {% for categoria in ordem %}
           {% if categoria in resumo.resumo_dados['resumo'] %}
           <div class="mb-2">
@@ -161,10 +175,10 @@ Resumo do Planejamento
           </div>
           {% endif %}
         {% endfor %}
-      {% endif %}
+      </div>
     </div>
+    {% endfor %}
   </div>
-  {% endfor %}
+  {% endif %}
 </div>
-{% endif %}
 {% endblock %}
