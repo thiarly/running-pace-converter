@@ -38,6 +38,7 @@ Resumo do Planejamento
     </div>
   </form>
 
+  
   {% if totais %}
   <div class="text-center text-lg font-medium mb-6">
     Tempo Total de Treino: <strong>{{ tempo_total }}h</strong>
@@ -102,60 +103,149 @@ Resumo do Planejamento
 {% if resumos %}
 <div class="mt-10 max-w-4xl mx-auto">
   <h2 class="text-xl font-bold mb-4">Resumos Salvos</h2>
-  {% for resumo in resumos %}
-  <div class="bg-white rounded shadow p-4 mb-6 border border-gray-200">
-    <div class="flex justify-between items-start">
-      <div onclick="toggleResumo('resumo-{{ loop.index }}')" class="cursor-pointer w-full">
-        <h3 class="text-lg font-semibold">{{ resumo.nome_treino }} ({{ resumo.data.strftime('%d/%m/%Y') }})</h3>
-        <p class="text-sm text-gray-600">{{ resumo.comentario }}</p>
-        <div class="text-sm text-blue-600 mt-1">Ver detalhes ⬇</div>
-      </div>
-      <form method="POST" action="{{ url_for('deletar_resumo', id=resumo.id) }}" onsubmit="return confirm('Tem certeza que deseja excluir este resumo?');" class="ml-4">
-        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-        <button type="submit" class="text-sm text-red-600">Excluir 🗑</button>
-      </form>
-    </div>
 
-    <div id="resumo-{{ loop.index }}" class="mt-4 hidden">
-      <div class="text-sm text-gray-700 mb-4">
-        <p><strong>Tempo total:</strong> {{ resumo.tempo_total }}h</p>
-        <p><strong>Natação:</strong> {{ resumo.tempo_natacao }}h |
-           <strong>Bike:</strong> {{ resumo.tempo_bike }}h |
-           <strong>Corrida:</strong> {{ resumo.tempo_corrida }}h</p>
-      </div>
+  <form method="get" class="mb-6 max-w-md">
+    <input type="text" id="campoBusca" placeholder="Buscar por título ou comentário"
+           class="w-full px-4 py-2 border rounded shadow-sm">
+  </form>
+  
+  <div id="resumosContainer">
+    {% for resumo in resumos %}
+    <div class="bg-white rounded shadow p-4 mb-6 border border-gray-200">
+      <div class="flex justify-between items-start">
+        <div onclick="toggleResumo('resumo-{{ loop.index }}')" class="cursor-pointer w-full">
+          <h3 class="text-lg font-semibold">{{ resumo.nome_treino }} ({{ resumo.data.strftime('%d/%m/%Y') }})</h3>
+          <p class="text-sm text-gray-600">{{ resumo.comentario }}</p>
+          <div class="text-sm text-blue-600 mt-1 cursor-pointer detalhes-link" data-id="resumo-{{ loop.index }}">Ver detalhes ⬇</div>
 
-      {% set ordem = ["Macronutrientes", "Eletrólitos", "Vitaminas", "Estimulantes e Compostos", "Aminoácidos"] %}
-      {% set ordem_eletrolitos = ["Sódio", "Magnésio", "Potássio", "Cálcio"] %}
-
-      {% for categoria in ordem %}
-        {% if resumo.resumo_dados[categoria] %}
-        <div class="mb-2">
-          <h4 class="font-semibold text-gray-700">{{ categoria }}</h4>
-          <ul class="list-disc pl-5 text-sm text-gray-800">
-            {% if categoria == "Eletrólitos" %}
-              {% for item in ordem_eletrolitos %}
-                <li><strong>{{ item }}:</strong> {{ resumo.resumo_dados[categoria][item] }}</li>
-              {% endfor %}
-            {% else %}
-              {% for item, valor in resumo.resumo_dados[categoria].items() %}
-                <li><strong>{{ item }}:</strong> {{ valor }}</li>
-              {% endfor %}
-            {% endif %}
-          </ul>
         </div>
-        {% endif %}
-      {% endfor %}
+        <form method="POST" action="{{ url_for('deletar_resumo', id=resumo.id) }}" onsubmit="return confirm('Tem certeza que deseja excluir este resumo?');" class="ml-4">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <button type="submit" class="text-sm text-red-600">Excluir 🗑</button>
+        </form>
+      </div>
+  
+      <div id="resumo-{{ loop.index }}" class="mt-4 hidden">
+        <div class="text-sm text-gray-700 mb-4">
+          <p><strong>Tempo total:</strong> {{ resumo.tempo_total }}h</p>
+          <p><strong>Natação:</strong> {{ resumo.tempo_natacao }}h |
+             <strong>Bike:</strong> {{ resumo.tempo_bike }}h |
+             <strong>Corrida:</strong> {{ resumo.tempo_corrida }}h</p>
+        </div>
+  
+        {% set ordem = ["Macronutrientes", "Eletrólitos", "Vitaminas", "Estimulantes e Compostos", "Aminoácidos"] %}
+        {% set ordem_eletrolitos = ["Sódio", "Magnésio", "Potássio", "Cálcio"] %}
+  
+        {% for categoria in ordem %}
+          {% if resumo.resumo_dados[categoria] %}
+          <div class="mb-2">
+            <h4 class="font-semibold text-gray-700">{{ categoria }}</h4>
+            <ul class="list-disc pl-5 text-sm text-gray-800">
+              {% if categoria == "Eletrólitos" %}
+                {% for item in ordem_eletrolitos %}
+                  <li><strong>{{ item }}:</strong> {{ resumo.resumo_dados[categoria][item] }}</li>
+                {% endfor %}
+              {% else %}
+                {% for item, valor in resumo.resumo_dados[categoria].items() %}
+                  <li><strong>{{ item }}:</strong> {{ valor }}</li>
+                {% endfor %}
+              {% endif %}
+            </ul>
+          </div>
+          {% endif %}
+        {% endfor %}
     </div>
   </div>
   {% endfor %}
 </div>
 {% endif %}
 
+
+
 <script>
+  const input = document.getElementById('campoBusca');
+  const container = document.getElementById('resumosContainer');
+
+  input.addEventListener('input', async () => {
+    const termo = input.value.trim();
+
+    const res = await fetch(`/buscar_resumos?termo=${encodeURIComponent(termo)}`);
+    const dados = await res.json();
+
+    container.innerHTML = '';
+
+    if (dados.length === 0) {
+      container.innerHTML = '<p class="text-sm text-gray-500">Nenhum resumo encontrado.</p>';
+      return;
+    }
+
+    const ordem = ["Macronutrientes", "Eletrólitos", "Vitaminas", "Estimulantes e Compostos", "Aminoácidos"];
+    const ordem_eletrolitos = ["Sódio", "Magnésio", "Potássio", "Cálcio"];
+
+    for (const r of dados) {
+      const detalhesId = `resumo-${r.id}`;
+
+      let detalhesHTML = `
+        <div class="text-sm text-gray-700 mb-4">
+          <p><strong>Tempo total:</strong> ${r.tempo_total}h</p>
+          <p><strong>Natação:</strong> ${r.tempo_natacao}h |
+             <strong>Bike:</strong> ${r.tempo_bike}h |
+             <strong>Corrida:</strong> ${r.tempo_corrida}h</p>
+        </div>
+      `;
+
+      for (const categoria of ordem) {
+        const catData = r.resumo_dados?.[categoria];
+        if (catData) {
+          detalhesHTML += `
+            <div class="mb-2">
+              <h4 class="font-semibold text-gray-700">${categoria}</h4>
+              <ul class="list-disc pl-5 text-sm text-gray-800">
+          `;
+
+          if (categoria === "Eletrólitos") {
+            for (const item of ordem_eletrolitos) {
+              detalhesHTML += `<li><strong>${item}:</strong> ${catData[item] || 0}</li>`;
+            }
+          } else {
+            for (const [item, valor] of Object.entries(catData)) {
+              detalhesHTML += `<li><strong>${item}:</strong> ${valor}</li>`;
+            }
+          }
+
+          detalhesHTML += `</ul></div>`;
+        }
+      }
+
+      container.innerHTML += `
+        <div class="bg-white rounded shadow p-4 mb-4 border border-gray-200">
+          <div class="flex justify-between items-start">
+            <div onclick="toggleResumo('${detalhesId}')" class="cursor-pointer w-full">
+              <h3 class="text-lg font-semibold">${r.nome_treino} (${r.data})</h3>
+              <p class="text-sm text-gray-600">${r.comentario}</p>
+              <div class="text-sm text-blue-600 mt-1 cursor-pointer">Ver detalhes ⬇</div>
+            </div>
+            <form method="POST" action="/deletar_resumo/${r.id}" onsubmit="return confirm('Tem certeza que deseja excluir este resumo?');" class="ml-4">
+              <input type="hidden" name="csrf_token" value="${document.querySelector('[name=csrf_token]').value}">
+              <button type="submit" class="text-sm text-red-600">Excluir 🗑</button>
+            </form>
+          </div>
+
+          <div id="${detalhesId}" class="mt-4 hidden">
+            ${detalhesHTML}
+          </div>
+        </div>
+      `;
+    }
+  });
+
+  // ativa o toggle no clique em qualquer "Ver detalhes"
   function toggleResumo(id) {
     const el = document.getElementById(id);
-    el.classList.toggle("hidden");
+    if (el) el.classList.toggle("hidden");
   }
 </script>
+
+
 
 {% endblock %}

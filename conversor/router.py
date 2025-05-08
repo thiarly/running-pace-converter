@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, session
+from flask import Flask, render_template, request, redirect, url_for, flash, session, jsonify
 from conversor import app, database
 
 from conversor.forms import SuplementoForm, PlanningItemForm, ResumoForm, LoginForm, RegisterForm, ResumoForm, SalvarResumoForm
@@ -9,6 +9,7 @@ from flask_login import login_user, login_required, logout_user, current_user, l
 
 import json
 from datetime import date
+
 
 
 
@@ -525,9 +526,22 @@ def resumo_view():
         session['resumo_dados'] = json.dumps(resumo_dados)
         flash("Resumo calculado com sucesso!", "success")
 
-    # 🔽 Adicione isso aqui
-    resumos = ResumoSalvo.query.filter_by(user_id=current_user.id).order_by(ResumoSalvo.data.desc()).all()
-    print("Tipo de resumo:", type(resumo_dados), resumo_dados)
+# 🔽 Adicione isso aqui
+    search = request.args.get("search", "").strip()
+
+    resumos_query = ResumoSalvo.query.filter_by(user_id=current_user.id)
+
+    if search:
+        resumos_query = resumos_query.filter(
+            database.or_(
+                ResumoSalvo.nome_treino.ilike(f"%{search}%"),
+                ResumoSalvo.comentario.ilike(f"%{search}%")
+            )
+        )
+
+    resumos = resumos_query.order_by(ResumoSalvo.data.desc(), ResumoSalvo.id.desc()).all()
+
+    
 
     return render_template(
         "resumo.html",
@@ -589,13 +603,6 @@ def salvar_resumo():
 
 
 
-@app.route('/resumos')
-@login_required
-def listar_resumos():
-    resumos = ResumoSalvo.query.filter_by(user_id=current_user.id).order_by(ResumoSalvo.criado_em.desc()).all()
-    return render_template('resumos.html', resumos=resumos)
-
-
 
 @app.route('/deletar_resumo/<int:id>', methods=['POST'])
 @login_required
@@ -609,3 +616,37 @@ def deletar_resumo(id):
     database.session.commit()
     flash("Resumo excluído com sucesso!", "success")
     return redirect(url_for('resumo_view'))
+
+
+
+@app.route('/buscar_resumos')
+@login_required
+def buscar_resumos():
+    termo = request.args.get("termo", "").strip().lower()
+
+    query = ResumoSalvo.query.filter_by(user_id=current_user.id)
+
+    if termo:
+        query = query.filter(
+            database.or_(
+                ResumoSalvo.nome_treino.ilike(f"%{termo}%"),
+                ResumoSalvo.comentario.ilike(f"%{termo}%")
+            )
+        )
+
+    resultados = query.order_by(ResumoSalvo.data.desc()).all()
+
+    return jsonify([
+        {
+            "id": r.id,
+            "nome_treino": r.nome_treino,
+            "comentario": r.comentario,
+            "data": r.data.strftime("%d/%m/%Y"),
+            "tempo_total": r.tempo_total,
+            "tempo_natacao": r.tempo_natacao,
+            "tempo_bike": r.tempo_bike,
+            "tempo_corrida": r.tempo_corrida,
+            "resumo_dados": r.resumo_dados  # ⬅️ aqui está a chave
+        }
+        for r in resultados
+    ])
