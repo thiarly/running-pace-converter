@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, session
+from flask import Flask, render_template, request, redirect, url_for, flash, session, jsonify
 from conversor import app, database
 
 from conversor.forms import SuplementoForm, PlanningItemForm, ResumoForm, LoginForm, RegisterForm, ResumoForm, SalvarResumoForm
@@ -9,7 +9,6 @@ from flask_login import login_user, login_required, logout_user, current_user, l
 
 import json
 from datetime import date
-from sqlalchemy import desc
 
 
 
@@ -545,19 +544,21 @@ def remover_item(item_id):
     return redirect(url_for('planejamento'))
 
 
+# Resumo
 @app.route('/resumo', methods=['GET', 'POST'])
 @login_required
 def resumo_view():
     form = ResumoForm()
-    totais_por_hora = {}
-    resumo_dados = {}
-    tempo_total = 0
-    resumo_completo = {}
 
     if request.method == 'POST' and 'limpar' in request.form:
-        session.pop('resumo_dados', None)
-        flash("Resumo limpo com sucesso!", "success")
         return redirect(url_for('resumo_view'))
+
+    itens = PlanejamentoItem.query.filter_by(user_id=current_user.id).all()
+    totais = calcular_totais_planejamento(itens)
+
+    totais_por_hora = {}
+    tempo_total = 0
+    resumo_dados = {}
 
     if form.validate_on_submit():
         tempo_natacao = (form.tempo_natacao_horas.data or 0) + (form.tempo_natacao_minutos.data or 0) / 60
@@ -566,56 +567,41 @@ def resumo_view():
 
         tempo_total = tempo_natacao + tempo_bike + tempo_corrida
 
-        itens = PlanejamentoItem.query.filter_by(user_id=current_user.id).all()
-        totais = calcular_totais_planejamento(itens)
-
         if tempo_total > 0:
             for key, valor in totais.items():
                 totais_por_hora[key] = round(valor / tempo_total, 2)
             resumo_dados = agrupar_por_categoria(totais_por_hora)
 
-            produtos_utilizados = []
-            for item in itens:
-                if item.suplemento:
-                    produtos_utilizados.append({
-                        "nome": item.suplemento.nome,
-                        "quantidade": item.quantidade
-                    })
-
-            session['resumo_dados'] = json.dumps({
-                "totais": totais_por_hora,
-                "resumo": resumo_dados,
-                "tempo_total": tempo_total,
-                "tempo_natacao": tempo_natacao,
-                "tempo_bike": tempo_bike,
-                "tempo_corrida": tempo_corrida,
-                "produtos": produtos_utilizados
-            })
-
+        session['resumo_dados'] = json.dumps(resumo_dados)
         flash("Resumo calculado com sucesso!", "success")
-        return redirect(url_for('resumo_view'))
 
-    if 'resumo_dados' in session:
-        resumo_completo = json.loads(session['resumo_dados'])
+# 🔽 Adicione isso aqui
+    search = request.args.get("search", "").strip()
 
-        tempo_total_float = resumo_completo.get("tempo_total", 0)
-        horas = int(tempo_total_float)
-        minutos = round((tempo_total_float - horas) * 60)
-        tempo_formatado = f"{horas}h {minutos}min"
-    else:
-        tempo_formatado = "0h 00min"
+    resumos_query = ResumoSalvo.query.filter_by(user_id=current_user.id)
 
-    resumos = ResumoSalvo.query.filter_by(user_id=current_user.id).order_by(desc(ResumoSalvo.data), desc(ResumoSalvo.id)).all()
+    if search:
+        resumos_query = resumos_query.filter(
+            database.or_(
+                ResumoSalvo.nome_treino.ilike(f"%{search}%"),
+                ResumoSalvo.comentario.ilike(f"%{search}%")
+            )
+        )
+
+    resumos = resumos_query.order_by(ResumoSalvo.data.desc(), ResumoSalvo.id.desc()).all()
+
+    
 
     return render_template(
         "resumo.html",
         form=form,
-        totais=resumo_completo.get("totais", {}),
-        resumo=resumo_completo,
-        tempo_total=tempo_formatado,
+        totais=totais_por_hora,
+        resumo=resumo_dados,
+        tempo_total=round(tempo_total, 2),
         current_date=date.today().isoformat(),
-        resumos=resumos
+        resumos=resumos  # <-- novo contexto
     )
+            
 
  
     
@@ -629,7 +615,7 @@ def salvar_resumo():
             return float(value)
         except (ValueError, TypeError):
             return 0.0
- 
+
     if form.validate_on_submit():
         print("Formulário validado")
     else:
@@ -642,25 +628,22 @@ def salvar_resumo():
         return redirect(url_for('resumo_view'))
 
     if form.validate_on_submit():
-        resumo_dict = json.loads(session.get('resumo_dados'))
-        tempo_natacao = parse_float(resumo_dict.get("tempo_natacao"))
-        tempo_bike = parse_float(resumo_dict.get("tempo_bike"))
-        tempo_corrida = parse_float(resumo_dict.get("tempo_corrida"))
-        tempo_total = parse_float(resumo_dict.get("tempo_total"))
-
+        tempo_natacao = parse_float(request.form.get("tempo_natacao_horas")) + parse_float(request.form.get("tempo_natacao_minutos")) / 60
+        tempo_bike = parse_float(request.form.get("tempo_bike_horas")) + parse_float(request.form.get("tempo_bike_minutos")) / 60
+        tempo_corrida = parse_float(request.form.get("tempo_corrida_horas")) + parse_float(request.form.get("tempo_corrida_minutos")) / 60
+        tempo_total = tempo_natacao + tempo_bike + tempo_corrida
 
         novo_resumo = ResumoSalvo(
             user_id=current_user.id,
             nome_treino=form.nome_treino.data,
             data=form.data.data,
             comentario=form.comentario.data,
-            resumo_dados=resumo_dict,  # usa o dicionário completo da sessão
+            resumo_dados=json.loads(request.form["resumo_dados"]),
             tempo_natacao=tempo_natacao,
             tempo_bike=tempo_bike,
             tempo_corrida=tempo_corrida,
             tempo_total=tempo_total
         )
-
 
         database.session.add(novo_resumo)
         database.session.commit()
@@ -691,3 +674,39 @@ def deletar_resumo(id):
     database.session.commit()
     flash("Resumo excluído com sucesso!", "success")
     return redirect(url_for('resumo_view'))
+
+
+
+
+
+@app.route('/buscar_resumos')
+@login_required
+def buscar_resumos():
+    termo = request.args.get("termo", "").strip().lower()
+
+    query = ResumoSalvo.query.filter_by(user_id=current_user.id)
+
+    if termo:
+        query = query.filter(
+            database.or_(
+                ResumoSalvo.nome_treino.ilike(f"%{termo}%"),
+                ResumoSalvo.comentario.ilike(f"%{termo}%")
+            )
+        )
+
+    resultados = query.order_by(ResumoSalvo.data.desc()).all()
+
+    return jsonify([
+        {
+            "id": r.id,
+            "nome_treino": r.nome_treino,
+            "comentario": r.comentario,
+            "data": r.data.strftime("%d/%m/%Y"),
+            "tempo_total": r.tempo_total,
+            "tempo_natacao": r.tempo_natacao,
+            "tempo_bike": r.tempo_bike,
+            "tempo_corrida": r.tempo_corrida,
+            "resumo_dados": r.resumo_dados  # ⬅️ aqui está a chave
+        }
+        for r in resultados
+    ])
