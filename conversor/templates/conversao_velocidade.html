@@ -16,6 +16,7 @@
         {% endif %}
 
         <form method="POST">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
             <label class="text-gray-800" for="speed_kmh">Velocidade (km/h):</label><br>
             <input type="text" id="speed_kmh" name="speed_kmh" pattern="[0-9]+(\.[0-9]+)?" class="text-gray-800 input-field mb-2 py-2 px-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" title="Digite uma velocidade válida, como 12.5"><br>
             

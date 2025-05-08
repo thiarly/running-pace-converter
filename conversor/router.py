@@ -12,8 +12,6 @@ from datetime import date
 
 
 
-
-
 from conversor.utils import (
     convert_pace, calc_average_speed_bike,
     calc_swim_pace, calculate_estimated_time,
@@ -22,7 +20,9 @@ from conversor.utils import (
     convert_pace_milha, convert_km_to_miles,
     convert_miles_to_km, calculate_vo2max,
     race_predictions, calculate_pace_km, calculate_paces_by_vo2max,
-    race_predictions_from_3k, agrupar_por_categoria
+    race_predictions_from_3k, agrupar_por_categoria,
+    calcular_zonas_ftp, calcular_zonas_fc, calcular_zonas_pace,
+    calcular_totais_planejamento
 )
 
 
@@ -35,7 +35,7 @@ def login():
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
         if user and check_password_hash(user.senha_hash, form.senha.data):
-            login_user(user)
+            login_user(user, remember=True)
             flash('Login realizado com sucesso!', 'success')
             return redirect(url_for('listar_suplementos'))
         else:
@@ -112,19 +112,31 @@ def home():
 
 @app.route('/estimativa-tempo', methods=['GET', 'POST'])
 def estimativa_tempo():
+    distance = ''
+    pace = ''
+    estimated_time = None
+    error = None
+
     if request.method == 'POST':
         distance = request.form.get('distance')
         pace = request.form.get('pace')
 
         if not distance or not pace:
-            return render_template('estimativa_tempo.html', error='Por favor, forneça valores para a distância e o pace.')
+            error = 'Por favor, forneça valores para a distância e o pace.'
+        else:
+            try:
+                distance_float = float(distance)
+                estimated_time = calculate_estimated_time(distance_float, pace)
+            except ValueError:
+                error = 'Distância inválida.'
 
-        distance = float(distance)
-        estimated_time = calculate_estimated_time(distance, pace)
-        
-        return render_template('estimativa_tempo.html', estimated_time=estimated_time)
-
-    return render_template('estimativa_tempo.html')
+    return render_template(
+        'estimativa_tempo.html',
+        estimated_time=estimated_time,
+        distance=distance,
+        pace=pace,
+        error=error
+    )
 
 
 @app.route('/estimativa_distancia', methods=['GET', 'POST'])
@@ -302,6 +314,50 @@ def previsao_prova_3k():
     return render_template('previsao_prova_3k.html')
 
 
+@app.route('/zonas/calculadora', methods=['GET', 'POST'])
+def calculadora_zonas():
+    zonas = None
+    metodo = None
+    valor = None
+    pace_min_km = None
+
+    if request.method == 'POST':
+        metodo = request.form.get('metodo')
+        valor = request.form.get('valor')
+
+        if metodo == 'ftp':
+            try:
+                ftp = float(valor)
+                zonas = calcular_zonas_ftp(ftp)
+            except ValueError:
+                zonas = None
+
+        elif metodo == 'fc':
+            try:
+                fc = float(valor)
+                zonas = calcular_zonas_fc(fc)
+            except ValueError:
+                zonas = None
+
+        elif metodo == 'pace':
+            try:
+                if ':' not in valor:
+                    raise ValueError("Formato inválido")
+                minutos, segundos = map(int, valor.strip().split(':'))
+                pace_threshold = minutos * 60 + segundos
+                zonas = calcular_zonas_pace(pace_threshold)
+            except (ValueError, AttributeError):
+                zonas = None
+
+    return render_template(
+        'calculadora_zonas.html',
+        zonas=zonas,
+        metodo=metodo,
+        valor=valor,
+        pace_min_km=pace_min_km
+    )
+
+
 @app.route('/zonas')
 def zonas():
     return render_template('zonas.html')
@@ -423,7 +479,9 @@ def editar_suplemento(id):
 @login_required
 def planejamento():
     form = PlanningItemForm()
-    form.suplemento_id.choices = [(s.id, s.nome) for s in Suplemento.query.filter_by(user_id=current_user.id)]
+    form.suplemento_id.choices = [
+        (s.id, s.nome) for s in Suplemento.query.filter_by(user_id=current_user.id)
+    ]
 
     if form.validate_on_submit():
         item_existente = PlanejamentoItem.query.filter_by(
@@ -443,10 +501,21 @@ def planejamento():
         flash('Item adicionado/atualizado com sucesso!', 'success')
         return redirect(url_for('planejamento'))
 
+    # 🔽 Limpa automaticamente os itens com suplemento excluído
     itens = PlanejamentoItem.query.filter_by(user_id=current_user.id).all()
-    totais = calcular_totais_planejamento(itens)
+    itens_validos = []
 
-    return render_template('planejamento.html', form=form, itens=itens, totais=totais)
+    for item in itens:
+        if item.suplemento is None:
+            database.session.delete(item)
+        else:
+            itens_validos.append(item)
+
+    database.session.commit()  # aplica exclusões
+    totais = calcular_totais_planejamento(itens_validos)
+
+    return render_template('planejamento.html', form=form, itens=itens_validos, totais=totais)
+
 
 
 # Atualizar quantidade no planejamento
@@ -473,26 +542,6 @@ def remover_item(item_id):
     database.session.commit()
     flash('Item removido do planejamento.', 'success')
     return redirect(url_for('planejamento'))
-
-
-# Cálculo de totais do planejamento
-def calcular_totais_planejamento(itens):
-    totais = {
-        'carbo': 0, 'sodio': 0, 'magnesio': 0, 'potassio': 0, 'calcio': 0,
-        'cafeina': 0, 'taurina': 0, 'beta_alanina': 0, 'citrulina': 0,
-        'creatina': 0, 'coq10': 0, 'carnitina': 0,
-        'leucina': 0, 'isoleucina': 0, 'valina': 0, 'arginina': 0,                           
-        'vit_b1': 0, 'vit_b2': 0, 'vit_b3': 0, 'vit_b6': 0,
-        'vit_b7': 0, 'vit_b9': 0, 'vit_b12': 0, 'vit_c': 0
-    }
-    
-    for item in itens:
-        suplemento = item.suplemento
-        for key in totais:
-            valor = getattr(suplemento, key) or 0
-            totais[key] += valor * item.quantidade
-
-    return totais
 
 
 # Resumo
@@ -553,6 +602,8 @@ def resumo_view():
         resumos=resumos  # <-- novo contexto
     )
             
+
+ 
     
 @app.route('/salvar_resumo', methods=['GET', 'POST'])
 @login_required
@@ -603,6 +654,13 @@ def salvar_resumo():
 
 
 
+@app.route('/resumos')
+@login_required
+def listar_resumos():
+    resumos = ResumoSalvo.query.filter_by(user_id=current_user.id).order_by(ResumoSalvo.criado_em.asc()).all()
+    return render_template('resumos.html', resumos=resumos)
+
+
 
 @app.route('/deletar_resumo/<int:id>', methods=['POST'])
 @login_required
@@ -616,6 +674,8 @@ def deletar_resumo(id):
     database.session.commit()
     flash("Resumo excluído com sucesso!", "success")
     return redirect(url_for('resumo_view'))
+
+
 
 
 

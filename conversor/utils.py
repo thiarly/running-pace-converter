@@ -1,3 +1,5 @@
+from flask import flash
+
 def convert_pace(time, distance):
     time_minutes = time // 60  # Obter a parte inteira dos minutos
     time_seconds = time % 60  # Obter os segundos restantes
@@ -211,3 +213,65 @@ def agrupar_por_categoria(dados):
             "Vitamina C": dados.get("vit_c", 0),
         }
     }
+    
+    
+def calcular_zonas_fc(fc_max):
+    return {
+        'Zona 1': (0.5 * fc_max, 0.6 * fc_max),
+        'Zona 2': (0.6 * fc_max, 0.7 * fc_max),
+        'Zona 3': (0.7 * fc_max, 0.8 * fc_max),
+        'Zona 4': (0.8 * fc_max, 0.9 * fc_max),
+        'Zona 5': (0.9 * fc_max, fc_max)
+    }
+
+def calcular_zonas_ftp(ftp):
+    return {
+        'Zona 1': (0, 0.55 * ftp),
+        'Zona 2': (0.56 * ftp, 0.75 * ftp),
+        'Zona 3': (0.76 * ftp, 0.90 * ftp),
+        'Zona 4': (0.91 * ftp, 1.05 * ftp),
+        'Zona 5': (1.06 * ftp, 1.20 * ftp),
+        'Zona 6': (1.21 * ftp, 1.50 * ftp),
+        'Zona 7': (1.51 * ftp, ftp * 2)
+    }
+    
+    
+def calcular_zonas_pace(pace_threshold_segundos):
+    zonas = {
+        "Zona 1 (Recuperação)": (pace_threshold_segundos * 1.15, pace_threshold_segundos * 1.30),
+        "Zona 2 (Endurance)":    (pace_threshold_segundos * 1.00, pace_threshold_segundos * 1.14),
+        "Zona 3 (Tempo)":        (pace_threshold_segundos * 0.95, pace_threshold_segundos * 0.99),
+        "Zona 4 (Limiar)":       (pace_threshold_segundos * 0.90, pace_threshold_segundos * 0.94),
+        "Zona 5 (VO2 Máx)":      (pace_threshold_segundos * 0.80, pace_threshold_segundos * 0.89),
+    }
+
+    # Converte os valores de segundos para tuplas (min, seg)
+    zonas_formatadas = {}
+    for nome, (min_seg, max_seg) in zonas.items():
+        zonas_formatadas[nome] = (int(min_seg), int(max_seg))
+
+    return zonas_formatadas
+
+
+
+def calcular_totais_planejamento(itens):
+    totais = {
+        'carbo': 0, 'sodio': 0, 'magnesio': 0, 'potassio': 0, 'calcio': 0,
+        'cafeina': 0, 'taurina': 0, 'beta_alanina': 0, 'citrulina': 0,
+        'creatina': 0, 'coq10': 0, 'carnitina': 0,
+        'leucina': 0, 'isoleucina': 0, 'valina': 0, 'arginina': 0,                           
+        'vit_b1': 0, 'vit_b2': 0, 'vit_b3': 0, 'vit_b6': 0,
+        'vit_b7': 0, 'vit_b9': 0, 'vit_b12': 0, 'vit_c': 0
+    }
+
+    for item in itens:
+        suplemento = item.suplemento
+        if suplemento is None:
+            flash("Um suplemento usado neste planejamento foi removido e será ignorado.", "warning")
+            continue
+
+        for key in totais:
+            valor = getattr(suplemento, key, 0) or 0
+            totais[key] += valor * item.quantidade
+
+    return totais

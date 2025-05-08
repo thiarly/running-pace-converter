@@ -12,7 +12,7 @@ class User(database.Model, UserMixin):
     email = database.Column(database.String(150), unique=True, nullable=False)
     nome = database.Column(database.String(150), nullable=False)
     sobrenome = database.Column(database.String(150), nullable=False)
-    senha_hash = database.Column(database.String(150), nullable=False)
+    senha_hash = database.Column(database.String(300), nullable=False)
 
     suplementos = database.relationship('Suplemento', backref='usuario', lazy=True)
     planejamentos = database.relationship('PlanejamentoItem', backref='usuario', lazy=True)
@@ -69,7 +69,7 @@ class PlanejamentoItem(database.Model):
 
     id = database.Column(database.Integer, primary_key=True)
     user_id = database.Column(database.Integer, database.ForeignKey('user.id'), nullable=False)
-    suplemento_id = database.Column(database.Integer, database.ForeignKey('suplementos.id'), nullable=False)
+    suplemento_id = database.Column(database.Integer, database.ForeignKey('suplementos.id', ondelete='SET NULL'))
     quantidade = database.Column(database.Integer, nullable=False)
 
     suplemento = database.relationship('Suplemento', lazy=True)

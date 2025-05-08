@@ -7,7 +7,7 @@ from conversor.models import User
 
 class SuplementoForm(FlaskForm):
     nome = StringField('Nome', validators=[DataRequired()])
-    tipo = SelectField('Tipo', choices=[('Gel', 'Gel'), ('Garrafa', 'Garrafa'), ('Eletrólitos', 'Eletrólitos'), ('Pré Treino', 'Pré Treino')], validators=[DataRequired()])
+    tipo = SelectField('Tipo', choices=[('Gel', 'Gel'), ('Carboidrato', 'Carboidrato'), ('Garrafa', 'Garrafa'), ('Proteina', 'Proteína'), ('Eletrólitos', 'Eletrólitos'), ('Pré Treino', 'Pré Treino')], validators=[DataRequired()])
     marca = StringField('Marca', validators=[Optional()])
 
     carbo = FloatField('Carboidrato (g)', validators=[Optional()])

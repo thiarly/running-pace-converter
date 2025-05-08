@@ -56,3 +56,25 @@ document.getElementById('userDropdown')?.addEventListener('click', () => {
 
 // Fecha dropdowns ao clicar fora
 document.addEventListener('click', () => closeAllDropdowns());
+
+
+
+
+// static/js/flash.js
+setTimeout(() => {
+    document.querySelectorAll('.flash-message').forEach(el => {
+      // @ts-ignore
+      el.style.transition = "opacity 0.5s ease";
+      // @ts-ignore
+      el.style.opacity = 0;
+      setTimeout(() => el.remove(), 500);
+    });
+  }, 2000);
+  
+
+
+  function toggleResumo(id) {
+    const el = document.getElementById(id);
+    // @ts-ignore
+    el.classList.toggle("hidden");
+  }

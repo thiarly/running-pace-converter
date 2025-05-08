@@ -1,7 +1,7 @@
 from flask import Flask, redirect, url_for, request, flash
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
-from flask_login import LoginManager
+from flask_login import LoginManager, login_user
 import time
 import os
 from flask_migrate import Migrate
@@ -16,6 +16,7 @@ time.tzset()
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'b2d8e4b8f1b6e9d1b4b0c0f2d2e8f6d4'
 csrf = CSRFProtect(app)
+
 
 # Configurar banco de dados
 project_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
