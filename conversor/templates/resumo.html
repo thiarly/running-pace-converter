@@ -5,6 +5,16 @@ Resumo do Planejamento
 {% endblock %}
 
 {% block content %}
+
+
+{% macro formatar_tempo_decimal(decimal) %}
+  {% set horas = decimal|int %}
+  {% set minutos = ((decimal - horas) * 60)|round(0, 'floor') %}
+  {{ horas }}h{{ "%02d"|format(minutos) }}m
+{% endmacro %}
+
+
+
 <div class="max-w-4xl mx-auto py-8">
 
   {% with messages = get_flashed_messages(with_categories=true) %}
@@ -52,34 +62,35 @@ Resumo do Planejamento
     </div>
   </form>
 
+
   {% if totais %}
   <div class="text-center text-lg font-medium mb-6">
-    Tempo Total de Treino: <strong>{{ tempo_total }}h</strong>
+    Tempo Total de Treino: <strong>{{ formatar_tempo_decimal(tempo_total|float) }}</strong>
   </div>
 
-  <div class="grid grid-cols-1 md:grid-cols-5 gap-6">
-    {% set ordem = ["Macronutrientes", "Eletrólitos", "Vitaminas", "Estimulantes e Compostos", "Aminoácidos"] %}
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    {% set ordem = ["Macronutrientes", "Eletrólitos", "Estimulantes e Compostos",  "Vitaminas", "Aminoácidos"] %}
     {% set ordem_eletrolitos = ["Sódio", "Magnésio", "Potássio", "Cálcio"] %}
     {% set icones = {
       "Macronutrientes": "🔥",
       "Eletrólitos": "💧",
-      "Vitaminas": "💊",
       "Estimulantes e Compostos": "⚡",
-      "Aminoácidos": "🤬"
+      "Vitaminas": "💊",
+      "Aminoácidos": "🧬"
     } %}
     {% set cores = {
-      "Macronutrientes": "bg-green-100",
-      "Eletrólitos": "bg-blue-100",
-      "Vitaminas": "bg-purple-100",
-      "Estimulantes e Compostos": "bg-yellow-100",
-      "Aminoácidos": "bg-pink-100"
+      "Macronutrientes": "bg-blue-200",
+      "Eletrólitos": "bg-sky-200",
+      "Estimulantes e Compostos": "bg-cyan-100",
+      "Vitaminas": "bg-teal-100",
+      "Aminoácidos": "bg-emerald-50"
     } %}
 
     {% for categoria in ordem %}
       {% if resumo[categoria] %}
         <div class="rounded-xl shadow p-4 {{ cores[categoria] }}">
-          <h3 class="font-bold text-gray-700 mb-2">{{ icones[categoria] }} {{ categoria }}</h3>
-          <ul class="list-disc pl-5 text-gray-800">
+          <h3 class="font-bold text-gray-800 mb-2">{{ icones[categoria] }} {{ categoria }}</h3>
+          <ul class="list-disc pl-5 text-sm text-gray-700">
             {% if categoria == "Eletrólitos" %}
               {% for item in ordem_eletrolitos %}
                 <li><strong>{{ item }}:</strong> {{ resumo[categoria][item] }}</li>
@@ -145,12 +156,13 @@ Resumo do Planejamento
       "Estimulantes e Compostos": "⚡",
       "Aminoácidos": "🧬"
     } %}
+    
     {% set cores = {
-      "Macronutrientes": "bg-green-100",
-      "Eletrólitos": "bg-blue-100",
-      "Vitaminas": "bg-purple-100",
-      "Estimulantes e Compostos": "bg-yellow-100",
-      "Aminoácidos": "bg-pink-100"
+      "Macronutrientes": "bg-blue-400",
+      "Eletrólitos": "bg-blue-300",
+      "Estimulantes e Compostos": "bg-blue-200",
+      "Vitaminas": "bg-blue-100",
+      "Aminoácidos": "bg-blue-50"
     } %}
 
     {% for resumo in resumos %}
@@ -169,19 +181,20 @@ Resumo do Planejamento
 
       <div id="resumo-{{ loop.index }}" class="mt-4 hidden">
         <div class="text-sm text-gray-700 mb-4">
-          <p><strong>Tempo total:</strong> {{ resumo.tempo_total }}h</p>
-          <p><strong>Natação:</strong> {{ resumo.tempo_natacao }}h |
-             <strong>Bike:</strong> {{ resumo.tempo_bike }}h |
-             <strong>Corrida:</strong> {{ resumo.tempo_corrida }}h</p>
+          <p><strong>Tempo total:</strong> {{ formatar_tempo_decimal(resumo.tempo_total) }}</p>
+          <p><strong>Natação:</strong> {{ formatar_tempo_decimal(resumo.tempo_natacao) }} |
+             <strong>Bike:</strong> {{ formatar_tempo_decimal(resumo.tempo_bike) }} |
+             <strong>Corrida:</strong> {{ formatar_tempo_decimal(resumo.tempo_corrida) }}</p>
+             
         </div>
 
-        {% set ordem = ["Macronutrientes", "Eletrólitos", "Vitaminas", "Estimulantes e Compostos", "Aminoácidos"] %}
+        {% set ordem = ["Macronutrientes", "Eletrólitos", "Estimulantes e Compostos", "Vitaminas",  "Aminoácidos"] %}
         {% set ordem_eletrolitos = ["Sódio", "Magnésio", "Potássio", "Cálcio"] %}
 
         {% for categoria in ordem %}
           {% if resumo.resumo_dados[categoria] %}
           <div class="mb-2 p-3 rounded-xl shadow {{ cores[categoria] }}">
-            <h4 class="font-semibold text-gray-700 mb-1">{{ icones[categoria] }} {{ categoria }}</h4>
+            <h4 class="font-semibold text-gray-900 mb-1">{{ icones[categoria] }} {{ categoria }}</h4>
             <ul class="list-disc pl-5 text-sm text-gray-800">
               {% if categoria == "Eletrólitos" %}
                 {% for item in ordem_eletrolitos %}
@@ -228,14 +241,14 @@ Resumo do Planejamento
       return;
     }
 
-    const ordem = ["Macronutrientes", "Eletrólitos", "Vitaminas", "Estimulantes e Compostos", "Aminoácidos"];
+    const ordem = ["Macronutrientes", "Eletrólitos", "Estimulantes e Compostos",  "Vitaminas", "Aminoácidos"];
     const ordem_eletrolitos = ["Sódio", "Magnésio", "Potássio", "Cálcio"];
 
     const icones = {
       "Macronutrientes": "🔥",
       "Eletrólitos": "💧",
-      "Vitaminas": "💊",
       "Estimulantes e Compostos": "⚡",
+      "Vitaminas": "💊",
       "Aminoácidos": "🧬"
     };
     
