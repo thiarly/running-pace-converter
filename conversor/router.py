@@ -704,10 +704,10 @@ def buscar_resumos():
             "nome_treino": r.nome_treino,
             "comentario": r.comentario,
             "data": r.data.strftime("%d/%m/%Y"),
-            "tempo_total": r.tempo_total,
-            "tempo_natacao": r.tempo_natacao,
-            "tempo_bike": r.tempo_bike,
-            "tempo_corrida": r.tempo_corrida,
+            "tempo_total": round(r.tempo_total, 2),
+            "tempo_natacao": round(r.tempo_natacao, 2),
+            "tempo_bike": round(r.tempo_bike, 2),
+            "tempo_corrida": round(r.tempo_corrida, 2),
             "resumo_dados": r.resumo_dados  # ⬅️ aqui está a chave
         }
         for r in resultados
