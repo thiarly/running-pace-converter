@@ -554,6 +554,10 @@ def resumo_view():
         return redirect(url_for('resumo_view'))
 
     itens = PlanejamentoItem.query.filter_by(user_id=current_user.id).all()
+    itens_utilizados = [f"{item.quantidade}x {item.suplemento.nome}" for item in itens if item.suplemento]
+    itens_utilizados_str = ", ".join(itens_utilizados)
+
+
     totais = calcular_totais_planejamento(itens)
 
     totais_por_hora = {}
@@ -599,7 +603,8 @@ def resumo_view():
         resumo=resumo_dados,
         tempo_total=round(tempo_total, 2),
         current_date=date.today().isoformat(),
-        resumos=resumos  # <-- novo contexto
+        resumos=resumos,  # <-- novo contexto
+        itens_utilizados=itens_utilizados_str
     )
             
 
@@ -674,9 +679,6 @@ def deletar_resumo(id):
     database.session.commit()
     flash("Resumo excluído com sucesso!", "success")
     return redirect(url_for('resumo_view'))
-
-
-
 
 
 @app.route('/buscar_resumos')
