@@ -114,7 +114,6 @@ def load_user(user_id):
     return User.query.get(int(user_id))
 
 
-
 class ResumoSalvo(database.Model):
     __tablename__ = 'resumos_salvos'
 
@@ -124,6 +123,7 @@ class ResumoSalvo(database.Model):
     data = database.Column(database.Date, nullable=False)
     comentario = database.Column(database.Text)
     resumo_dados = database.Column(database.JSON, nullable=False)
+    suplementos_utilizados = database.Column(database.Text, nullable=True)  # ✅ Novo campo
     tempo_natacao = database.Column(database.Float)
     tempo_bike = database.Column(database.Float)
     tempo_corrida = database.Column(database.Float)
@@ -132,6 +132,6 @@ class ResumoSalvo(database.Model):
 
     def __repr__(self):
         return f'<ResumoSalvo {self.nome_treino} - {self.data}>'
-    
+
     
     

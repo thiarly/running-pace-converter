@@ -609,7 +609,6 @@ def resumo_view():
             
 
  
-    
 @app.route('/salvar_resumo', methods=['GET', 'POST'])
 @login_required
 def salvar_resumo():
@@ -638,12 +637,19 @@ def salvar_resumo():
         tempo_corrida = parse_float(request.form.get("tempo_corrida_horas")) + parse_float(request.form.get("tempo_corrida_minutos")) / 60
         tempo_total = tempo_natacao + tempo_bike + tempo_corrida
 
+        # 🔽 Captura os suplementos utilizados no momento atual
+        itens = PlanejamentoItem.query.filter_by(user_id=current_user.id).all()
+        suplementos_utilizados = ", ".join(
+            [f"{item.quantidade}x {item.suplemento.nome}" for item in itens if item.suplemento]
+        )
+
         novo_resumo = ResumoSalvo(
             user_id=current_user.id,
             nome_treino=form.nome_treino.data,
             data=form.data.data,
             comentario=form.comentario.data,
             resumo_dados=json.loads(request.form["resumo_dados"]),
+            suplementos_utilizados=suplementos_utilizados,  # ✅ aqui
             tempo_natacao=tempo_natacao,
             tempo_bike=tempo_bike,
             tempo_corrida=tempo_corrida,
@@ -656,14 +662,6 @@ def salvar_resumo():
         return redirect(url_for('resumo_view'))
 
     return render_template("salvar_resumo.html", form=form, dados=json.loads(resumo_json))
-
-
-
-@app.route('/resumos')
-@login_required
-def listar_resumos():
-    resumos = ResumoSalvo.query.filter_by(user_id=current_user.id).order_by(ResumoSalvo.criado_em.asc()).all()
-    return render_template('resumos.html', resumos=resumos)
 
 
 
