@@ -543,6 +543,17 @@ def remover_item(item_id):
     flash('Item removido do planejamento.', 'success')
     return redirect(url_for('planejamento'))
 
+# Remover todos os itens do planejamento
+@app.route('/planejamento/remover_todos', methods=['POST'])
+@login_required
+def remover_todos_itens():
+    PlanejamentoItem.query.filter_by(user_id=current_user.id).delete()
+    database.session.commit()
+    flash('Todos os itens foram removidos do planejamento.', 'success')
+    return redirect(url_for('planejamento'))
+
+
+
 
 # Resumo
 @app.route('/resumo', methods=['GET', 'POST'])
