@@ -29,7 +29,7 @@
 
         <form method="GET" class="flex flex-col sm:flex-row flex-wrap gap-2 mb-6 w-full">
           <input type="text" id="busca" placeholder="Buscar suplemento..." onkeyup="filtrarTabela()" class="border text-sm px-1 py-0.5 rounded w-full sm:w-auto">
-          
+
             <button type="submit" class="bg-blue-500 text-white px-3 py-1 text-sm rounded hover:bg-blue-700 w-full sm:w-auto">
                 Filtrar
             </button>
@@ -39,32 +39,32 @@
         </form>
 
         {% if suplementos %}
-        <div class="w-full overflow-x-auto">
-            <table class="w-full text-xs sm:text-sm text-left min-w-[600px]">
-              <thead class="text-gray-700 uppercase bg-gray-100">
+        <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+            <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+              <thead class="text-xs text-gray-700 uppercase bg-gray-200 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
-                  <th class="px-4 py-2 text-left border-b text-xs whitespace-nowrap truncate cursor-pointer" onclick="sortTable(0)">Nome ⬍</th>
-                  <th class="px-4 py-2 text-left border-b text-xs whitespace-nowrap truncate cursor-pointer" onclick="sortTable(1)">Marca ⬍</th>
-                  <th class="px-4 py-2 text-left border-b text-xs whitespace-nowrap truncate cursor-pointer" onclick="sortTable(2)">Tipo ⬍</th>
-                  <th class="px-4 py-2 text-left border-b text-xs whitespace-nowrap truncate cursor-pointer" onclick="sortTable(3, true)">Carboidrato (g) ⬍</th>
-                  <th class="px-4 py-2 text-left border-b text-xs whitespace-nowrap truncate cursor-pointer" onclick="sortTable(4, true)">Sódio (mg) ⬍</th>
-                  <th class="px-4 py-2 text-left border-b text-xs whitespace-nowrap truncate cursor-pointer" onclick="sortTable(5, true)">Magnésio (mg) ⬍</th>
-                  <th class="px-4 py-2 text-left border-b text-xs whitespace-nowrap truncate cursor-pointer" onclick="sortTable(6, true)">Cafeína (mg) ⬍</th>
-                  <th class="px-4 py-2 text-left border-b text-xs whitespace-nowrap truncate cursor-pointer">Ações</th>
+                  <th scope="col" class="px-6 py-3 whitespace-nowrap truncate cursor-pointer" onclick="sortTable(0)">Nome ⬍</th>
+                  <th scope="col" class="px-6 py-3 whitespace-nowrap truncate cursor-pointer" onclick="sortTable(1)">Marca ⬍</th>
+                  <th scope="col" class="px-6 py-3 whitespace-nowrap truncate cursor-pointer" onclick="sortTable(2)">Tipo ⬍</th>
+                  <th scope="col" class="px-6 py-3 whitespace-nowrap truncate cursor-pointer" onclick="sortTable(3, true)">Carboidrato (g) ⬍</th>
+                  <th scope="col" class="px-6 py-3 whitespace-nowrap truncate cursor-pointer" onclick="sortTable(4, true)">Sódio (mg) ⬍</th>
+                  <th scope="col" class="px-6 py-3 whitespace-nowrap truncate cursor-pointer" onclick="sortTable(5, true)">Magnésio (mg) ⬍</th>
+                  <th scope="col" class="px-6 py-3 whitespace-nowrap truncate cursor-pointer" onclick="sortTable(6, true)">Cafeína (mg) ⬍</th>
+                  <th scope="col" class="px-6 py-3 whitespace-nowrap truncate cursor-pointer">Ações</th>
                 </tr>
               </thead>
                 </thead>
                 <tbody>
                     {% for suplemento in suplementos %}
-                    <tr class="border-b">
-                        <td class="py-3 px-4 whitespace-nowrap text-left text-sm">{{ suplemento.nome }}</td>
-                        <td class="py-3 px-4 whitespace-nowrap text-left text-sm">{{ suplemento.marca }}</td>
-                        <td class="py-3 px-4 whitespace-nowrap text-left text-sm">{{ suplemento.tipo }}</td>
-                        <td class="py-3 px-4 whitespace-nowrap text-left text-sm">{{ suplemento.carbo or 0 }}</td>
-                        <td class="py-3 px-4 whitespace-nowrap text-left text-sm">{{ suplemento.sodio or 0 }}</td>
-                        <td class="py-3 px-4 whitespace-nowrap text-left text-sm">{{ suplemento.magnesio or 0 }}</td>
-                        <td class="py-3 px-4 whitespace-nowrap text-left text-sm">{{ suplemento.cafeina or 0 }}</td>
-                        <td class="py-3 px-4 whitespace-nowrap text-left text-sm">
+                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
+                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white whitespace-nowrap">{{ suplemento.nome }}</th>
+                        <td class="px-6 py-4 whitespace-nowrap">{{ suplemento.marca }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">{{ suplemento.tipo }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">{{ suplemento.carbo or 0 }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">{{ suplemento.sodio or 0 }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">{{ suplemento.magnesio or 0 }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">{{ suplemento.cafeina or 0 }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">
                             <a href="{{ url_for('editar_suplemento', id=suplemento.id) }}" class="text-blue-600 text-sm hover:underline">✏️ Editar</a>
                             <span class="mx-1">|</span>
                             <a href="{{ url_for('excluir_suplemento', id=suplemento.id) }}" class="text-red-600 text-sm hover:underline" onclick="return confirm('Tem certeza que deseja excluir?')">🗑️ Excluir</a>
@@ -72,7 +72,7 @@
                             <button onclick="toggleDetails('{{ suplemento.id }}')" class="text-green-600 text-sm hover:underline">🔎 Detalhes</button>
                         </td>
                     </tr>
-                    <tr id="details-{{ suplemento.id }}" class="hidden bg-gray-50">
+                    <tr id="details-{{ suplemento.id }}" class="hidden bg-gray-100 border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
                         <td colspan="6" class="p-4">
                             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2 text-xs sm:text-sm">
                                 <div><strong>Magnésio:</strong> {{ suplemento.magnesio or 0 }} mg</div>

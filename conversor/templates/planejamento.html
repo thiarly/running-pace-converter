@@ -1,4 +1,4 @@
-\{% extends "base.html" %}
+{% extends "base.html" %}
 
 {% block titulo %}
 Planejamento de Suplementos
@@ -19,7 +19,8 @@ Planejamento de Suplementos
   {% endif %}
 {% endwith %}
 
-  <h1 class="text-2xl font-bold mb-6">Planejamento de Suplementos</h1>
+<div class="flex flex-col  mt-8 px-4">
+  <h1 class="text-2xl font-bold text-left text-gray-800 mb-6 border-b pb-2">Planejamento de Suplementos</h1>
 
   <form method="POST" class="flex flex-col sm:flex-row flex-wrap items-end gap-4 mb-8">
     {{ form.hidden_tag() }}
@@ -44,28 +45,29 @@ Planejamento de Suplementos
     </form>
 
   </form>
+</div>
 
   {% if itens %}
-    <div class="overflow-x-auto">
-      <table class="w-full min-w-[400px] bg-white border mb-8">        
-        <thead class="bg-gray-100">
+    <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+      <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">        
+        <thead class="text-xs text-gray-700 uppercase bg-gray-200 dark:bg-gray-700 dark:text-gray-400">
           <tr>
-            <th class="px-4 py-2 text-left border-b whitespace-nowrap">Produto</th>
-            <th class="px-4 py-2 text-left border-b whitespace-nowrap">Carboidrato</th>
-            <th class="px-4 py-2 text-left border-b whitespace-nowrap">Sódio</th>
-            <th class="px-4 py-2 text-left border-b whitespace-nowrap">Quantidade</th>
-            <th class="px-4 py-2 text-left border-b whitespace-nowrap">Ações</th>
+            <th scope="col" class="px-6 py-3 ">Produto</th>
+            <th scope="col" class="px-6 py-3 ">Carboidrato</th>
+            <th scope="col" class="px-6 py-3 ">Sódio</th>
+            <th scope="col" class="px-6 py-3 ">Quantidade</th>
+            <th scope="col" class="px-6 py-3 ">Ações</th>
           </tr>
         </thead>
         <tbody>
           {% for item in itens %}
-          <tr>
-            <td class="px-4 text-sm py-2 border-b whitespace-nowrap">{{ item.suplemento.nome }}</td>
-            <td class="px-4 text-sm py-2 border-b whitespace-nowrap">{{ item.suplemento.carbo if item.suplemento.carbo is not none else 0 }}g</td>
+          <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200" >
+            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ item.suplemento.nome }}</th>
+            <td class="px-6 py-4 whitespace-nowrap">{{ item.suplemento.carbo if item.suplemento.carbo is not none else 0 }}g</td>
             
 
-            <td class="px-4 py-2 text-sm border-b whitespace-nowrap">{{ item.suplemento.sodio if item.suplemento.sodio is not none else 0 }}mg</td>
-            <td class="px-4 py-2  border-b whitespace-nowrap">
+            <td class="px-6 py-4 whitespace-nowrap">{{ item.suplemento.sodio if item.suplemento.sodio is not none else 0 }}mg</td>
+            <td class="px-6 py-4 whitespace-nowrap">
               <form method="POST" action="{{ url_for('atualizar_quantidade', item_id=item.id) }}" class="flex items-center gap-2">
                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                 <input type="number" name="quantidade" value="{{ item.quantidade }}" class="w-20 px-2 py-1 border rounded">
