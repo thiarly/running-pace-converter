@@ -19,33 +19,37 @@ Planejamento de Suplementos
   {% endif %}
 {% endwith %}
 
-<div class="flex flex-col  mt-8 px-4">
+<div class="flex flex-col mt-8 px-4">
   <h1 class="text-2xl font-bold text-left text-gray-800 mb-6 border-b pb-2">Planejamento de Suplementos</h1>
 
-  <form method="POST" class="flex flex-col sm:flex-row flex-wrap items-end gap-4 mb-8">
-    {{ form.hidden_tag() }}
+  <div class="flex flex-col sm:flex-row flex-wrap items-end gap-4 mb-8">
+    <!-- Form Adicionar -->
+    <form method="POST" class="flex flex-wrap items-end gap-4">
+      {{ form.hidden_tag() }}
 
-    <div class="w-full sm:w-auto">
-      {{ form.suplemento_id.label(class="block text-sm font-medium text-gray-700") }}
-      {{ form.suplemento_id(class="border border-gray-300 rounded px-1 py-0.5 text-sm w-full") }}
-    </div>
-    <div class="w-full sm:w-auto">
-      {{ form.quantidade.label(class="block text-sm font-medium text-gray-700") }}
-      {{ form.quantidade(class="border border-gray-300 rounded px-1 py-0.5 text-sm w-full") }}
-    </div>
-    <button type="submit" class="bg-blue-500 text-white text-sm px-4 py-1 rounded hover:bg-blue-600 w-full sm:w-auto">
-      Adicionar
-    </button>
+      <div class="w-full sm:w-auto">
+        {{ form.suplemento_id.label(class="block text-sm font-medium text-gray-700") }}
+        {{ form.suplemento_id(class="border border-gray-300 rounded px-1 py-0.5 text-sm w-full") }}
+      </div>
+      <div class="w-full sm:w-auto">
+        {{ form.quantidade.label(class="block text-sm font-medium text-gray-700") }}
+        {{ form.quantidade(class="border border-gray-300 rounded px-1 py-0.5 text-sm w-full") }}
+      </div>
+      <button type="submit" class="bg-blue-500 text-white text-sm px-4 py-1 rounded hover:bg-blue-600 w-full sm:w-auto">
+        Adicionar
+      </button>
+    </form>
 
+    <!-- Form Remover Todos -->
     <form method="POST" action="{{ url_for('remover_todos_itens') }}" onsubmit="return confirm('Deseja remover todos os itens?')">
       <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
       <button type="submit" class="bg-red-500 text-white text-sm px-4 py-1 rounded hover:bg-red-600 w-full sm:w-auto">
         Remover Todos
       </button>
     </form>
-
-  </form>
+  </div>
 </div>
+
 
   {% if itens %}
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
