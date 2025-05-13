@@ -10,7 +10,7 @@ from flask_login import login_user, login_required, logout_user, current_user, l
 import json
 from datetime import date
 
-
+import os
 
 from conversor.utils import (
     convert_pace, calc_average_speed_bike,
@@ -363,14 +363,11 @@ def zonas():
     return render_template('zonas.html')
 
 
-import os
-
 @app.route('/sobre')
 def sobre():
     image_directory = os.path.join(app.root_path, 'static/image')
     images = [os.path.join('image', image) for image in os.listdir(image_directory) if image.endswith('.jpg')]
     return render_template('sobre.html', images=images)
-
 
 
 # Cadastro de suplemento
@@ -415,8 +412,6 @@ def novo_suplemento():
         flash('Suplemento cadastrado com sucesso!', 'success')
         return redirect(url_for('listar_suplementos'))
     return render_template('cadastro_suplemento.html', form=form)
-
-
 
 
 # Lista de suplementos
@@ -532,7 +527,6 @@ def atualizar_quantidade(item_id):
         flash('Quantidade inválida.', 'danger')
     return redirect(url_for('planejamento'))
 
-
 # Remover item do planejamento
 @app.route('/planejamento/remover/<int:item_id>', methods=['POST'])
 @login_required
@@ -551,8 +545,6 @@ def remover_todos_itens():
     database.session.commit()
     flash('Todos os itens foram removidos do planejamento.', 'success')
     return redirect(url_for('planejamento'))
-
-
 
 
 # Resumo
@@ -619,7 +611,6 @@ def resumo_view():
     )
             
 
- 
 @app.route('/salvar_resumo', methods=['GET', 'POST'])
 @login_required
 def salvar_resumo():
@@ -673,7 +664,6 @@ def salvar_resumo():
         return redirect(url_for('resumo_view'))
 
     return render_template("salvar_resumo.html", form=form, dados=json.loads(resumo_json))
-
 
 
 @app.route('/deletar_resumo/<int:id>', methods=['POST'])
