@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+\{% extends "base.html" %}
 
 {% block titulo %}
 Planejamento de Suplementos
@@ -26,23 +26,33 @@ Planejamento de Suplementos
 
     <div class="w-full sm:w-auto">
       {{ form.suplemento_id.label(class="block text-sm font-medium text-gray-700") }}
-      {{ form.suplemento_id(class="border border-gray-300 rounded px-2 py-1 w-full") }}
+      {{ form.suplemento_id(class="border border-gray-300 rounded px-1 py-0.5 text-sm w-full") }}
     </div>
     <div class="w-full sm:w-auto">
       {{ form.quantidade.label(class="block text-sm font-medium text-gray-700") }}
-      {{ form.quantidade(class="border border-gray-300 rounded px-2 py-1 w-full") }}
+      {{ form.quantidade(class="border border-gray-300 rounded px-1 py-0.5 text-sm w-full") }}
     </div>
-    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 w-full sm:w-auto">
+    <button type="submit" class="bg-blue-500 text-white text-sm px-4 py-1 rounded hover:bg-blue-600 w-full sm:w-auto">
       Adicionar
     </button>
+
+    <form method="POST" action="{{ url_for('remover_todos_itens') }}" onsubmit="return confirm('Deseja remover todos os itens?')">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <button type="submit" class="bg-red-500 text-white text-sm px-4 py-1 rounded hover:bg-red-600 w-full sm:w-auto">
+        Remover Todos
+      </button>
+    </form>
+
   </form>
 
   {% if itens %}
     <div class="overflow-x-auto">
-      <table class="w-full min-w-[400px] bg-white border mb-8">
+      <table class="w-full min-w-[400px] bg-white border mb-8">        
         <thead class="bg-gray-100">
           <tr>
             <th class="px-4 py-2 text-left border-b whitespace-nowrap">Produto</th>
+            <th class="px-4 py-2 text-left border-b whitespace-nowrap">Carboidrato</th>
+            <th class="px-4 py-2 text-left border-b whitespace-nowrap">Sódio</th>
             <th class="px-4 py-2 text-left border-b whitespace-nowrap">Quantidade</th>
             <th class="px-4 py-2 text-left border-b whitespace-nowrap">Ações</th>
           </tr>
@@ -50,8 +60,12 @@ Planejamento de Suplementos
         <tbody>
           {% for item in itens %}
           <tr>
-            <td class="px-4 py-2 border-b whitespace-nowrap">{{ item.suplemento.nome }}</td>
-            <td class="px-4 py-2 border-b whitespace-nowrap">
+            <td class="px-4 text-sm py-2 border-b whitespace-nowrap">{{ item.suplemento.nome }}</td>
+            <td class="px-4 text-sm py-2 border-b whitespace-nowrap">{{ item.suplemento.carbo if item.suplemento.carbo is not none else 0 }}g</td>
+            
+
+            <td class="px-4 py-2 text-sm border-b whitespace-nowrap">{{ item.suplemento.sodio if item.suplemento.sodio is not none else 0 }}mg</td>
+            <td class="px-4 py-2  border-b whitespace-nowrap">
               <form method="POST" action="{{ url_for('atualizar_quantidade', item_id=item.id) }}" class="flex items-center gap-2">
                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                 <input type="number" name="quantidade" value="{{ item.quantidade }}" class="w-20 px-2 py-1 border rounded">

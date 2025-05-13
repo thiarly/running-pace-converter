@@ -22,26 +22,26 @@
     <div class="w-full max-w-8xl p-6 bg-white rounded-lg shadow-md">
         <div class="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4">
             <h1 class="text-2xl font-bold text-gray-900">Suplementos Cadastrados</h1>
-            <a href="{{ url_for('novo_suplemento') }}" class="bg-blue-500 hover:bg-blue-700 text-white px-4 py-1 rounded text-center">
+            <a href="{{ url_for('novo_suplemento') }}" class="bg-green-500 hover:bg-blue-700 text-white px-3 py-1 text-sm rounded text-center">
                 Novo Suplemento
             </a>
         </div>
 
         <form method="GET" class="flex flex-col sm:flex-row flex-wrap gap-2 mb-6 w-full">
-            <input type="text" name="filtro" placeholder="Buscar suplemento..." value="{{ filtro }}" class="border px-2 py-1 rounded w-full sm:w-auto">
-            <select name="ordenar" class="border px-2 py-1 rounded w-full sm:w-auto">
+            <input type="text" name="filtro" placeholder="Buscar suplemento..." value="{{ filtro }}" class="border text-sm px-1 py-0.5 text-sm rounded w-full sm:w-auto">
+            <select name="ordenar" class="border px-1 py-0.5 text-sm  rounded w-full sm:w-auto">
                 <option value="">Ordenar por</option>
                 <option value="carbo" {% if ordenar == 'carbo' %}selected{% endif %}>Carboidrato</option>
                 <option value="sodio" {% if ordenar == 'sodio' %}selected{% endif %}>Sódio</option>
             </select>
-            <select name="direcao" class="border px-2 py-1 rounded w-full sm:w-auto">
+            <select name="direcao" class="border px-1 py-0.5 text-sm  rounded w-full sm:w-auto">
                 <option value="desc" {% if direcao == 'desc' %}selected{% endif %}>Maior para Menor</option>
                 <option value="asc" {% if direcao == 'asc' %}selected{% endif %}>Menor para Maior</option>
             </select>
-            <button type="submit" class="bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-700 w-full sm:w-auto">
+            <button type="submit" class="bg-blue-500 text-white px-3 py-1 text-sm rounded hover:bg-blue-700 w-full sm:w-auto">
                 Filtrar
             </button>
-            <a href="{{ url_for('listar_suplementos') }}" class="bg-gray-500 text-white px-4 py-1 rounded hover:bg-gray-700 w-full sm:w-auto text-center">
+            <a href="{{ url_for('listar_suplementos') }}" class="bg-gray-500 text-white px-3 py-1 text-sm rounded hover:bg-gray-700 w-full sm:w-auto text-center">
                 Limpar
             </a>
         </form>
@@ -51,29 +51,33 @@
             <table class="w-full text-xs sm:text-sm text-left min-w-[600px]">
               <thead class="text-gray-700 uppercase bg-gray-100">
                 <tr>
-                  <th class="py-3 px-4 cursor-pointer" onclick="sortTable(0)">Nome ⬍</th>
-                  <th class="py-3 px-4 cursor-pointer" onclick="sortTable(1)">Marca ⬍</th>
-                  <th class="py-3 px-4 cursor-pointer" onclick="sortTable(2)">Tipo ⬍</th>
-                  <th class="py-3 px-4 cursor-pointer" onclick="sortTable(3, true)">Carboidrato (g) ⬍</th>
-                  <th class="py-3 px-4 cursor-pointer" onclick="sortTable(4, true)">Sódio (mg) ⬍</th>
-                  <th class="py-3 px-4">Ações</th>
+                  <th class="px-4 py-2 text-left border-b text-xs whitespace-nowrap truncate cursor-pointer" onclick="sortTable(0)">Nome ⬍</th>
+                  <th class="px-4 py-2 text-left border-b text-xs whitespace-nowrap truncate cursor-pointer" onclick="sortTable(1)">Marca ⬍</th>
+                  <th class="px-4 py-2 text-left border-b text-xs whitespace-nowrap truncate cursor-pointer" onclick="sortTable(2)">Tipo ⬍</th>
+                  <th class="px-4 py-2 text-left border-b text-xs whitespace-nowrap truncate cursor-pointer" onclick="sortTable(3, true)">Carboidrato (g) ⬍</th>
+                  <th class="px-4 py-2 text-left border-b text-xs whitespace-nowrap truncate cursor-pointer" onclick="sortTable(4, true)">Sódio (mg) ⬍</th>
+                  <th class="px-4 py-2 text-left border-b text-xs whitespace-nowrap truncate cursor-pointer" onclick="sortTable(5, true)">Magnésio (mg) ⬍</th>
+                  <th class="px-4 py-2 text-left border-b text-xs whitespace-nowrap truncate cursor-pointer" onclick="sortTable(6, true)">Cafeína (mg) ⬍</th>
+                  <th class="px-4 py-2 text-left border-b text-xs whitespace-nowrap truncate cursor-pointer">Ações</th>
                 </tr>
               </thead>
                 </thead>
                 <tbody>
                     {% for suplemento in suplementos %}
                     <tr class="border-b">
-                        <td class="py-3 px-4 whitespace-nowrap">{{ suplemento.nome }}</td>
-                        <td class="py-3 px-4 whitespace-nowrap">{{ suplemento.marca }}</td>
-                        <td class="py-3 px-4 whitespace-nowrap">{{ suplemento.tipo }}</td>
-                        <td class="py-3 px-4 whitespace-nowrap">{{ suplemento.carbo or 0 }}</td>
-                        <td class="py-3 px-4 whitespace-nowrap">{{ suplemento.sodio or 0 }}</td>
-                        <td class="py-3 px-4 whitespace-nowrap">
-                            <a href="{{ url_for('editar_suplemento', id=suplemento.id) }}" class="text-blue-600 hover:underline">Editar</a>
+                        <td class="py-3 px-4 whitespace-nowrap text-left text-sm">{{ suplemento.nome }}</td>
+                        <td class="py-3 px-4 whitespace-nowrap text-left text-sm">{{ suplemento.marca }}</td>
+                        <td class="py-3 px-4 whitespace-nowrap text-left text-sm">{{ suplemento.tipo }}</td>
+                        <td class="py-3 px-4 whitespace-nowrap text-left text-sm">{{ suplemento.carbo or 0 }}</td>
+                        <td class="py-3 px-4 whitespace-nowrap text-left text-sm">{{ suplemento.sodio or 0 }}</td>
+                        <td class="py-3 px-4 whitespace-nowrap text-left text-sm">{{ suplemento.magnesio or 0 }}</td>
+                        <td class="py-3 px-4 whitespace-nowrap text-left text-sm">{{ suplemento.cafeina or 0 }}</td>
+                        <td class="py-3 px-4 whitespace-nowrap text-left text-sm">
+                            <a href="{{ url_for('editar_suplemento', id=suplemento.id) }}" class="text-blue-600 text-sm hover:underline">✏️ Editar</a>
                             <span class="mx-1">|</span>
-                            <a href="{{ url_for('excluir_suplemento', id=suplemento.id) }}" class="text-red-600 hover:underline" onclick="return confirm('Tem certeza que deseja excluir?')">Excluir</a>
+                            <a href="{{ url_for('excluir_suplemento', id=suplemento.id) }}" class="text-red-600 text-sm hover:underline" onclick="return confirm('Tem certeza que deseja excluir?')">🗑️ Excluir</a>
                             <span class="mx-1">|</span>
-                            <button onclick="toggleDetails('{{ suplemento.id }}')" class="text-green-600 hover:underline">Detalhes</button>
+                            <button onclick="toggleDetails('{{ suplemento.id }}')" class="text-green-600 text-sm hover:underline">🔎 Detalhes</button>
                         </td>
                     </tr>
                     <tr id="details-{{ suplemento.id }}" class="hidden bg-gray-50">
