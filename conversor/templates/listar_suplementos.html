@@ -28,16 +28,8 @@
         </div>
 
         <form method="GET" class="flex flex-col sm:flex-row flex-wrap gap-2 mb-6 w-full">
-            <input type="text" name="filtro" placeholder="Buscar suplemento..." value="{{ filtro }}" class="border text-sm px-1 py-0.5 text-sm rounded w-full sm:w-auto">
-            <select name="ordenar" class="border px-1 py-0.5 text-sm  rounded w-full sm:w-auto">
-                <option value="">Ordenar por</option>
-                <option value="carbo" {% if ordenar == 'carbo' %}selected{% endif %}>Carboidrato</option>
-                <option value="sodio" {% if ordenar == 'sodio' %}selected{% endif %}>Sódio</option>
-            </select>
-            <select name="direcao" class="border px-1 py-0.5 text-sm  rounded w-full sm:w-auto">
-                <option value="desc" {% if direcao == 'desc' %}selected{% endif %}>Maior para Menor</option>
-                <option value="asc" {% if direcao == 'asc' %}selected{% endif %}>Menor para Maior</option>
-            </select>
+          <input type="text" id="busca" placeholder="Buscar suplemento..." onkeyup="filtrarTabela()" class="border text-sm px-1 py-0.5 rounded w-full sm:w-auto">
+          
             <button type="submit" class="bg-blue-500 text-white px-3 py-1 text-sm rounded hover:bg-blue-700 w-full sm:w-auto">
                 Filtrar
             </button>
@@ -156,6 +148,33 @@ function toggleDetails(id) {
     });
   }
   </script>
+
+
+  <script>
+    function filtrarTabela() {
+      const termo = document.getElementById("busca").value.toLowerCase();
+      const linhas = document.querySelectorAll("table tbody tr");
+    
+      linhas.forEach((linha, index) => {
+        // Pula linhas de detalhe (ex: toggleDetails), se forem ímpares
+        if (linha.id && linha.id.startsWith("details-")) return;
+    
+        const conteudo = linha.innerText.toLowerCase();
+        const mostrar = conteudo.includes(termo);
+    
+        linha.style.display = mostrar ? "" : "none";
+    
+        // Se houver linha de detalhes logo abaixo, esconde/mostra junto
+        const proxima = linhas[index + 1];
+        if (proxima && proxima.id && proxima.id.startsWith("details-")) {
+          proxima.style.display = mostrar ? "" : "none";
+        }
+      });
+    }
+    </script>
+    
+
+
 
 
 {% endblock %}
