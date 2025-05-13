@@ -95,56 +95,56 @@ Planejamento de Suplementos
     <div class="bg-white shadow-md rounded-xl p-6">
       <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
         <div>
-          <h3 class="font-bold text-gray-700 mb-2">Macronutrientes</h3>
+          <h3 class="text-sm font-semibold text-gray-900 uppercase bg-gray-200 dark:bg-gray-700 dark:text-gray-400 rounded mb-4">⛽️ Macronutrientes</h3>
           <ul class="list-disc pl-5 text-gray-800">
-            <li><strong>Carboidrato:</strong> {{ totais.carbo }}</li>
+            <li class="px-2 py-1 font-medium text-gray-700 text-sm whitespace-nowrap dark:text-white">Carboidrato:{{ totais.carbo }}</li>
           </ul>
         </div>
 
         <div>
-          <h3 class="font-bold text-gray-700 mb-2">Eletrólitos</h3>
+          <h3 class="text-sm font-semibold text-gray-900 uppercase bg-gray-200 dark:bg-gray-700 dark:text-gray-400 rounded mb-4">💧 Eletrólitos</h3>
           <ul class="list-disc pl-5 text-gray-800">
-            <li><strong>Sódio:</strong> {{ totais.sodio }}</li>
-            <li><strong>Magnésio:</strong> {{ totais.magnesio }}</li>
-            <li><strong>Potássio:</strong> {{ totais.potassio }}</li>
-            <li><strong>Cálcio:</strong> {{ totais.calcio }}</li>
+            <li class="px-2 py-1 font-medium text-gray-700 text-sm whitespace-nowrap dark:text-white">Sódio:{{ totais.sodio }}</li>
+            <li class="px-2 py-1 font-medium text-gray-700 text-sm whitespace-nowrap dark:text-white">Magnésio:{{ totais.magnesio }}</li>
+            <li class="px-2 py-1 font-medium text-gray-700 text-sm whitespace-nowrap dark:text-white">Potássio:{{ totais.potassio }}</li>
+            <li class="px-2 py-1 font-medium text-gray-700 text-sm whitespace-nowrap dark:text-white">Cálcio:{{ totais.calcio }}</li>
           </ul>
         </div>
 
         <div>
-          <h3 class="font-bold text-gray-700 mb-2">Estimulantes e Compostos</h3>
+          <h3 class="text-sm font-semibold text-gray-900 uppercase bg-gray-200 dark:bg-gray-700 dark:text-gray-400 rounded mb-4">🔥Estimulantes</h3>
           <ul class="list-disc pl-5 text-gray-800">
-            <li><strong>Cafeína:</strong> {{ totais.cafeina }}</li>
-            <li><strong>Taurina:</strong> {{ totais.taurina }}</li>
-            <li><strong>Beta-Alanina:</strong> {{ totais.beta_alanina }}</li>
-            <li><strong>Citrulina:</strong> {{ totais.citrulina }}</li>
-            <li><strong>Creatina:</strong> {{ totais.creatina }}</li>
-            <li><strong>CoQ10:</strong> {{ totais.coq10 }}</li>
-            <li><strong>Carnitina:</strong> {{ totais.carnitina }}</li>
+            <li class="px-2 py-1 font-medium text-gray-700 text-sm whitespace-nowrap dark:text-white">Cafeína:{{ totais.cafeina }}</li>
+            <li class="px-2 py-1 font-medium text-gray-700 text-sm whitespace-nowrap dark:text-white">Taurina:{{ totais.taurina }}</li>
+            <li class="px-2 py-1 font-medium text-gray-700 text-sm whitespace-nowrap dark:text-white">Beta-Alanina:{{ totais.beta_alanina }}</li>
+            <li class="px-2 py-1 font-medium text-gray-700 text-sm whitespace-nowrap dark:text-white">Citrulina:{{ totais.citrulina }}</li>
+            <li class="px-2 py-1 font-medium text-gray-700 text-sm whitespace-nowrap dark:text-white">Creatina:{{ totais.creatina }}</li>
+            <li class="px-2 py-1 font-medium text-gray-700 text-sm whitespace-nowrap dark:text-white">CoQ10:{{ totais.coq10 }}</li>
+            <li class="px-2 py-1 font-medium text-gray-700 text-sm whitespace-nowrap dark:text-white">Carnitina:{{ totais.carnitina }}</li>
           </ul>
         </div>
 
         <div>
-          <h3 class="font-bold text-gray-700 mb-2">Aminoácidos</h3>
+          <h3 class="text-sm font-semibold text-gray-900 uppercase bg-gray-200 dark:bg-gray-700 dark:text-gray-400 rounded mb-4">🧬 Aminoácidos</h3>
           <ul class="list-disc pl-5 text-gray-800">
-            <li><strong>Leucina:</strong> {{ totais.leucina }}</li>
-            <li><strong>Isoleucina:</strong> {{ totais.isoleucina }}</li>
-            <li><strong>Valina:</strong> {{ totais.valina }}</li>
-            <li><strong>Arginina:</strong> {{ totais.arginina }}</li>
+            <li class="px-2 py-1 font-medium text-gray-700 text-sm whitespace-nowrap dark:text-white">Leucina:{{ totais.leucina }}</li>
+            <li class="px-2 py-1 font-medium text-gray-700 text-sm whitespace-nowrap dark:text-white">Isoleucina:{{ totais.isoleucina }}</li>
+            <li class="px-2 py-1 font-medium text-gray-700 text-sm whitespace-nowrap dark:text-white">Valina:{{ totais.valina }}</li>
+            <li class="px-2 py-1 font-medium text-gray-700 text-sm whitespace-nowrap dark:text-white">Arginina:{{ totais.arginina }}</li>
           </ul>
         </div>
 
         <div>
-          <h3 class="font-bold text-gray-700 mb-2">Vitaminas</h3>
+          <h3 class="text-sm font-semibold text-gray-900 uppercase bg-gray-200 dark:bg-gray-700 dark:text-gray-400 rounded mb-4">💊 Vitaminas</h3>
           <ul class="list-disc pl-5 text-gray-800">
-            <li><strong>Vitamina B1:</strong> {{ totais.vit_b1 }}</li>
-            <li><strong>Vitamina B2:</strong> {{ totais.vit_b2 }}</li>
-            <li><strong>Vitamina B3:</strong> {{ totais.vit_b3 }}</li>
-            <li><strong>Vitamina B6:</strong> {{ totais.vit_b6 }}</li>
-            <li><strong>Vitamina B7:</strong> {{ totais.vit_b7 }}</li>
-            <li><strong>Vitamina B9:</strong> {{ totais.vit_b9 }}</li>
-            <li><strong>Vitamina B12:</strong> {{ totais.vit_b12 }}</li>
-            <li><strong>Vitamina C:</strong> {{ totais.vit_c }}</li>
+            <li class="px-2 py-1 font-medium text-gray-700 text-sm whitespace-nowrap dark:text-white">Vitamina B1:{{ totais.vit_b1 }}</li>
+            <li class="px-2 py-1 font-medium text-gray-700 text-sm whitespace-nowrap dark:text-white">Vitamina B2:{{ totais.vit_b2 }}</li>
+            <li class="px-2 py-1 font-medium text-gray-700 text-sm whitespace-nowrap dark:text-white">Vitamina B3:{{ totais.vit_b3 }}</li>
+            <li class="px-2 py-1 font-medium text-gray-700 text-sm whitespace-nowrap dark:text-white">Vitamina B6:{{ totais.vit_b6 }}</li>
+            <li class="px-2 py-1 font-medium text-gray-700 text-sm whitespace-nowrap dark:text-white">Vitamina B7:{{ totais.vit_b7 }}</li>
+            <li class="px-2 py-1 font-medium text-gray-700 text-sm whitespace-nowrap dark:text-white">Vitamina B9:{{ totais.vit_b9 }}</li>
+            <li class="px-2 py-1 font-medium text-gray-700 text-sm whitespace-nowrap dark:text-white">Vitamina B12:{{ totais.vit_b12 }}</li>
+            <li class="px- py-1 font-medium text-gray-700 text-sm whitespace-nowrap dark:text-white">Vitamina C:{{ totais.vit_c }}</li>
           </ul>
         </div>
       </div>
