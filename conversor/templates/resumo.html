@@ -28,7 +28,7 @@ Resumo do Planejamento
 
   <!-- Resumo do Planejamento -->
   <div class="bg-white rounded-xl shadow p-6 border border-gray-200">
-    <h2 class="text-xl font-semibold mb-4">📊 Resumo do Planejamento</h2>
+    <h2 class="text-xl text-center font-semibold mb-10">📊 Resumo do Planejamento</h2>
     <form method="POST" class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm text-gray-700">
       {{ form.hidden_tag() }}
 
@@ -37,28 +37,28 @@ Resumo do Planejamento
       
         <!-- Natação -->
         <div class="flex flex-col items-center gap-1">
-          <label class="text-sm font-semibold">🏊 Natação</label>
+          <label class="text-base font-semibold mb-4">🏊 Natação</label>
           <div class="flex gap-2">
-            {{ form.tempo_natacao_horas(class="w-16 text-center py-2 px-2 border-2 border-blue-300 rounded-md bg-white shadow-sm text-base font-semibold", placeholder="h") }}
-            {{ form.tempo_natacao_minutos(class="w-16 text-center py-2 px-2 border-2 border-blue-300 rounded-md bg-white shadow-sm text-base font-semibold", placeholder="min") }}
+            {{ form.tempo_natacao_horas(class="w-20 text-center py-1 px-1 border-2 border-solid border-blue-500 rounded-md bg-white shadow-sm text-babase font-semibold mb-8", placeholder="h") }}
+            {{ form.tempo_natacao_minutos(class="w-20 text-center py-1 px-1 border-2 border-solid border-blue-500 rounded-md bg-white shadow-sm text-babase font-semibold mb-8", placeholder="min") }}
           </div>
         </div>
       
         <!-- Bike -->
         <div class="flex flex-col items-center gap-1">
-          <label class="text-sm font-semibold">🚴 Bike</label>
+          <label class="text-base font-semibold mb-4">🚴 Bike</label>
           <div class="flex gap-2">
-            {{ form.tempo_bike_horas(class="w-16 text-center py-2 px-2 border-2 border-yellow-300 rounded-md bg-white shadow-sm text-base font-semibold", placeholder="h") }}
-            {{ form.tempo_bike_minutos(class="w-16 text-center py-2 px-2 border-2 border-yellow-300 rounded-md bg-white shadow-sm text-base font-semibold", placeholder="min") }}
+            {{ form.tempo_bike_horas(class="w-20 text-center py-1 px-2 border-2 border-solid border-yellow-300 rounded-md bg-white shadow-sm text-babase font-semibold mb-8", placeholder="h") }}
+            {{ form.tempo_bike_minutos(class="w-20 text-center py-1 px-2 border-2 border-solid border-yellow-300 rounded-md bg-white shadow-sm text-babase font-semibold mb-8", placeholder="min") }}
           </div>
         </div>
       
         <!-- Corrida -->
         <div class="flex flex-col items-center gap-1">
-          <label class="text-sm font-semibold">🏃 Corrida</label>
+          <label class="text-base font-semibold mb-4">🏃 Corrida</label>
           <div class="flex gap-2">
-            {{ form.tempo_corrida_horas(class="w-16 text-center py-2 px-2 border-2 border-red-300 rounded-md bg-white shadow-sm text-base font-semibold", placeholder="h") }}
-            {{ form.tempo_corrida_minutos(class="w-16 text-center py-2 px-2 border-2 border-red-300 rounded-md bg-white shadow-sm text-base font-semibold", placeholder="min") }}
+            {{ form.tempo_corrida_horas(class="w-20 text-center py-1 px-2 border-2 border-solid border-green-300 rounded-md bg-white shadow-sm text-babase font-semibold mb-8", placeholder="h") }}
+            {{ form.tempo_corrida_minutos(class="w-20 text-center py-1 px-2 border-2 border-solid border-green-300 rounded-md bg-white shadow-sm text-babase font-semibold mb-8", placeholder="min") }}
           </div>
         </div>
       
