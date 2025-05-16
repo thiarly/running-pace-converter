@@ -711,3 +711,27 @@ def buscar_resumos():
         }
         for r in resultados
     ])
+
+
+
+@app.route('/resumo/editar/<int:id>', methods=['GET', 'POST'])
+@login_required
+def editar_resumo(id):
+    resumo = ResumoSalvo.query.get_or_404(id)
+    if resumo.user_id != current_user.id:
+        flash("Você não tem permissão para editar esse resumo.", "danger")
+        return redirect(url_for('resumo_view'))
+
+    form = SalvarResumoForm(obj=resumo)
+
+    if form.validate_on_submit():
+        resumo.nome_treino = form.nome_treino.data
+        resumo.data = form.data.data
+        resumo.comentario = form.comentario.data
+
+        # opcionalmente você pode reprocessar tempos ou suplementos aqui
+        database.session.commit()
+        flash("Resumo atualizado com sucesso!", "success")
+        return redirect(url_for('resumo_view'))
+
+    return render_template("editar_resumo.html", form=form, resumo=resumo)

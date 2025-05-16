@@ -181,10 +181,13 @@ Resumo do Planejamento
           <p class="text-sm text-gray-600">{{ resumo.comentario }}</p>
           <div class="text-sm text-blue-600 mt-1 cursor-pointer detalhes-link" data-id="resumo-{{ loop.index }}">Ver detalhes ⬇</div>
         </div>
-        <form method="POST" action="{{ url_for('deletar_resumo', id=resumo.id) }}" onsubmit="return confirm('Tem certeza que deseja excluir este resumo?');" class="ml-4">
-          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-          <button type="submit" class="text-sm text-red-600">Excluir 🗑</button>
-        </form>
+        <div class="ml-4 flex flex-col items-end space-y-1 sm:flex-row sm:items-center sm:space-y-0 sm:space-x-4">
+          <form method="POST" action="{{ url_for('deletar_resumo', id=resumo.id) }}" onsubmit="return confirm('Tem certeza que deseja excluir este resumo?');">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <button type="submit" class="text-sm text-red-600 hover:underline">🗑 Excluir</button>
+          </form>
+          <a href="{{ url_for('editar_resumo', id=resumo.id) }}" class="text-sm text-blue-600 hover:underline">✏️ Editar</a>
+        </div>        
       </div>    
 
       <div id="resumo-{{ loop.index }}" class="mt-4 hidden">
