@@ -735,3 +735,6 @@ def editar_resumo(id):
         return redirect(url_for('resumo_view'))
 
     return render_template("editar_resumo.html", form=form, resumo=resumo)
+
+
+

@@ -40,8 +40,10 @@ Planejamento de Suplementos
       </button>
     </form>
 
+    <a href="{{url_for('resumo_view')}}" class="bg-gray-500 text-white text-sm text-center px-4 py-1 rounded hover:bg-gray-600 w-full sm:w-auto">Calcular Resumo</a>
+
     <!-- Form Remover Todos -->
-    <form method="POST" action="{{ url_for('remover_todos_itens') }}" onsubmit="return confirm('Deseja remover todos os itens?')">
+    <form method="POST" class="w-full sm:w-auto" action="{{ url_for('remover_todos_itens') }}" onsubmit="return confirm('Deseja remover todos os itens?')">
       <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
       <button type="submit" class="bg-red-500 text-white text-sm px-4 py-1 rounded hover:bg-red-600 w-full sm:w-auto">
         Remover Todos
