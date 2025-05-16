@@ -33,36 +33,44 @@ Resumo do Planejamento
   <h1 class="text-2xl font-bold text-left text-gray-800 mb-6 border-b pb-2">Resumo do Planejamento</h1>
 
 
-  <form method="POST" class="grid grid-cols-1 md:grid-cols-3 sm:grid-cols-2 gap-6 mb-8">
+  <form method="POST" class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6 text-sm text-gray-700 items-end justify-center text-center">
     {{ form.hidden_tag() }}
-
+  
+    <!-- Natação -->
     <div>
-      <label class="block text-sm font-medium text-gray-700">🏊 Horas Natação</label>
-      {{ form.tempo_natacao_horas(class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-md") }}
-      <label class="block text-sm font-medium text-gray-700 mt-2">⏱️ Minutos Natação</label>
-      {{ form.tempo_natacao_minutos(class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-md") }}
+      <label class="block mb-1 font-semibold">🏊 Natação</label>
+      <div class="flex gap-2 justify-center">
+        {{ form.tempo_natacao_horas(class="w-14 text-center py-1 border rounded", placeholder="h") }}
+        {{ form.tempo_natacao_minutos(class="w-14 text-center py-1 border rounded", placeholder="min") }}
+      </div>
     </div>
-    
+  
+    <!-- Bike -->
     <div>
-      <label class="block text-sm font-medium text-gray-700">🚴 Horas Bike</label>
-      {{ form.tempo_bike_horas(class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-md") }}
-      <label class="block text-sm font-medium text-gray-700 mt-2">⏱️ Minutos Bike</label>
-      {{ form.tempo_bike_minutos(class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-md") }}
+      <label class="block mb-1 font-semibold">🚴 Bike</label>
+      <div class="flex gap-2 justify-center">
+        {{ form.tempo_bike_horas(class="w-14 text-center py-1 border rounded", placeholder="h") }}
+        {{ form.tempo_bike_minutos(class="w-14 text-center py-1 border rounded", placeholder="min") }}
+      </div>
     </div>
-    
+  
+    <!-- Corrida -->
     <div>
-      <label class="block text-sm font-medium text-gray-700">🏃 Horas Corrida</label>
-      {{ form.tempo_corrida_horas(class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-md") }}
-      <label class="block text-sm font-medium text-gray-700 mt-2">⏱️ Minutos Corrida</label>
-      {{ form.tempo_corrida_minutos(class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-md") }}
+      <label class="block mb-1 font-semibold">🏃 Corrida</label>
+      <div class="flex gap-2 justify-center">
+        {{ form.tempo_corrida_horas(class="w-14 text-center py-1 border rounded", placeholder="h") }}
+        {{ form.tempo_corrida_minutos(class="w-14 text-center py-1 border rounded", placeholder="min") }}
+      </div>
     </div>
-
-    <div class="md:col-span-2 md:col-span-3 flex flex-col sm:flex-row justify-center gap-4 mt-4">
-      <button type="submit" name="submit" class="bg-blue-500 text-white text-sm px-4 py-1 rounded hover:bg-blue-600 w-full sm:w-auto">Calcular Resumo</button>
-      <a href="{{url_for('planejamento')}}" class="bg-gray-500 text-white text-sm text-center px-4 py-1 rounded hover:bg-gray-600 w-full sm:w-auto">Editar Planejamento</a>
-      <button type="submit" name="limpar" class="bg-red-500 text-white text-sm px-4 py-1 rounded hover:bg-red-600 w-full sm:w-auto">Limpar Tela</button>
+  
+    <!-- Botões -->
+    <div class="md:col-span-3 flex flex-col sm:flex-row justify-center gap-4 mt-4">
+      <button type="submit" name="submit" class="bg-blue-600 hover:bg-blue-700 text-white text-sm px-4 py-1 rounded">Calcular Resumo</button>
+      <a href="{{ url_for('planejamento') }}" class="bg-gray-500 hover:bg-gray-600 text-white text-sm px-4 py-1 rounded">Editar Planejamento</a>
+      <button type="submit" name="limpar" class="bg-red-500 hover:bg-red-600 text-white text-sm px-4 py-1 rounded">Limpar Tela</button>
     </div>
   </form>
+  
 
 
   {% if totais %}
@@ -71,7 +79,7 @@ Resumo do Planejamento
   </div>
 
   <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-    {% set ordem = ["Macronutrientes", "Eletrólitos", "Estimulantes e Compostos",  "Vitaminas", "Aminoácidos"] %}
+    {% set ordem = ["Macronutrientes", "Eletrólitos", "Estimulantes e Compostos",  "Vitaminas", "Aminoácidos"] %} 
     {% set ordem_eletrolitos = ["Sódio", "Magnésio", "Potássio", "Cálcio"] %}
     {% set icones = {
       "Macronutrientes": "⛽️",
