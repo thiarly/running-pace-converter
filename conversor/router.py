@@ -595,7 +595,7 @@ def resumo_view():
             )
         )
 
-    resumos = resumos_query.order_by(ResumoSalvo.data.desc(), ResumoSalvo.id.desc()).all()
+    resumos = resumos_query.order_by(ResumoSalvo.ordem.desc(), ResumoSalvo.id.desc()).all()
 
     
 
@@ -658,6 +658,10 @@ def salvar_resumo():
             tempo_total=tempo_total
         )
 
+        # Define a maior ordem atual + 1
+        maior_ordem = database.session.query(database.func.max(ResumoSalvo.ordem)).filter_by(user_id=current_user.id).scalar() or 0
+        novo_resumo.ordem = maior_ordem + 1
+            
         database.session.add(novo_resumo)
         database.session.commit()
         flash("Resumo salvo com sucesso!", "success")
@@ -738,3 +742,35 @@ def editar_resumo(id):
 
 
 
+# 🔼 mover_cima (ordem maior → menor)
+@app.route('/resumo/mover_cima/<int:id>')
+@login_required
+def mover_cima(id):
+    atual = ResumoSalvo.query.get_or_404(id)
+    anterior = ResumoSalvo.query.filter(
+        ResumoSalvo.user_id == current_user.id,
+        ResumoSalvo.ordem > atual.ordem
+    ).order_by(ResumoSalvo.ordem.asc()).first()
+
+    if anterior:
+        atual.ordem, anterior.ordem = anterior.ordem, atual.ordem
+        database.session.commit()
+
+    return redirect(url_for('resumo_view'))
+
+
+# 🔽 mover_baixo (ordem menor → maior)
+@app.route('/resumo/mover_baixo/<int:id>')
+@login_required
+def mover_baixo(id):
+    atual = ResumoSalvo.query.get_or_404(id)
+    proximo = ResumoSalvo.query.filter(
+        ResumoSalvo.user_id == current_user.id,
+        ResumoSalvo.ordem < atual.ordem
+    ).order_by(ResumoSalvo.ordem.desc()).first()
+
+    if proximo:
+        atual.ordem, proximo.ordem = proximo.ordem, atual.ordem
+        database.session.commit()
+
+    return redirect(url_for('resumo_view'))

@@ -128,6 +128,7 @@ class ResumoSalvo(database.Model):
     tempo_bike = database.Column(database.Float)
     tempo_corrida = database.Column(database.Float)
     tempo_total = database.Column(database.Float)
+    ordem = database.Column(database.Integer, nullable=False, default=0)
     criado_em = database.Column(database.DateTime, default=datetime.utcnow)
 
     def __repr__(self):
