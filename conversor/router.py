@@ -405,6 +405,8 @@ def novo_suplemento():
             vit_b9=form.vit_b9.data,
             vit_b12=form.vit_b12.data,
             vit_c=form.vit_c.data,
+            ingredientes=form.ingredientes.data,
+            comentario=form.comentario.data,
             user_id=current_user.id  # 👈 liga ao usuário
         )
         database.session.add(suplemento)
@@ -808,3 +810,6 @@ def salvar_resumo_livre():
     database.session.commit()
     flash("Resumo livre salvo com sucesso!", "success")
     return redirect(url_for('resumo_view'))
+
+
+#

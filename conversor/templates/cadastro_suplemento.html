@@ -94,9 +94,23 @@ Cadastro de Suplemento
           {{ campo(class="w-full px-1 py-0.5 border border-gray-300 rounded") }}
         </div>
         {% endfor %}
+
       </div>
 
-      <div class="mt-8 text-center">
+
+
+        <!-- Ingredientes e Comentário -->
+        <div class="col-span-full border-b pb-2 mt-6 mb-2">
+          <h2 class="text-lg font-semibold text-gray-700">Ingredientes e Comentário</h2>
+        </div>
+        {% for campo in [form.ingredientes, form.comentario] %}
+        <div>
+          {{ campo.label(class="block text-base text-gray-600") }}
+          {{ campo(class="w-full text-sm px-1 py-0.5 border border-gray-300 rounded") }}
+        </div>
+        {% endfor %}
+
+      <div class="mt-8 text-left">
         <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 text-sm rounded w-full sm:w-auto">
           Salvar Suplemento
         </button>

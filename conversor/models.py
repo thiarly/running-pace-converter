@@ -59,6 +59,9 @@ class Suplemento(database.Model):
     vit_b9 = database.Column(database.Float)
     vit_b12 = database.Column(database.Float)
     vit_c = database.Column(database.Float)
+    
+    comentario = database.Column(database.Text)  # campo livre para observações
+    ingredientes = database.Column(database.Text)  # composição ou descrição dos ingredientes
 
     def __repr__(self):
         return f'<Suplemento {self.nome}>'
