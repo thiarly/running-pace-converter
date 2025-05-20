@@ -774,3 +774,37 @@ def mover_baixo(id):
         database.session.commit()
 
     return redirect(url_for('resumo_view'))
+
+
+
+@app.route('/salvar_resumo_livre', methods=['POST'])
+@login_required
+def salvar_resumo_livre():
+    form = SalvarResumoForm()
+
+    itens = PlanejamentoItem.query.filter_by(user_id=current_user.id).all()
+    suplementos_utilizados = ", ".join(
+        [f"{item.quantidade}x {item.suplemento.nome}" for item in itens if item.suplemento]
+    )
+
+    resumo_dados = agrupar_por_categoria(calcular_totais_planejamento(itens))  # total bruto
+
+    novo_resumo = ResumoSalvo(
+        user_id=current_user.id,
+        nome_treino=form.nome_treino.data,
+        data=form.data.data,
+        comentario=form.comentario.data,
+        resumo_dados=resumo_dados,
+        suplementos_utilizados=suplementos_utilizados,
+        tempo_natacao=0,
+        tempo_bike=0,
+        tempo_corrida=0,
+        tempo_total=0,
+        ordem=(database.session.query(database.func.max(ResumoSalvo.ordem))
+               .filter_by(user_id=current_user.id).scalar() or 0) + 1
+    )
+
+    database.session.add(novo_resumo)
+    database.session.commit()
+    flash("Resumo livre salvo com sucesso!", "success")
+    return redirect(url_for('resumo_view'))
