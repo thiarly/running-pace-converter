@@ -100,22 +100,84 @@ Resumo do Planejamento
       "Aminoácidos": "bg-teal-50"
     } %}
 
+
+    {% set unidades = {
+      "Macronutrientes": {
+        "Carboidrato": "g"
+      },
+      "Eletrólitos": {
+        "Sódio": "mg",
+        "Magnésio": "mg",
+        "Potássio": "mg",
+        "Cálcio": "mg"
+      },
+      "Estimulantes e Compostos": {
+        "Cafeína": "mg",
+        "Taurina": "mg",
+        "Beta-Alanina": "mg",
+        "Citrulina": "mg",
+        "Creatina": "mg",
+        "CoQ10": "mg",
+        "Carnitina": "mg"
+      },
+      "Vitaminas": {
+        "Vitamina B1": "mg",
+        "Vitamina B2": "mg",
+        "Vitamina B3": "mg",
+        "Vitamina B6": "mg",
+        "Vitamina B7": "µg",
+        "Vitamina B9": "µg",
+        "Vitamina B12": "µg",
+        "Vitamina C": "mg"
+      },
+      "Aminoácidos": {
+        "Leucina": "mg",
+        "Isoleucina": "mg",
+        "Valina": "mg",
+        "Arginina": "mg"
+      }
+    } %}
+
+    {% set tempo_horas = tempo_total %}
+
+    <div class="text-center mb-4">
+      <button onclick="document.getElementById('detalhes-secundarios').classList.toggle('hidden')" class="text-sm text-blue-600 underline">
+        Mostrar/ocultar Vitaminas e Aminoácidos
+      </button>
+    </div>
+    
     {% for categoria in ordem %}
       {% if resumo[categoria] %}
-        <div class="{% if categoria in ['Macronutrientes', 'Eletrólitos'] %}md:col-span-3{% else %}md:col-span-1{% endif %} rounded-xl shadow p-4 {{ cores[categoria] }}">
+        
+      {% if categoria == "Vitaminas" %}
+      <div id="detalhes-secundarios" class="hidden grid grid-cols-2 md:col-span-3 gap-4">
+      {% endif %}
+    
+        <div class="{% if categoria in ['Macronutrientes', 'Eletrólitos'] %}md:col-span-3{% else %}md:col-span-3{% endif %} rounded-xl shadow p-4 {{ cores[categoria] }}">
           <h3 class="font-bold text-gray-800 mb-2">{{ icones[categoria] }} {{ categoria }}</h3>
           <ul class="list-disc pl-5 text-sm text-gray-700">
             {% if categoria == "Eletrólitos" %}
               {% for item in ordem_eletrolitos %}
-                <li><strong>{{ item }}:</strong> {{ resumo[categoria][item] }}</li>
+              <li title="{{ (resumo[categoria][item] * tempo_horas) | round(1) }} {{ unidades[categoria].get(item, '') }} no total">
+                <strong>{{ item }}:</strong>
+                {{ resumo[categoria][item] | round(1) }} {{ unidades[categoria].get(item, '') }} por hora
+              </li>
               {% endfor %}
             {% else %}
               {% for nome, valor in resumo[categoria].items() %}
-                <li><strong>{{ nome }}:</strong> {{ valor }}</li>
+              <li title="{{ (valor * tempo_horas) | round(1) }} {{ unidades[categoria].get(nome, '') }} no total">
+                <strong>{{ nome }}:</strong>
+                {{ valor | round(1) }} {{ unidades[categoria].get(nome, '') }} por hora
+              </li>
               {% endfor %}
             {% endif %}
           </ul>
         </div>
+    
+        {% if categoria == "Aminoácidos" %}
+        </div>
+        {% endif %}
+    
       {% endif %}
     {% endfor %}
   </div>
