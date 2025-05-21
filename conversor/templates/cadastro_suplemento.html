@@ -42,6 +42,15 @@ Cadastro de Suplemento
           {{ form.marca(class="w-full px-1 py-0.5 border border-gray-300 rounded") }}
         </div>
 
+        <div>
+          {{ form.gramas_por_porcao.label(class="block text-sm text-gray-600") }}
+          {{ form.gramas_por_porcao(class="w-full px-1 py-0.5 border border-gray-300 rounded") }}
+        </div>
+        <div>
+          {{ form.descricao_porcao.label(class="block text-sm text-gray-600") }}
+          {{ form.descricao_porcao(class="w-full px-1 py-0.5 border border-gray-300 rounded") }}
+        </div>
+
         <!-- Macronutrientes -->
         <div class="col-span-full border-b pb-2 mt-6 mb-2">
           <h2 class="text-lg font-semibold text-gray-700">Macronutrientes</h2>

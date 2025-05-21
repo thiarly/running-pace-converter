@@ -75,6 +75,8 @@
                     <tr id="details-{{ suplemento.id }}" class="hidden bg-gray-100 border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
                         <td colspan="6" class="p-4">
                             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2 text-xs sm:text-sm">
+                              <div><strong>Porção:</strong> {{ suplemento.gramas_por_porcao or '–' }}</div>
+                              <div><strong>Descrição Porção:</strong> {{ suplemento.descricao_porcao or '–' }}</div>
                                 <div><strong>Magnésio:</strong> {{ suplemento.magnesio or 0 }} mg</div>
                                 <div><strong>Potássio:</strong> {{ suplemento.potassio or 0 }} mg</div>
                                 <div><strong>Cálcio:</strong> {{ suplemento.calcio or 0 }} mg</div>

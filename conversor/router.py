@@ -485,7 +485,7 @@ def planejamento():
             suplemento_id=form.suplemento_id.data, user_id=current_user.id
         ).first()
         if item_existente:
-            item_existente.quantidade += form.quantidade.data
+            item_existente.quantidade += float(form.quantidade.data)
         else:
             novo_item = PlanejamentoItem(
                 suplemento_id=form.suplemento_id.data,
@@ -520,13 +520,22 @@ def planejamento():
 @login_required
 def atualizar_quantidade(item_id):
     item = PlanejamentoItem.query.filter_by(id=item_id, user_id=current_user.id).first_or_404()
-    nova_quantidade = request.form.get('quantidade', type=int)
-    if nova_quantidade and nova_quantidade > 0:
-        item.quantidade = nova_quantidade
-        database.session.commit()
-        flash('Quantidade atualizada com sucesso!', 'success')
-    else:
+
+    try:
+        # Aceita ponto ou vírgula como separador decimal
+        quantidade_str = request.form.get('quantidade', '').replace(',', '.')
+        nova_quantidade = float(quantidade_str)
+
+        if nova_quantidade >= 0.01:
+            item.quantidade = nova_quantidade
+            database.session.commit()
+            flash('Quantidade atualizada com sucesso!', 'success')
+        else:
+            flash('Quantidade inválida.', 'danger')
+
+    except (ValueError, TypeError):
         flash('Quantidade inválida.', 'danger')
+
     return redirect(url_for('planejamento'))
 
 # Remover item do planejamento

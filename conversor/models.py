@@ -30,6 +30,9 @@ class Suplemento(database.Model):
     nome = database.Column(database.String(100), nullable=False)
     tipo = database.Column(database.String(50), nullable=False)
     marca = database.Column(database.String(50))
+    
+    gramas_por_porcao = database.Column(database.Float)
+    descricao_porcao = database.Column(database.String(50))
 
     carbo = database.Column(database.Float)
     sodio = database.Column(database.Float)
@@ -73,7 +76,7 @@ class PlanejamentoItem(database.Model):
     id = database.Column(database.Integer, primary_key=True)
     user_id = database.Column(database.Integer, database.ForeignKey('user.id'), nullable=False)
     suplemento_id = database.Column(database.Integer, database.ForeignKey('suplementos.id', ondelete='SET NULL'))
-    quantidade = database.Column(database.Integer, nullable=False)
+    quantidade = database.Column(database.Float, nullable=False)
 
     suplemento = database.relationship('Suplemento', lazy=True)
 

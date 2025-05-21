@@ -33,7 +33,7 @@ Planejamento de Suplementos
       </div>
       <div class="w-full sm:w-auto">
         {{ form.quantidade.label(class="block text-sm font-medium text-gray-700") }}
-        {{ form.quantidade(class="border border-gray-300 rounded px-1 py-0.5 text-sm w-full") }}
+        {{ form.quantidade(class="border border-gray-300 rounded px-1 py-0.5 text-sm w-full", step="0.01", min="0.01") }}
       </div>
       <button type="submit" class="bg-blue-500 text-white text-sm px-4 py-1 rounded hover:bg-blue-600 w-full sm:w-auto">
         Adicionar
@@ -69,14 +69,18 @@ Planejamento de Suplementos
           {% for item in itens %}
           <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200" >
             <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ item.suplemento.nome }}</th>
-            <td class="px-6 py-4 whitespace-nowrap">{{ item.suplemento.carbo if item.suplemento.carbo is not none else 0 }}g</td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              {{ (item.suplemento.carbo or 0) * item.quantidade | round(1) }}g
+            </td>
             
 
-            <td class="px-6 py-4 whitespace-nowrap">{{ item.suplemento.sodio if item.suplemento.sodio is not none else 0 }}mg</td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              {{ (item.suplemento.sodio or 0) * item.quantidade | round(1) }}mg
+            </td>
             <td class="px-6 py-4 whitespace-nowrap">
               <form method="POST" action="{{ url_for('atualizar_quantidade', item_id=item.id) }}" class="flex items-center gap-2">
                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                <input type="number" name="quantidade" value="{{ item.quantidade }}" class="w-20 px-2 py-1 border rounded">
+                <input type="number" name="quantidade" value="{{ item.quantidade | float | round(2) }}" step="any" min="0.01" class="w-20 px-2 py-1 border rounded">
                 <button type="submit" class="text-blue-600 hover:underline">Atualizar</button>
               </form>
             </td>
