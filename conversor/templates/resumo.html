@@ -138,36 +138,48 @@ Resumo do Planejamento
       }
     } %}
 
+
+
+
     {% set tempo_horas = tempo_total %}
 
-    <div class="text-center mb-4">
-      <button onclick="document.getElementById('detalhes-secundarios').classList.toggle('hidden')" class="text-sm text-blue-600 underline">
-        Mostrar/ocultar Vitaminas e Aminoácidos
+    <div class="text-center mb-6">
+      <button
+        onclick="document.getElementById('detalhes-secundarios').classList.toggle('hidden'); this.querySelector('svg').classList.toggle('rotate-45')"
+        class="flex items-center justify-center mx-auto gap-2 text-sm font-medium text-blue-700 hover:text-blue-600 transition"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+        </svg>
+        Vitaminas e Aminoácidos
       </button>
     </div>
+
     
     {% for categoria in ordem %}
       {% if resumo[categoria] %}
-        
-      {% if categoria == "Vitaminas" %}
-      <div id="detalhes-secundarios" class="hidden grid grid-cols-2 md:col-span-3 gap-4">
-      {% endif %}
     
-        <div class="{% if categoria in ['Macronutrientes', 'Eletrólitos'] %}md:col-span-3{% else %}md:col-span-3{% endif %} rounded-xl shadow p-4 {{ cores[categoria] }}">
+        {% if categoria == "Vitaminas" %}
+        <div id="detalhes-secundarios" class="hidden grid grid-cols-1 md:grid-cols-2 gap-4 md:col-span-3 transition-all duration-300 ease-in-out">
+        {% endif %}
+    
+        <div class="{% if categoria in ['Macronutrientes', 'Eletrólitos', 'Estimulantes e Compostos'] %}md:col-span-3{% else %}md:col-span-1{% endif %} rounded-xl shadow p-4 {{ cores[categoria] }}">
           <h3 class="font-bold text-gray-800 mb-2">{{ icones[categoria] }} {{ categoria }}</h3>
           <ul class="list-disc pl-5 text-sm text-gray-700">
             {% if categoria == "Eletrólitos" %}
               {% for item in ordem_eletrolitos %}
-              <li title="{{ (resumo[categoria][item] * tempo_horas) | round(1) }} {{ unidades[categoria].get(item, '') }} no total">
+              <li>
                 <strong>{{ item }}:</strong>
-                {{ resumo[categoria][item] | round(1) }} {{ unidades[categoria].get(item, '') }} por hora
+                {{ resumo[categoria][item] | round(1) }} {{ unidades[categoria].get(item, '') }}/h ⇥
+                {{ (resumo[categoria][item] * tempo_horas) | round(1) }} {{ unidades[categoria].get(item, '') }}/total
               </li>
               {% endfor %}
             {% else %}
               {% for nome, valor in resumo[categoria].items() %}
-              <li title="{{ (valor * tempo_horas) | round(1) }} {{ unidades[categoria].get(nome, '') }} no total">
+              <li>
                 <strong>{{ nome }}:</strong>
-                {{ valor | round(1) }} {{ unidades[categoria].get(nome, '') }} por hora
+                {{ valor | round(1) }} {{ unidades[categoria].get(nome, '') }}/h ⇥
+                {{ (valor * tempo_horas) | round(1) }} {{ unidades[categoria].get(nome, '') }}/total
               </li>
               {% endfor %}
             {% endif %}
@@ -180,6 +192,10 @@ Resumo do Planejamento
     
       {% endif %}
     {% endfor %}
+
+
+
+
   </div>
 
   <form method="POST" action="{{ url_for('salvar_resumo') }}" class="mt-8 max-w-xl mx-auto bg-gray-200 p-4 rounded shadow">
@@ -456,4 +472,18 @@ Resumo do Planejamento
   </script>
 
 
+
+
+      <script>
+        function toggleDetalhes() {
+          const detalhes = document.getElementById("detalhes-secundarios");
+          const icon = document.getElementById("toggle-icon");
+          detalhes.classList.toggle("hidden");
+      
+          // Altera o ícone ➕ <-> ➖
+          icon.innerHTML = detalhes.classList.contains("hidden")
+            ? `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />`  // +
+            : `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" />`;        // -
+        }
+      </script>
 {% endblock %}
