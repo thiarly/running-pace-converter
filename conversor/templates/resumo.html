@@ -262,7 +262,49 @@ Resumo do Planejamento
       "Aminoácidos": "bg-blue-50"
     } %}
 
+
+
     {% for resumo in resumos %}
+
+
+    {% set unidades = {
+      "Macronutrientes": {
+        "Carboidrato": "g"
+      },
+      "Eletrólitos": {
+        "Sódio": "mg",
+        "Magnésio": "mg",
+        "Potássio": "mg",
+        "Cálcio": "mg"
+      },
+      "Estimulantes e Compostos": {
+        "Cafeína": "mg",
+        "Taurina": "mg",
+        "Beta-Alanina": "mg",
+        "Citrulina": "mg",
+        "Creatina": "mg",
+        "CoQ10": "mg",
+        "Carnitina": "mg"
+      },
+      "Vitaminas": {
+        "Vitamina B1": "mg",
+        "Vitamina B2": "mg",
+        "Vitamina B3": "mg",
+        "Vitamina B6": "mg",
+        "Vitamina B7": "µg",
+        "Vitamina B9": "µg",
+        "Vitamina B12": "µg",
+        "Vitamina C": "mg"
+      },
+      "Aminoácidos": {
+        "Leucina": "mg",
+        "Isoleucina": "mg",
+        "Valina": "mg",
+        "Arginina": "mg"
+      }
+    } %}
+
+
     <div class="bg-white rounded shadow p-4 mb-6 border border-gray-200">
       
       <!-- Linha superior com título e setas -->
@@ -348,11 +390,11 @@ Resumo do Planejamento
             <ul class="list-disc pl-5 text-sm text-gray-800">
               {% if categoria == "Eletrólitos" %}
                 {% for item in ordem_eletrolitos %}
-                  <li><strong>{{ item }}:</strong> {{ resumo.resumo_dados[categoria][item] }}</li>
+                <li><strong>{{ item }}:</strong> {{ resumo.resumo_dados[categoria][item] }} {{ unidades[categoria].get(item, '') }}/h</li>
                 {% endfor %}
               {% else %}
                 {% for item, valor in resumo.resumo_dados[categoria].items() %}
-                  <li><strong>{{ item }}:</strong> {{ valor }}</li>
+                <li><strong>{{ item }}:</strong> {{ valor }} {{ unidades[categoria].get(item, '') }}/h</li>
                 {% endfor %}
               {% endif %}
             </ul>
