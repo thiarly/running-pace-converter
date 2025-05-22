@@ -8,20 +8,20 @@
     <title>TC Sports</title>
 </head>
 <body class="bg-gray-100">
-<nav class="bg-white border-gray-200 dark:bg-gray-900 dark:border-gray-700">
+<nav class="bg-white border-gray-200">
   <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
     <a href="{{url_for('zonas')}}" class="flex items-center">
       <img src="{{ url_for('static', filename='image/tcsports1.png')}}" class="h-12 mr-3 " alt="Flowbite Logo" />
       
     </a>
-    <button id="btNav" data-collapse-toggle="navbar-dropdown" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="navbar-dropdown" aria-expanded="false">
+    <button id="btNav" data-collapse-toggle="navbar-dropdown" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200  dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="navbar-dropdown" aria-expanded="false">
         <span class="sr-only">Open main menu</span>
         <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15"/>
         </svg>
     </button>
     <div class="hidden w-full md:block md:w-auto" id="divNav">
-      <ul class="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+      <ul class="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md">
 
 
 
@@ -31,19 +31,19 @@
     </svg></button>
           <!-- Dropdown menu -->
           <div id="dropdownNavbar4" class="absolute top-full mt-2 z-50 hidden font-normal bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
-              <ul class="py-2 text-sm text-gray-700 dark:text-gray-400" aria-labelledby="dropdownLargeButton">
+              <ul class="py-2 text-sm text-gray-700 " aria-labelledby="dropdownLargeButton">
                 <li>
-                  <a href="{{url_for('novo_suplemento')}}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Novo Suplemento</a>
+                  <a href="{{url_for('novo_suplemento')}}" class="block px-4 py-2 hover:bg-gray-100 ">Novo Suplemento</a>
                 </li>
                 <li>
-                  <a href="{{url_for('listar_suplementos')}}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Lista de Suplementos</a>
+                  <a href="{{url_for('listar_suplementos')}}" class="block px-4 py-2 hover:bg-gray-100 ">Lista de Suplementos</a>
                 </li>
     
                 <li>
-                  <a href="{{url_for('planejamento')}}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Meu Planejamento</a>
+                  <a href="{{url_for('planejamento')}}" class="block px-4 py-2 hover:bg-gray-100 ">Meu Planejamento</a>
                 </li>
                 <li>
-                  <a href="{{url_for('resumo_view')}}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Resumo por Hora</a>
+                  <a href="{{url_for('resumo_view')}}" class="block px-4 py-2 hover:bg-gray-100 ">Resumo por Hora</a>
                 </li>
               </ul>
           </div>
@@ -56,15 +56,15 @@
   </svg></button>
             <!-- Dropdown menu -->
             <div id="dropdownNavbar1" class="absolute top-full mt-2 z-50 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
-                <ul class="py-2 text-sm text-gray-700 dark:text-gray-400" aria-labelledby="dropdownLargeButton">
+                <ul class="py-2 text-sm text-gray-700 " aria-labelledby="dropdownLargeButton">
                   <li>
-                    <a href="{{url_for('home')}}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Run-Bike-Swim</a>
+                    <a href="{{url_for('home')}}" class="block px-4 py-2 hover:bg-gray-100 ">Run-Bike-Swim</a>
                   </li>
                   <li>
-                    <a href="{{url_for('estimativa_tempo')}}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Tempo</a>
+                    <a href="{{url_for('estimativa_tempo')}}" class="block px-4 py-2 hover:bg-gray-100 ">Tempo</a>
                   </li>
                   <li>
-                    <a href="{{url_for('estimativa_distancia')}}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Distância</a>
+                    <a href="{{url_for('estimativa_distancia')}}" class="block px-4 py-2 hover:bg-gray-100 ">Distância</a>
                   </li>
                 </ul>
             </div>
@@ -77,27 +77,27 @@
 </svg></button>
           <!-- Dropdown menu -->
           <div id="dropdownNavbar2" class="absolute top-full mt-2 z-50 hidden font-normal bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
-              <ul class="py-2 text-sm text-gray-700 dark:text-gray-400" aria-labelledby="dropdownLargeButton">
+              <ul class="py-2 text-sm text-gray-700 " aria-labelledby="dropdownLargeButton">
                 <li>
-                  <a href="{{url_for('conversao_pace')}}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Pace - Km/h</a>
+                  <a href="{{url_for('conversao_pace')}}" class="block px-4 py-2 hover:bg-gray-100 ">Pace - Km/h</a>
                 </li>
                 <li>
-                  <a href="{{url_for('conversao_velocidade')}}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Km/h - Pace</a>
+                  <a href="{{url_for('conversao_velocidade')}}" class="block px-4 py-2 hover:bg-gray-100 ">Km/h - Pace</a>
                 </li>
                 <li>
-                  <a href="{{url_for('conversao_milha_pace')}}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Milha - Pace</a>
+                  <a href="{{url_for('conversao_milha_pace')}}" class="block px-4 py-2 hover:bg-gray-100 ">Milha - Pace</a>
                 </li>
                 <li>
-                  <a href="{{url_for('conversao_pace_milha')}}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Pace - Milha</a>
+                  <a href="{{url_for('conversao_pace_milha')}}" class="block px-4 py-2 hover:bg-gray-100 ">Pace - Milha</a>
                 </li>
                 <li>
-                  <a href="{{url_for('tabela_pace')}}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Tabela Pace</a>
+                  <a href="{{url_for('tabela_pace')}}" class="block px-4 py-2 hover:bg-gray-100 ">Tabela Pace</a>
                 </li>
                 <li>
-                  <a href="{{url_for('conversao_km_para_milhas')}}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">KM - Milhas</a>
+                  <a href="{{url_for('conversao_km_para_milhas')}}" class="block px-4 py-2 hover:bg-gray-100 ">KM - Milhas</a>
                 </li>
                 <li>
-                  <a href="{{url_for('conversao_milhas_para_km')}}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Milhas - KM</a>
+                  <a href="{{url_for('conversao_milhas_para_km')}}" class="block px-4 py-2 hover:bg-gray-100 ">Milhas - KM</a>
                 </li>
               </ul>
           </div>
@@ -110,12 +110,12 @@
 </svg></button>
         <!-- Dropdown menu -->
         <div id="dropdownNavbar3" class="absolute top-full mt-2 z-50 hidden font-normal bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
-            <ul class="py-2 text-sm text-gray-700 dark:text-gray-400" aria-labelledby="dropdownLargeButton">
+            <ul class="py-2 text-sm text-gray-700 " aria-labelledby="dropdownLargeButton">
               <li>
-                <a href="{{url_for('calculadora_vo2max')}}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">VO2 Max 10k</a>
+                <a href="{{url_for('calculadora_vo2max')}}" class="block px-4 py-2 hover:bg-gray-100">VO2 Max 10k</a>
               </li>
               <li>
-                <a href="{{url_for('previsao_prova_3k')}}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Teste 3k</a>
+                <a href="{{url_for('previsao_prova_3k')}}" class="block px-4 py-2 hover:bg-gray-100">Teste 3k</a>
               </li>
             </ul>
         </div>
