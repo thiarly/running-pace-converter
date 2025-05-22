@@ -779,11 +779,9 @@ def mover_baixo(id):
         ResumoSalvo.user_id == current_user.id,
         ResumoSalvo.ordem < atual.ordem
     ).order_by(ResumoSalvo.ordem.desc()).first()
-
     if proximo:
         atual.ordem, proximo.ordem = proximo.ordem, atual.ordem
         database.session.commit()
-
     return redirect(url_for('resumo_view'))
 
 
