@@ -234,17 +234,15 @@ Resumo do Planejamento
 
 <hr class="my-10 border-t-2 border-gray-300">
 
-<div class="text-center mb-6">
-  <h2 class="text-xl font-bold text-gray-800"> Resumos Salvos</h2>
-</div>
-
-<div class="mt-10 max-w-8xl mx-auto px-1 sm:px-4 lg:px-6">
-
-  <form method="get" class="mb-6 max-w-md">
+<div class="bg-gray-200 border border-gray-200 rounded-md p-4 mb-6">
+  <h2 class="text-lg font-bold text-gray-800 border-b pb-2 mb-3 flex items-center gap-2">
+    <i class="fas fa-folder-open text-blue-600"></i> Resumos Salvos
+  </h2>
+  <form method="get" class="max-w-md">
     <input type="text" id="campoBusca" placeholder="Buscar por título ou comentário 🔎"
-           class="w-full px-4 py-2 border rounded shadow-sm">
+          class="w-full px-4 py-2 border rounded shadow-sm mb-4">
   </form>
-
+</div>
   
   <div id="resumosContainer">
     {% set icones = {
@@ -306,7 +304,7 @@ Resumo do Planejamento
     } %}
 
 
-    <div class="bg-white rounded shadow p-4 mb-6 border border-gray-200">
+    <div class="bg-white rounded shadow p-4 mb-4 border border-gray-200">
       
       <!-- Linha superior com título e setas -->
       <div class="flex justify-between items-start">
