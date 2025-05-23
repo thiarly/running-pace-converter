@@ -383,32 +383,64 @@ Resumo do Planejamento
         {% set ordem = ["Macronutrientes", "Eletrólitos", "Estimulantes e Compostos", "Vitaminas",  "Aminoácidos"] %}
         {% set ordem_eletrolitos = ["Sódio", "Magnésio", "Potássio", "Cálcio"] %}
 
-        {% for categoria in ordem %}
-        {% if resumo.resumo_dados[categoria] %}
-        <div class="mb-2 p-3 rounded-xl shadow {{ cores[categoria] }}">
-          <h4 class="font-semibold text-gray-900 mb-1">{{ icones[categoria] }} {{ categoria }}</h4>
-          <ul class="list-disc pl-5 text-sm text-gray-800">
-            {% if categoria == "Eletrólitos" %}
-              {% for item in ordem_eletrolitos %}
-              <li>
-                <strong>{{ item }}:</strong>
-                {{ resumo.resumo_dados[categoria][item] | round(1) }} {{ unidades[categoria].get(item, '') }}/h ⇥
-                {{ (resumo.resumo_dados[categoria][item] * resumo.tempo_total) | round(1) }} {{ unidades[categoria].get(item, '') }} total
-              </li>
-              {% endfor %}
-            {% else %}
-              {% for item, valor in resumo.resumo_dados[categoria].items() %}
-              <li>
-                <strong>{{ item }}:</strong>
-                {{ valor | round(1) }} {{ unidades[categoria].get(item, '') }}/h ⇥
-                {{ (valor * resumo.tempo_total) | round(1) }} {{ unidades[categoria].get(item, '') }} total
-              </li>
-              {% endfor %}
+
+
+
+
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {% for categoria in ordem %}
+            {% if resumo.resumo_dados[categoria] %}
+              {% set dados = resumo.resumo_dados[categoria] %}
+              {% if categoria == "Eletrólitos" %}
+                {% set total = 0 %}
+                {% for item in ordem_eletrolitos %}
+                  {% set _ = total.__add__(dados[item]) %}
+                {% endfor %}
+              {% else %}
+                {% set total = dados.values() | map('float') | sum %}
+              {% endif %}
+
+              {% if total > 0 %}
+              <div class="p-3 rounded-xl shadow {{ cores[categoria] }}">
+                <h4 class="font-semibold text-gray-900 mb-1">{{ icones[categoria] }} {{ categoria }}</h4>
+                <ul class="list-disc pl-5 text-sm text-gray-800">
+                  {% if categoria == "Eletrólitos" %}
+                    {% for item in ordem_eletrolitos %}
+                      {% set valor = dados[item] %}
+                      {% if valor > 0 %}
+                      <li>
+                        <strong>{{ item }}:</strong>
+                        {{ valor | round(1) }} {{ unidades[categoria].get(item, '') }}/h ⇥
+                        {{ (valor * resumo.tempo_total) | round(1) }} {{ unidades[categoria].get(item, '') }} total
+                      </li>
+                      {% endif %}
+                    {% endfor %}
+                  {% else %}
+                    {% for item, valor in dados.items() %}
+                      {% if valor > 0 %}
+                      <li>
+                        <strong>{{ item }}:</strong>
+                        {{ valor | round(1) }} {{ unidades[categoria].get(item, '') }}/h ⇥
+                        {{ (valor * resumo.tempo_total) | round(1) }} {{ unidades[categoria].get(item, '') }} total
+                      </li>
+                      {% endif %}
+                    {% endfor %}
+                  {% endif %}
+                </ul>
+              </div>
+              {% endif %}
             {% endif %}
-          </ul>
+          {% endfor %}
         </div>
-        {% endif %}
-      {% endfor %}
+
+
+
+
+
+
+
+
       </div>
     </div>
     {% endfor %}
