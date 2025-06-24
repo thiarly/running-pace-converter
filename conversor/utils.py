@@ -104,11 +104,6 @@ def calculate_pace_km(time_seconds, distance_km):
     return f"{pace_minutes:02}:{pace_seconds:02}"
 
 
-def calculate_vo2max(time_seconds, distance_km):
-    velocity_m_per_s = distance_km * 1000 / time_seconds
-    vo2max = (velocity_m_per_s - 5.2) * 1000 / (distance_km / 1.609344)
-    return round(vo2max, 1)
-
 def calculate_paces_by_vo2max(pace_seconds_per_km):
     paces = {
         "leve": pace_seconds_per_km / 0.68,
@@ -128,17 +123,63 @@ def riegel_prediction(base_time_seconds, base_distance_km, target_distance_km):
     return predicted_time_seconds
 
 
-def race_predictions(time_seconds, distance_km):
-    predictions = {
-        "3 km": riegel_prediction(time_seconds, distance_km, 3),
-        "5 km": riegel_prediction(time_seconds, distance_km, 5),
-        "10 km": time_seconds,
-        "meia": riegel_prediction(time_seconds, distance_km, 21.0975),
-        "maratona": riegel_prediction(time_seconds, distance_km, 42.195)
+def race_predictions_formatted(time_seconds, distance_km):
+    distance_mapping = {
+        "3 km": 3,
+        "5 km": 5,
+        "10 km": 10,
+        "meia": 21.0975,
+        "maratona": 42.195
     }
-    
-    return {key: f"{int(pred // 3600):02}:{int((pred % 3600) // 60):02}:{int(pred % 60):02}" for key, pred in predictions.items()}
 
+    predictions = {
+        prova: riegel_prediction(time_seconds, distance_km, dist)
+        for prova, dist in distance_mapping.items()
+    }
+
+    prediction_paces = {
+        prova: calculate_pace_km(predictions[prova], dist)
+        for prova, dist in distance_mapping.items()
+    }
+
+    return {
+        prova: {
+            'Tempo': f"{int(pred // 3600):02}:{int((pred % 3600) // 60):02}:{int(pred % 60):02}",
+            'Pace': prediction_paces[prova]
+        }
+        for prova, pred in predictions.items()
+    }
+
+def calculate_vo2max(time_seconds):
+    # Converte segundos totais em pace por km
+    pace_segundos = time_seconds / 10  # considerando 10 km
+
+    # Velocidade média em km/h
+    velocidade_kmh = 3600 / pace_segundos
+
+    # Fórmula estimada de VO2max baseada na velocidade (Garmin/Polar)
+    vo2max = 3.5 + 12 * (velocidade_kmh / 3.5)
+
+    # Cálculo das zonas baseadas no pace de referência
+    zonas = {
+        "Z1 (Leve - 50% a 60%)": (pace_segundos / 0.50, pace_segundos / 0.60),
+        "Z2 (Endurance - 60% a 70%)": (pace_segundos / 0.60, pace_segundos / 0.70),
+        "Z3 (Tempo - 70% a 80%)": (pace_segundos / 0.70, pace_segundos / 0.80),
+        "Z4 (Limiar - 80% a 90%)": (pace_segundos / 0.80, pace_segundos / 0.90),
+        "Z5 (VO2Max - 90% a 100%)": (pace_segundos / 0.90, pace_segundos / 1.00),
+    }
+
+    # Formatando os paces das zonas para MM:SS
+    zonas_formatadas = {
+        nome: f"{int(maximo // 60):02d}:{int(maximo % 60):02d} → {int(minimo // 60):02d}:{int(minimo % 60):02d}"
+        for nome, (minimo, maximo) in zonas.items()
+    }
+
+    return {
+        "pace": f"{int(pace_segundos // 60):02d}:{int(pace_segundos % 60):02d}",
+        "vo2max": round(vo2max, 1),
+        "zonas": zonas_formatadas
+    }
 
 
 def race_predictions_from_3k(time_seconds, distance_km):

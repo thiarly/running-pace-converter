@@ -5,9 +5,9 @@
 {% endblock %}
 
 {% block content %}
-<div class="flex items-center justify-center h-auto mt-8 sm:h-screen sm:mt-2 bg-gray-100">
-    <div class="flex flex-col justify-center sm:max-w-sm md:max-w-md p-6 sm:p-12 shadow-lg rounded-3xl sm:px-12 dark:bg-white dark:text-gray-100 mb-10">
-        <h1 class="text-2xl font-semibold sm:text-3xl dark:text-black mb-6">Calculadora de Paces pelo VO2Max</h1>
+<div class="flex items-center justify-center min-h-screen pt-24 pb-20 bg-gray-100">
+    <div class="flex flex-col justify-center w-full max-w-3xl px-4 py-8 shadow-lg rounded-3xl bg-white mb-10">
+        <h1 class="text-2xl font-semibold sm:text-3xl mb-6 text-center">Calculadora de VO₂Max, Ritmos e Provas</h1>
 
         {% if error %}
         <div class="mb-4 bg-red-200 border-red-500 text-red-700 px-4 py-3 rounded">
@@ -15,41 +15,49 @@
         </div>
         {% endif %}
 
-        <form method="POST">
+        <form method="POST" class="mb-6">
             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-            <label class="text-gray-800" for="time">Tempo 10k (HH:MM:SS):</label><br>
-            <input type="text" id="time" name="time" pattern="[0-9]{1,2}:[0-9]{2}:[0-9]{2}" class="text-gray-800 input-field mb-2 py-2 px-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" title="Digite um tempo válido, como 00:37:00"><br>
-            
-            <input class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded cursor-pointer mt-4 w-full" type="submit" value="Calcular">
+            <label for="time" class="block mb-1">Tempo 10k (HH:MM:SS):</label>
+            <input type="text" id="time" name="time" pattern="[0-9]{1,2}:[0-9]{2}:[0-9]{2}"
+                class="w-full text-gray-800 mb-4 py-2 px-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="ex: 00:37:00" title="Digite um tempo válido"><br>
+            <input type="submit" value="Calcular"
+                class="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded cursor-pointer">
         </form>
 
         {% if vo2max %}
-        <div class="mt-8 p-4 bg-gray-200 rounded">
-            <p><span>Pace: <strong>{{ pace_km }} /km - (VO2 max: {{ vo2max }})</strong></span></p>
-            <h2 class="text-xl font-semibold mt-4">Pace por faixas de treino</h2>
-            <ul>
-                <li>50% (Leve): {{ paces['leve'] }}</li>
-                <li>60% (Moderado): {{ paces['moderado'] }}</li>
-                <li>70% (Forte): {{ paces['forte'] }}</li>
-                <li>80% (Muito forte): {{ paces['muito_forte'] }}</li>
-                <li>90% (Fortíssimo): {{ paces['fortissimo'] }}</li>
-                <li>100% ("Pra morte"): {{ paces['pra_morte'] }}</li>
-            </ul>
-            <h2 class="text-xl font-semibold mt-4">Previsões de provas</h2>
-            <table class="min-w-full bg-white dark:bg-gray-800">
+        <div class="mt-4 p-4 bg-gray-100 rounded-lg space-y-4">
+            
+            {% if tempo_inputado and distancia %}
+            <p class="text-sm"><strong>Tempo informado:</strong> {{ tempo_inputado }} — <strong>Distância:</strong> {{ distancia }}</p>
+          {% endif %}
+          <p class="text-sm"><strong>Pace médio:</strong> {{ pace }} /km — <strong>VO₂max estimado:</strong> {{ vo2max }}</p>
+
+            <h2 class="text-lg font-semibold">Zonas de treino (faixas de pace)</h2>
+            <div class="grid gap-2">
+                {% for zona, faixa in paces.items() %}
+                <div class="bg-white rounded-lg shadow px-4 py-2 flex justify-between items-center border border-gray-300 whitespace-nowrap gap-x-4">
+                    <span class="font-medium">{{ zona }}</span>
+                    <span class="text-sm text-gray-600">{{ faixa }} min/km</span>
+                </div>
+                {% endfor %}
+            </div>
+
+            <h2 class="text-lg font-semibold mt-4">Previsões de provas</h2>
+            <table class="min-w-full bg-white mt-2 text-sm">
                 <thead>
                     <tr>
-                        <th class="py-2 px-4 border-b border-gray-200 dark:border-gray-700">Prova</th>
-                        <th class="py-2 px-4 border-b border-gray-200 dark:border-gray-700">Tempo</th>
-                        <th class="py-2 px-4 border-b border-gray-200 dark:border-gray-700">Pace</th>
+                        <th class="py-2 px-4 border-b border-gray-200">Prova</th>
+                        <th class="py-2 px-4 border-b border-gray-200">Tempo</th>
+                        <th class="py-2 px-4 border-b border-gray-200">Pace</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {% for race, time in predictions.items() %}
+                    {% for prova, dados in predictions.items() %}
                     <tr>
-                        <td class="py-2 px-4 border-b border-gray-200 dark:border-gray-700 text-center">{{ race }}</td>
-                        <td class="py-2 px-4 border-b border-gray-200 dark:border-gray-700 text-center">{{ time }}</td>
-                        <td class="py-2 px-4 border-b border-gray-200 dark:border-gray-700 text-center">{{ pace_km }}</td>
+                        <td class="py-2 px-4 border-b border-gray-200 text-center">{{ prova }}</td>
+                        <td class="py-2 px-4 border-b border-gray-200 text-center">{{ dados['Tempo'] }}</td>
+                        <td class="py-2 px-4 border-b border-gray-200 text-center">{{ dados['Pace'] }}</td>
                     </tr>
                     {% endfor %}
                 </tbody>

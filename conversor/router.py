@@ -19,10 +19,10 @@ from conversor.utils import (
     convert_speed_to_pace, convert_milha_pace,
     convert_pace_milha, convert_km_to_miles,
     convert_miles_to_km, calculate_vo2max,
-    race_predictions, calculate_pace_km, calculate_paces_by_vo2max,
+    calculate_pace_km, calculate_paces_by_vo2max,
     race_predictions_from_3k, agrupar_por_categoria,
     calcular_zonas_ftp, calcular_zonas_fc, calcular_zonas_pace,
-    calcular_totais_planejamento
+    calcular_totais_planejamento, race_predictions_formatted
 )
 
 
@@ -286,11 +286,29 @@ def calculadora_vo2max():
 
         pace_seconds_per_km = time_seconds / 10  # Distância de 10 km
         pace_km = calculate_pace_km(time_seconds, 10)
-        vo2max = calculate_vo2max(time_seconds, 10)
-        paces = calculate_paces_by_vo2max(pace_seconds_per_km)
-        predictions = race_predictions(time_seconds, 10)
-        
-        return render_template('calculadora_vo2max.html', vo2max=vo2max, paces=paces, predictions=predictions, pace_km=pace_km)
+
+        # Formatando tempo inputado para exibir
+        tempo_inputado = f"{hours:02d}:{minutes:02d}:{seconds:02d}"
+        distancia = "10 km"
+
+        vo2max_data = calculate_vo2max(time_seconds)
+
+        paces = vo2max_data["zonas"]
+        vo2max = vo2max_data["vo2max"]
+        pace = vo2max_data["pace"]
+
+        predictions = race_predictions_formatted(time_seconds, 10)
+
+        return render_template(
+            'calculadora_vo2max.html',
+            vo2max=vo2max,
+            paces=paces,
+            predictions=predictions,
+            pace_km=pace_km,
+            pace=pace,
+            tempo_inputado=tempo_inputado,
+            distancia=distancia
+        )
 
     return render_template('calculadora_vo2max.html')
 
