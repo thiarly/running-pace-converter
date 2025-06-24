@@ -36,7 +36,7 @@
             <h2 class="text-lg font-semibold">Zonas de treino (faixas de pace)</h2>
             <div class="grid gap-2">
                 {% for zona, faixa in paces.items() %}
-                <div class="bg-white rounded-lg shadow px-4 py-2 flex justify-between items-center border border-gray-300 whitespace-nowrap gap-x-4">
+                <div class="bg-white rounded-lg shadow px-4 py-2 flex flex-col sm:flex-row justify-between items-start sm:items-center border border-gray-300 gap-y-1 whitespace-nowrap">
                     <span class="font-medium">{{ zona }}</span>
                     <span class="text-sm text-gray-600">{{ faixa }} min/km</span>
                 </div>
@@ -44,6 +44,7 @@
             </div>
 
             <h2 class="text-lg font-semibold mt-4">Previsões de provas</h2>
+            <div class="overflow-x-auto">
             <table class="min-w-full bg-white mt-2 text-sm">
                 <thead>
                     <tr>
@@ -62,6 +63,7 @@
                     {% endfor %}
                 </tbody>
             </table>
+        </div>
         </div>
         {% endif %}
     </div>
