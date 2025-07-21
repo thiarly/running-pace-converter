@@ -39,6 +39,9 @@ class Suplemento(database.Model):
     magnesio = database.Column(database.Float)
     potassio = database.Column(database.Float)
     calcio = database.Column(database.Float)
+    cloro = database.Column(database.Float)
+    fosforo = database.Column(database.Float)
+    zinco = database.Column(database.Float)
 
     cafeina = database.Column(database.Float)
     taurina = database.Column(database.Float)

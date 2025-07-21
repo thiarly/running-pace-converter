@@ -16,6 +16,9 @@ class SuplementoForm(FlaskForm):
     sodio = FloatField('Sódio (mg)', validators=[Optional()])
     magnesio = FloatField('Magnésio (mg)', validators=[Optional()])
     potassio = FloatField('Potássio (mg)', validators=[Optional()])
+    cloro = FloatField('Cloro (mg)', validators=[Optional()])
+    fosforo = FloatField('Fósforo (mg)', validators=[Optional()])
+    zinco = FloatField('Zinco (mg)', validators=[Optional()])
     calcio = FloatField('Cálcio (mg)', validators=[Optional()])
 
     cafeina = FloatField('Cafeína (mg)', validators=[Optional()])
