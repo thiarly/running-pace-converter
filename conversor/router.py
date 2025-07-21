@@ -466,6 +466,57 @@ def listar_suplementos():
         direcao=direcao
     )
 
+
+# Duplicar suplemento
+@app.route('/duplicar_suplemento/<int:id>', methods=['GET'])
+@login_required
+def duplicar_suplemento(id):
+    suplemento_original = Suplemento.query.filter_by(id=id, user_id=current_user.id).first_or_404()
+
+    suplemento_duplicado = Suplemento(
+        nome=f"{suplemento_original.nome} (Cópia)",
+        tipo=suplemento_original.tipo,
+        marca=suplemento_original.marca,
+        gramas_por_porcao=suplemento_original.gramas_por_porcao,
+        descricao_porcao=suplemento_original.descricao_porcao,
+        carbo=suplemento_original.carbo,
+        sodio=suplemento_original.sodio,
+        magnesio=suplemento_original.magnesio,
+        potassio=suplemento_original.potassio,
+        calcio=suplemento_original.calcio,
+        cloro=suplemento_original.cloro,
+        fosforo=suplemento_original.fosforo,
+        zinco=suplemento_original.zinco,
+        cafeina=suplemento_original.cafeina,
+        taurina=suplemento_original.taurina,
+        beta_alanina=suplemento_original.beta_alanina,
+        citrulina=suplemento_original.citrulina,
+        creatina=suplemento_original.creatina,
+        coq10=suplemento_original.coq10,
+        carnitina=suplemento_original.carnitina,
+        leucina=suplemento_original.leucina,
+        isoleucina=suplemento_original.isoleucina,
+        valina=suplemento_original.valina,
+        arginina=suplemento_original.arginina,
+        vit_b1=suplemento_original.vit_b1,
+        vit_b2=suplemento_original.vit_b2,
+        vit_b3=suplemento_original.vit_b3,
+        vit_b6=suplemento_original.vit_b6,
+        vit_b7=suplemento_original.vit_b7,
+        vit_b9=suplemento_original.vit_b9,
+        vit_b12=suplemento_original.vit_b12,
+        vit_c=suplemento_original.vit_c,
+        ingredientes=suplemento_original.ingredientes,
+        comentario=suplemento_original.comentario,
+        user_id=current_user.id
+    )
+
+    database.session.add(suplemento_duplicado)
+    database.session.commit()
+    flash('Suplemento duplicado com sucesso!', 'success')
+    return redirect(url_for('listar_suplementos'))
+
+
 # Excluir suplemento
 @app.route('/suplementos/excluir/<int:id>', methods=['GET'])
 @login_required
@@ -840,4 +891,3 @@ def salvar_resumo_livre():
     return redirect(url_for('resumo_view'))
 
 
-#

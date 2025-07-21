@@ -70,6 +70,8 @@
                             <a href="{{ url_for('excluir_suplemento', id=suplemento.id) }}" class="text-red-600 text-sm hover:underline" onclick="return confirm('Tem certeza que deseja excluir?')">🗑️ Excluir</a>
                             <span class="mx-1">|</span>
                             <button onclick="toggleDetails('{{ suplemento.id }}')" class="text-green-600 text-sm hover:underline">🔎 Detalhes</button>
+                            <span class="mx-1">|</span>
+                            <a href="{{ url_for('duplicar_suplemento', id=suplemento.id) }}" class="text-gray-600 text-sm hover:underline">📄 Duplicar</a>
                         </td>
                     </tr>
                     <tr id="details-{{ suplemento.id }}" class="hidden bg-gray-100 border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
