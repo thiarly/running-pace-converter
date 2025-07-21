@@ -418,6 +418,9 @@ def novo_suplemento():
             isoleucina=form.isoleucina.data,
             valina=form.valina.data,
             arginina=form.arginina.data,
+            niacina=form.niacina.data,
+            gramas_por_porcao=form.gramas_por_porcao.data,
+            descricao_porcao=form.descricao_porcao.data,
             vit_b1=form.vit_b1.data,
             vit_b2=form.vit_b2.data,
             vit_b3=form.vit_b3.data,
@@ -426,6 +429,7 @@ def novo_suplemento():
             vit_b9=form.vit_b9.data,
             vit_b12=form.vit_b12.data,
             vit_c=form.vit_c.data,
+            vit_e=form.vit_e.data,
             ingredientes=form.ingredientes.data,
             comentario=form.comentario.data,
             user_id=current_user.id  # 👈 liga ao usuário
@@ -498,6 +502,7 @@ def duplicar_suplemento(id):
         isoleucina=suplemento_original.isoleucina,
         valina=suplemento_original.valina,
         arginina=suplemento_original.arginina,
+        niacina=suplemento_original.niacina,
         vit_b1=suplemento_original.vit_b1,
         vit_b2=suplemento_original.vit_b2,
         vit_b3=suplemento_original.vit_b3,
@@ -506,6 +511,7 @@ def duplicar_suplemento(id):
         vit_b9=suplemento_original.vit_b9,
         vit_b12=suplemento_original.vit_b12,
         vit_c=suplemento_original.vit_c,
+        vit_e=suplemento_original.vit_e,
         ingredientes=suplemento_original.ingredientes,
         comentario=suplemento_original.comentario,
         user_id=current_user.id

@@ -56,6 +56,7 @@ class Suplemento(database.Model):
     isoleucina = database.Column(database.Float)
     valina = database.Column(database.Float)
     arginina = database.Column(database.Float)
+    niacina = database.Column(database.Float)
 
     vit_b1 = database.Column(database.Float)
     vit_b2 = database.Column(database.Float)
@@ -65,6 +66,8 @@ class Suplemento(database.Model):
     vit_b9 = database.Column(database.Float)
     vit_b12 = database.Column(database.Float)
     vit_c = database.Column(database.Float)
+    vit_e = database.Column(database.Float)
+
     
     comentario = database.Column(database.Text)  # campo livre para observações
     ingredientes = database.Column(database.Text)  # composição ou descrição dos ingredientes

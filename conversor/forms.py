@@ -34,6 +34,7 @@ class SuplementoForm(FlaskForm):
     isoleucina = FloatField('Isoleucina (mg)', validators=[Optional()])
     valina = FloatField('Valina (mg)', validators=[Optional()])
     arginina = FloatField('Arginina (mg)', validators=[Optional()])
+    niacina = FloatField('Niacina (mg)', validators=[Optional()])
 
     vit_b1 = FloatField('Vitamina B1 (mg)', validators=[Optional()])
     vit_b2 = FloatField('Vitamina B2 (mg)', validators=[Optional()])
@@ -43,6 +44,7 @@ class SuplementoForm(FlaskForm):
     vit_b9 = FloatField('Vitamina B9 (µg)', validators=[Optional()])
     vit_b12 = FloatField('Vitamina B12 (µg)', validators=[Optional()])
     vit_c = FloatField('Vitamina C (mg)', validators=[Optional()])
+    vit_e = FloatField('Vitamina E (mg)', validators=[Optional()])
     
     comentario = TextAreaField('Comentário', render_kw={"placeholder": "Anotações, misturas, fabricante..."})
     ingredientes = TextAreaField('Ingredientes', render_kw={"placeholder": "Composição ou ingredientes usados..."})
