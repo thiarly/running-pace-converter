@@ -19,39 +19,58 @@ Planejamento de Suplementos
   {% endif %}
 {% endwith %}
 
-<div class="flex flex-col mt-8 px-4">
+<div class="bg-white shadow-md rounded-xl p-6 border border-gray-200 mb-8">
   <h1 class="text-2xl font-bold text-left text-gray-800 mb-6 border-b pb-2">Planejamento de Suplementos</h1>
 
-  <div class="flex flex-col sm:flex-row flex-wrap items-end gap-4 mb-8">
-    <!-- Form Adicionar -->
-    <form method="POST" class="flex flex-wrap items-end gap-4">
-      {{ form.hidden_tag() }}
 
-      <div class="w-full sm:w-auto">
+
+  <div class="flex flex-col gap-4 mb-8">
+    <!-- Form Adicionar -->
+    <form method="POST" class="flex flex-col gap-4">
+      {{ form.hidden_tag() }}
+  
+      <!-- Linha 1: Produto -->
+      <div class="w-full sm:max-w-sm">
         {{ form.suplemento_id.label(class="block text-sm font-medium text-gray-700") }}
-        {{ form.suplemento_id(class="border border-gray-300 rounded px-1 py-0.5 text-sm w-full") }}
+        {{ form.suplemento_id(
+          class="border border-gray-300 rounded px-2 py-1 text-sm w-full",
+          id="select-suplemento"
+        ) }}
       </div>
-      <div class="w-full sm:w-auto">
-        {{ form.quantidade.label(class="block text-sm font-medium text-gray-700") }}
-        {{ form.quantidade(class="border border-gray-300 rounded px-1 py-0.5 text-sm w-full", step="0.01", min="0.01") }}
-      </div>
-      <button type="submit" class="bg-blue-500 text-white text-sm px-4 py-1 rounded hover:bg-blue-600 w-full sm:w-auto">
+  
+      <!-- Linha 2: Quantidade + Botão -->
+      <div class="flex flex-col sm:flex-row gap-4 items-end">
+        <div class="w-full sm:w-40">
+          {{ form.quantidade.label(class="block text-sm font-medium text-gray-700") }}
+          {{ form.quantidade(
+            class="border border-gray-300 rounded px-2 py-1 text-sm w-full",
+            step="0.01", min="0.01"
+          ) }}
+        </div>
+  
+
+    </form>
+  
+    <!-- Botões externos -->
+    <div class="flex flex-col sm:flex-row gap-4 mt-2">
+      <button type="submit" class="bg-blue-500 text-white text-sm px-4 py-1 rounded hover:bg-blue-600 w-full sm:w-auto mt-1 sm:mt-[22px]">
         Adicionar
       </button>
-    </form>
+    </div>
 
-    <a href="{{url_for('resumo_view')}}" class="bg-gray-500 text-white text-sm text-center px-4 py-1 rounded hover:bg-gray-600 w-full sm:w-auto">Calcular Resumo</a>
-
-    <!-- Form Remover Todos -->
-    <form method="POST" class="w-full sm:w-auto" action="{{ url_for('remover_todos_itens') }}" onsubmit="return confirm('Deseja remover todos os itens?')">
-      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-      <button type="submit" class="bg-red-500 text-white text-sm px-4 py-1 rounded hover:bg-red-600 w-full sm:w-auto">
-        Remover Todos
-      </button>
-    </form>
+      <a href="{{ url_for('resumo_view') }}" class="bg-gray-500 text-white text-sm px-4 py-1 rounded hover:bg-gray-600 w-full sm:w-auto text-center">
+        Calcular Resumo
+      </a>
+  
+      <form method="POST" action="{{ url_for('remover_todos_itens') }}" onsubmit="return confirm('Deseja remover todos os itens?')" class="w-full sm:w-auto">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <button type="submit" class="bg-red-500 text-white text-sm px-4 py-1 rounded hover:bg-red-600 w-full sm:w-auto">
+          Remover Todos
+        </button>
+      </form>
+    </div>
   </div>
 </div>
-
 
   {% if itens %}
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
@@ -186,4 +205,19 @@ Planejamento de Suplementos
     </div>
   </div>
 </div>
+
+
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    new TomSelect("#select-suplemento", {
+      create: false,
+      sortField: {
+        field: "text",
+        direction: "asc"
+      },
+      placeholder: "Digite para buscar um suplemento..."
+    });
+  });
+</script>
 {% endblock %}
