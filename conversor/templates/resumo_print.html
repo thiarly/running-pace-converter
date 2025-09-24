@@ -6,35 +6,63 @@ Impressão do Resumo — {{ resumo.nome_treino }}
 
 {% block content %}
 <style>
-    /* Página A4 com margem */
-    @page { size: A4; margin: 14mm; }
-  
-    /* Regras só para impressão */
-    @media print {
-      header, nav, footer,
-      .navbar, .site-header, .site-footer,
-      .no-print, [data-print="hide"] {
-        display: none !important;
-        visibility: hidden !important;
-        height: 0 !important;
-      }
-      html, body { font-size: 12px; line-height: 1.25; }
-      h1 { font-size: 18px !important; margin: 0 0 6px !important; }
-      h2 { font-size: 14px !important; margin: 8px 0 4px !important; }
-      h3 { font-size: 13px !important; margin: 6px 0 4px !important; }
-      p  { margin: 2px 0 !important; }
-      .print-card { box-shadow: none !important; border-color: #e5e7eb !important; }
-      .print-wrap { padding-top: 6mm !important; padding-bottom: 4mm !important; }
-      .print-pad  { padding: 12px !important; }
-      /* Grid sempre 2 colunas no A4 */
-      .print-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px !important; }
-      /* Cards compactos e não quebrar no meio */
-      .print-item { padding: 8px !important; border-radius: 8px !important; page-break-inside: avoid; }
-      /* Listas mais juntinhas */
-      .print-list { margin: 0 0 0 16px !important; }
-      .print-list li { margin: 0 !important; padding: 0 !important; }
-      .print-logo { height: 28px !important; }
+  /* Página A4 com margem */
+  @page { size: A4; margin: 14mm; }
+
+  @media print {
+    /* Esconde header/rodapé/menus */
+    header, nav, footer,
+    .navbar, .site-header, .site-footer,
+    .no-print, [data-print="hide"] {
+      display: none !important;
+      visibility: hidden !important;
+      height: 0 !important;
     }
+
+    /* Fundo 100% branco, ignorando o bg do base.html */
+    html, body,
+    main, #app, .page, .container,
+    .bg-gray-50, .bg-gray-100, .bg-slate-50 {
+      background: #fff !important;
+    }
+
+    /* Tipografia compacta */
+    html, body { font-size: 12px; line-height: 1.25; }
+    h1 { font-size: 18px !important; margin: 0 0 6px !important; }
+    h2 { font-size: 14px !important; margin: 8px 0 4px !important; }
+    h3 { font-size: 13px !important; margin: 6px 0 4px !important; }
+    p  { margin: 2px 0 !important; }
+
+    /* Container e cartões */
+    .print-card { box-shadow: none !important; border-color: #e5e7eb !important; background:#fff !important; }
+    .print-wrap { padding-top: 6mm !important; padding-bottom: 4mm !important; }
+    .print-pad  { padding: 12px !important; }
+
+    /* Grid 2 colunas */
+    .print-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px !important; }
+
+    /* Cards de categoria */
+    .print-item { padding: 8px !important; border-radius: 8px !important; page-break-inside: avoid; }
+
+    /* Listas compactas */
+    .print-list { margin: 0 0 0 16px !important; }
+    .print-list li { margin: 0 !important; padding: 0 !important; }
+
+    /* Manter cores no print */
+    :root { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+    /* Paleta por categoria (ajuste como preferir) */
+      /* cores por categoria */
+      .cat-macro { background:#ccdbfd!important; border-color:#abc4ff !important; }
+      .cat-ele   { background:#d7e3fc !important; border-color:#abc4ff !important; }
+      .cat-stim  { background:#e2eafc !important; border-color:#abc4ff !important; }
+      .cat-vit   { background:#edf2fb !important; border-color:#abc4ff !important; }
+      .cat-amino { background:#edf2fb !important; border-color:#abc4ff !important; }
+    
+
+    /* Logo menor no print */
+    .print-logo { height: 28px !important; }
+  }
 </style>
 
 {% macro formatar_tempo_decimal(decimal) %}
@@ -42,17 +70,17 @@ Impressão do Resumo — {{ resumo.nome_treino }}
     {% set horas = decimal|int %}
     {% set minutos = ((decimal - horas) * 60)|round(0, 'floor') %}
     {{ horas }}h{{ "%02d"|format(minutos) }}m
-  {% else %}
-    -
-  {% endif %}
+  {% else %}-{% endif %}
 {% endmacro %}
 
-<a href="/" class="flex items-center justify-center mb-2">
-  <img src="{{ url_for('static', filename='image/tcsports1.png') }}"
-       alt="Logo" class="h-12 print-logo">
-</a>
-
 <div class="max-w-4xl mx-auto bg-white p-6 rounded shadow print-card print-wrap print-pad">
+
+  <!-- LOGO agora DENTRO do wrapper branco -->
+  <div class="flex items-center justify-center mb-2">
+    <img src="{{ url_for('static', filename='image/tcsports1.png') }}"
+         alt="Logo" class="h-12 print-logo">
+  </div>
+
   <h1 class="text-2xl font-bold mb-2">{{ resumo.nome_treino }}</h1>
   <p class="text-sm text-gray-600 mb-4">{{ resumo.data.strftime('%d/%m/%Y') }}</p>
 
@@ -86,17 +114,21 @@ Impressão do Resumo — {{ resumo.nome_treino }}
 
   {% set ordem = ["Macronutrientes","Eletrólitos","Estimulantes e Compostos","Vitaminas","Aminoácidos"] %}
   {% set ordem_eletrolitos = ["Sódio","Magnésio","Potássio","Cálcio"] %}
+  {% set classe_cat = {
+    "Macronutrientes":"cat-macro",
+    "Eletrólitos":"cat-ele",
+    "Estimulantes e Compostos":"cat-stim",
+    "Vitaminas":"cat-vit",
+    "Aminoácidos":"cat-amino"
+  } %}
 
-  <!-- AQUI: adicionada print-grid -->
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-4 print-grid">
+  <div class="print-grid">
     {% for categoria in ordem %}
       {% if resumo.resumo_dados.get(categoria) %}
         {% set dados = resumo.resumo_dados[categoria] %}
         {% if categoria == "Eletrólitos" %}
           {% set total = namespace(v=0) %}
-          {% for k in ordem_eletrolitos %}
-            {% set total.v = total.v + (dados.get(k,0) or 0) %}
-          {% endfor %}
+          {% for k in ordem_eletrolitos %}{% set total.v = total.v + (dados.get(k,0) or 0) %}{% endfor %}
           {% set mostrar = total.v > 0 %}
         {% else %}
           {% set soma = dados.values() | map('float') | sum %}
@@ -104,13 +136,11 @@ Impressão do Resumo — {{ resumo.nome_treino }}
         {% endif %}
 
         {% if mostrar %}
-        <!-- AQUI: adicionada print-item -->
-        <div class="p-3 rounded border print-item">
+        <div class="p-3 rounded border print-item {{ classe_cat.get(categoria,'') }}">
           <h3 class="font-semibold text-gray-900 mb-1">
             {{ "💧" if categoria=="Eletrólitos" else ("🔥" if categoria=="Macronutrientes" else ("⚡" if categoria=="Estimulantes e Compostos" else ("💊" if categoria=="Vitaminas" else "🧬"))) }}
             {{ categoria }}
           </h3>
-          <!-- AQUI: adicionada print-list -->
           <ul class="list-disc list-inside text-sm text-gray-800 print-list">
             {% if categoria == "Eletrólitos" %}
               {% for item in ordem_eletrolitos %}
