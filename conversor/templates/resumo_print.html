@@ -11,7 +11,6 @@ Impressão do Resumo — {{ resumo.nome_treino }}
   
     /* Regras só para impressão */
     @media print {
-      /* Esconde header/rodapé/menus */
       header, nav, footer,
       .navbar, .site-header, .site-footer,
       .no-print, [data-print="hide"] {
@@ -19,33 +18,24 @@ Impressão do Resumo — {{ resumo.nome_treino }}
         visibility: hidden !important;
         height: 0 !important;
       }
-  
-      /* Tipografia compacta */
       html, body { font-size: 12px; line-height: 1.25; }
       h1 { font-size: 18px !important; margin: 0 0 6px !important; }
       h2 { font-size: 14px !important; margin: 8px 0 4px !important; }
       h3 { font-size: 13px !important; margin: 6px 0 4px !important; }
       p  { margin: 2px 0 !important; }
-  
-      /* Container mais estreito e com menos padding */
       .print-card { box-shadow: none !important; border-color: #e5e7eb !important; }
       .print-wrap { padding-top: 6mm !important; padding-bottom: 4mm !important; }
-      .print-pad  { padding: 12px !important; }         /* reduz p-6 */
-  
+      .print-pad  { padding: 12px !important; }
       /* Grid sempre 2 colunas no A4 */
       .print-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px !important; }
-  
-      /* Cards compactos e que não quebrem no meio */
+      /* Cards compactos e não quebrar no meio */
       .print-item { padding: 8px !important; border-radius: 8px !important; page-break-inside: avoid; }
-  
       /* Listas mais juntinhas */
       .print-list { margin: 0 0 0 16px !important; }
       .print-list li { margin: 0 !important; padding: 0 !important; }
-  
-      /* Logo menor */
       .print-logo { height: 28px !important; }
     }
-  </style>
+</style>
 
 {% macro formatar_tempo_decimal(decimal) %}
   {% if decimal is not none %}
@@ -57,14 +47,12 @@ Impressão do Resumo — {{ resumo.nome_treino }}
   {% endif %}
 {% endmacro %}
 
-<!-- ADJUST: adicionadas classes print-card e print-wrap -->
-
 <a href="/" class="flex items-center justify-center mb-2">
-    <img src="{{ url_for('static', filename='image/tcsports1.png') }}"
-         alt="Logo" class="h-12 print-logo">
-  </a>
+  <img src="{{ url_for('static', filename='image/tcsports1.png') }}"
+       alt="Logo" class="h-12 print-logo">
+</a>
 
-  <div class="max-w-4xl mx-auto bg-white p-6 rounded shadow print-card print-wrap print-pad">
+<div class="max-w-4xl mx-auto bg-white p-6 rounded shadow print-card print-wrap print-pad">
   <h1 class="text-2xl font-bold mb-2">{{ resumo.nome_treino }}</h1>
   <p class="text-sm text-gray-600 mb-4">{{ resumo.data.strftime('%d/%m/%Y') }}</p>
 
@@ -99,7 +87,8 @@ Impressão do Resumo — {{ resumo.nome_treino }}
   {% set ordem = ["Macronutrientes","Eletrólitos","Estimulantes e Compostos","Vitaminas","Aminoácidos"] %}
   {% set ordem_eletrolitos = ["Sódio","Magnésio","Potássio","Cálcio"] %}
 
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+  <!-- AQUI: adicionada print-grid -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4 print-grid">
     {% for categoria in ordem %}
       {% if resumo.resumo_dados.get(categoria) %}
         {% set dados = resumo.resumo_dados[categoria] %}
@@ -115,12 +104,14 @@ Impressão do Resumo — {{ resumo.nome_treino }}
         {% endif %}
 
         {% if mostrar %}
-        <div class="p-3 rounded border">
+        <!-- AQUI: adicionada print-item -->
+        <div class="p-3 rounded border print-item">
           <h3 class="font-semibold text-gray-900 mb-1">
             {{ "💧" if categoria=="Eletrólitos" else ("🔥" if categoria=="Macronutrientes" else ("⚡" if categoria=="Estimulantes e Compostos" else ("💊" if categoria=="Vitaminas" else "🧬"))) }}
             {{ categoria }}
           </h3>
-          <ul class="list-disc list-inside text-sm text-gray-800">
+          <!-- AQUI: adicionada print-list -->
+          <ul class="list-disc list-inside text-sm text-gray-800 print-list">
             {% if categoria == "Eletrólitos" %}
               {% for item in ordem_eletrolitos %}
                 {% set valor = dados.get(item,0) %}
@@ -148,7 +139,6 @@ Impressão do Resumo — {{ resumo.nome_treino }}
 </div>
 
 <script>
-  // imprime e fecha a aba após imprimir
   window.addEventListener("load", () => window.print());
   window.addEventListener("afterprint", () => window.close());
 </script>
