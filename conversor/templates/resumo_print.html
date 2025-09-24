@@ -5,27 +5,47 @@ Impressão do Resumo — {{ resumo.nome_treino }}
 {% endblock %}
 
 {% block content %}
-
 <style>
-  /* Margem da página impressa */
-  @page { size: A4; margin: 16mm; }
-
-  /* Esconde navbar/rodapé só na impressão */
-  @media print {
-    header, nav, footer,
-    .navbar, .site-header, .site-footer,
-    .no-print, [data-print="hide"] {
-      display: none !important;
-      visibility: hidden !important;
-      height: 0 !important;
+    /* Página A4 com margem */
+    @page { size: A4; margin: 14mm; }
+  
+    /* Regras só para impressão */
+    @media print {
+      /* Esconde header/rodapé/menus */
+      header, nav, footer,
+      .navbar, .site-header, .site-footer,
+      .no-print, [data-print="hide"] {
+        display: none !important;
+        visibility: hidden !important;
+        height: 0 !important;
+      }
+  
+      /* Tipografia compacta */
+      html, body { font-size: 12px; line-height: 1.25; }
+      h1 { font-size: 18px !important; margin: 0 0 6px !important; }
+      h2 { font-size: 14px !important; margin: 8px 0 4px !important; }
+      h3 { font-size: 13px !important; margin: 6px 0 4px !important; }
+      p  { margin: 2px 0 !important; }
+  
+      /* Container mais estreito e com menos padding */
+      .print-card { box-shadow: none !important; border-color: #e5e7eb !important; }
+      .print-wrap { padding-top: 6mm !important; padding-bottom: 4mm !important; }
+      .print-pad  { padding: 12px !important; }         /* reduz p-6 */
+  
+      /* Grid sempre 2 colunas no A4 */
+      .print-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px !important; }
+  
+      /* Cards compactos e que não quebrem no meio */
+      .print-item { padding: 8px !important; border-radius: 8px !important; page-break-inside: avoid; }
+  
+      /* Listas mais juntinhas */
+      .print-list { margin: 0 0 0 16px !important; }
+      .print-list li { margin: 0 !important; padding: 0 !important; }
+  
+      /* Logo menor */
+      .print-logo { height: 28px !important; }
     }
-    /* tira sombras/bordas fortes e evita cortes */
-    .print-card { box-shadow: none !important; border-color: #e5e7eb !important; }
-  }
-
-  /* Respiro topo/rodapé do conteúdo */
-  .print-wrap { padding-top: 12mm; padding-bottom: 8mm; }
-</style>
+  </style>
 
 {% macro formatar_tempo_decimal(decimal) %}
   {% if decimal is not none %}
@@ -39,13 +59,12 @@ Impressão do Resumo — {{ resumo.nome_treino }}
 
 <!-- ADJUST: adicionadas classes print-card e print-wrap -->
 
-<a href="/" class="flex items-center">
-    <img src="{{ url_for('static', filename='image/tcsports1.png') }}" alt="Logo" class="h-10">
-    
+<a href="/" class="flex items-center justify-center mb-2">
+    <img src="{{ url_for('static', filename='image/tcsports1.png') }}"
+         alt="Logo" class="h-12 print-logo">
   </a>
 
-
-<div class="max-w-4xl mx-auto bg-white p-6 rounded shadow print-card print-wrap">
+  <div class="max-w-4xl mx-auto bg-white p-6 rounded shadow print-card print-wrap print-pad">
   <h1 class="text-2xl font-bold mb-2">{{ resumo.nome_treino }}</h1>
   <p class="text-sm text-gray-600 mb-4">{{ resumo.data.strftime('%d/%m/%Y') }}</p>
 
