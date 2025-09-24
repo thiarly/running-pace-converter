@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+
+{% block titulo %}
+Impressão do Resumo — {{ resumo.nome_treino }}
+{% endblock %}
+
+{% block content %}
+
+<style>
+  /* Margem da página impressa */
+  @page { size: A4; margin: 16mm; }
+
+  /* Esconde navbar/rodapé só na impressão */
+  @media print {
+    header, nav, footer,
+    .navbar, .site-header, .site-footer,
+    .no-print, [data-print="hide"] {
+      display: none !important;
+      visibility: hidden !important;
+      height: 0 !important;
+    }
+    /* tira sombras/bordas fortes e evita cortes */
+    .print-card { box-shadow: none !important; border-color: #e5e7eb !important; }
+  }
+
+  /* Respiro topo/rodapé do conteúdo */
+  .print-wrap { padding-top: 12mm; padding-bottom: 8mm; }
+</style>
+
+{% macro formatar_tempo_decimal(decimal) %}
+  {% if decimal is not none %}
+    {% set horas = decimal|int %}
+    {% set minutos = ((decimal - horas) * 60)|round(0, 'floor') %}
+    {{ horas }}h{{ "%02d"|format(minutos) }}m
+  {% else %}
+    -
+  {% endif %}
+{% endmacro %}
+
+<!-- ADJUST: adicionadas classes print-card e print-wrap -->
+
+<a href="/" class="flex items-center">
+    <img src="{{ url_for('static', filename='image/tcsports1.png') }}" alt="Logo" class="h-10">
+    
+  </a>
+
+
+<div class="max-w-4xl mx-auto bg-white p-6 rounded shadow print-card print-wrap">
+  <h1 class="text-2xl font-bold mb-2">{{ resumo.nome_treino }}</h1>
+  <p class="text-sm text-gray-600 mb-4">{{ resumo.data.strftime('%d/%m/%Y') }}</p>
+
+  {% if resumo.comentario %}
+  <div class="mb-6">
+    <h2 class="text-lg font-semibold mb-1">📝 Comentário</h2>
+    <p class="whitespace-pre-wrap">{{ resumo.comentario }}</p>
+  </div>
+  {% endif %}
+
+  {% if resumo.suplementos_utilizados %}
+  <div class="mb-6">
+    <h2 class="text-lg font-semibold mb-1">🧪 Suplementos utilizados</h2>
+    <ul class="list-disc list-inside text-sm text-gray-700">
+      {% for item in resumo.suplementos_utilizados.split(',') %}
+        <li>{{ item.strip() }}</li>
+      {% endfor %}
+    </ul>
+  </div>
+  {% endif %}
+
+  <div class="mb-6">
+    <h2 class="text-lg font-semibold mb-1">⏱️ Tempos</h2>
+    <p><strong>Total:</strong> {{ formatar_tempo_decimal(resumo.tempo_total) }}</p>
+    <p>
+      <strong>Natação:</strong> {{ formatar_tempo_decimal(resumo.tempo_natacao) }} |
+      <strong>Bike:</strong> {{ formatar_tempo_decimal(resumo.tempo_bike) }} |
+      <strong>Corrida:</strong> {{ formatar_tempo_decimal(resumo.tempo_corrida) }}
+    </p>
+  </div>
+
+  {% set ordem = ["Macronutrientes","Eletrólitos","Estimulantes e Compostos","Vitaminas","Aminoácidos"] %}
+  {% set ordem_eletrolitos = ["Sódio","Magnésio","Potássio","Cálcio"] %}
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    {% for categoria in ordem %}
+      {% if resumo.resumo_dados.get(categoria) %}
+        {% set dados = resumo.resumo_dados[categoria] %}
+        {% if categoria == "Eletrólitos" %}
+          {% set total = namespace(v=0) %}
+          {% for k in ordem_eletrolitos %}
+            {% set total.v = total.v + (dados.get(k,0) or 0) %}
+          {% endfor %}
+          {% set mostrar = total.v > 0 %}
+        {% else %}
+          {% set soma = dados.values() | map('float') | sum %}
+          {% set mostrar = soma > 0 %}
+        {% endif %}
+
+        {% if mostrar %}
+        <div class="p-3 rounded border">
+          <h3 class="font-semibold text-gray-900 mb-1">
+            {{ "💧" if categoria=="Eletrólitos" else ("🔥" if categoria=="Macronutrientes" else ("⚡" if categoria=="Estimulantes e Compostos" else ("💊" if categoria=="Vitaminas" else "🧬"))) }}
+            {{ categoria }}
+          </h3>
+          <ul class="list-disc list-inside text-sm text-gray-800">
+            {% if categoria == "Eletrólitos" %}
+              {% for item in ordem_eletrolitos %}
+                {% set valor = dados.get(item,0) %}
+                {% if valor > 0 %}
+                  <li><strong>{{ item }}:</strong>
+                    {{ valor|round(1) }} {{ unidades[categoria].get(item,'') }}/h ⇥
+                    {{ (valor * resumo.tempo_total)|round(1) }} {{ unidades[categoria].get(item,'') }} total
+                  </li>
+                {% endif %}
+              {% endfor %}
+            {% else %}
+              {% for item, valor in dados.items() if valor > 0 %}
+                <li><strong>{{ item }}:</strong>
+                  {{ valor|round(1) }} {{ unidades[categoria].get(item,'') }}/h ⇥
+                  {{ (valor * resumo.tempo_total)|round(1) }} {{ unidades[categoria].get(item,'') }} total
+                </li>
+              {% endfor %}
+            {% endif %}
+          </ul>
+        </div>
+        {% endif %}
+      {% endif %}
+    {% endfor %}
+  </div>
+</div>
+
+<script>
+  // imprime e fecha a aba após imprimir
+  window.addEventListener("load", () => window.print());
+  window.addEventListener("afterprint", () => window.close());
+</script>
+
+{% endblock %}

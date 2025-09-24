@@ -343,6 +343,13 @@ Resumo do Planejamento
         <a href="{{ url_for('editar_resumo', id=resumo.id) }}" class="flex items-center gap-1 text-sm text-gray-700 hover:underline">
           <i class="fas fa-pen text-gray-500 hover:text-gray-800"></i> Editar
         </a>
+
+        <a href="{{ url_for('print_resumo', id=resumo.id) }}"
+        target="_blank" rel="noopener"
+        class="flex items-center gap-1 text-sm text-gray-700 hover:underline">
+       <i class="fas fa-print text-gray-500 hover:text-gray-800"></i> Imprimir
+     </a>
+
       </div>
 
 

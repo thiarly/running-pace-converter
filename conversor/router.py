@@ -897,3 +897,58 @@ def salvar_resumo_livre():
     return redirect(url_for('resumo_view'))
 
 
+
+# --- PRINT: helpers de impressão ---
+def formatar_tempo_decimal(h):
+    if h is None:
+        return "-"
+    horas = int(h)
+    minutos = int(round((h - horas) * 60))
+    return f"{horas}h{minutos:02d}"
+
+UNIDADES_PRINT = {
+    "Macronutrientes": {"Carboidrato": "g"},
+    "Eletrólitos": {"Sódio": "mg", "Magnésio": "mg", "Potássio": "mg", "Cálcio": "mg"},
+    "Estimulantes e Compostos": {
+        "Cafeína": "mg", "Taurina": "mg", "Beta-alanina": "mg",
+        "Citrulina": "mg", "Creatina": "mg", "CoQ10": "mg", "Carnitina": "mg"
+    },
+    "Vitaminas": {
+        "Vitamina C": "mg", "Vitamina E": "mg", "B1": "mg", "B2": "mg",
+        "B3": "mg", "B6": "mg", "B7": "µg", "B9": "µg", "B12": "µg"
+    },
+    "Aminoácidos": {"Leucina": "mg", "Isoleucina": "mg", "Valina": "mg", "Arginina": "mg", "Niacina": "mg"},
+}
+
+# --- PRINT: um resumo ---
+@app.route("/resumo/print/<int:id>")
+@login_required
+def print_resumo(id):
+    resumo = ResumoSalvo.query.get_or_404(id)
+    if resumo.user_id != current_user.id:
+        return redirect(url_for('resumo_view'))
+    return render_template(
+        "resumo_print.html",
+        resumo=resumo,
+        unidades=UNIDADES_PRINT,
+        formatar_tempo_decimal=formatar_tempo_decimal
+    )
+
+# (opcional) PRINT: vários de uma vez (respeita ?search=)
+@app.route("/resumos/print")
+@login_required
+def print_resumos():
+    termo = request.args.get("search", "").strip()
+    q = ResumoSalvo.query.filter_by(user_id=current_user.id)
+    if termo:
+        q = q.filter(
+            database.or_(ResumoSalvo.nome_treino.ilike(f"%{termo}%"),
+                         ResumoSalvo.comentario.ilike(f"%{termo}%"))
+        )
+    resumos = q.order_by(ResumoSalvo.data.desc()).all()
+    return render_template(
+        "resumos_print_many.html",
+        resumos=resumos,
+        unidades=UNIDADES_PRINT,
+        formatar_tempo_decimal=formatar_tempo_decimal
+    )
