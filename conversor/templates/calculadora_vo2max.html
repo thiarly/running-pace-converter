@@ -7,7 +7,7 @@
 {% block content %}
 <div class="flex items-center justify-center min-h-screen pt-24 pb-20 bg-gray-100">
     <div class="flex flex-col justify-center w-full max-w-3xl px-4 py-8 shadow-lg rounded-3xl bg-white mb-10">
-        <h1 class="text-2xl font-semibold sm:text-3xl mb-6 text-center">Calculadora de VO₂Max, Ritmos e Provas</h1>
+        <h1 class="text-2xl font-semibold sm:text-3xl mb-6 title-nave text-center">Calculadora de VO₂Max, Ritmos e Provas</h1>
 
         {% if error %}
         <div class="mb-4 bg-red-200 border-red-500 text-red-700 px-4 py-3 rounded">
@@ -15,14 +15,14 @@
         </div>
         {% endif %}
 
-        <form method="POST" class="mb-6">
+        <form method="POST" class="mb-6 ">
             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
             <label for="time" class="block mb-1">Tempo 10k (HH:MM:SS):</label>
             <input type="text" id="time" name="time" pattern="[0-9]{1,2}:[0-9]{2}:[0-9]{2}"
                 class="w-full text-gray-800 mb-4 py-2 px-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="ex: 00:37:00" title="Digite um tempo válido"><br>
             <input type="submit" value="Calcular"
-                class="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded cursor-pointer">
+                class="w-full btn-nave font-bold py-2 px-4 rounded cursor-pointer">
         </form>
 
         {% if vo2max %}

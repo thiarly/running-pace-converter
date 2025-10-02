@@ -7,10 +7,10 @@
 {% block content %}
 <div class="flex items-center justify-center h-auto mt-8 sm:h-screen sm:mt-2 bg-gray-100">
     <div class="flex flex-col justify-center sm:max-w-sm md:max-w-md p-6 sm:p-12 shadow-lg rounded-3xl sm:px-12 dark:bg-white dark:text-gray-100 mb-10">
-        <h1 class="text-2xl font-semibold sm:text-3xl dark:text-black mb-2">Conversor de ritmo</h1>
+        <h1 class="text-2xl font-semibold sm:text-3xl mb-2 title-nave">Conversor de ritmo</h1>
         <div class="flex space-x-2 mb-6">
-            <a href="{{url_for('estimativa_tempo')}}" class="text-sm bg-blue-100 text-blue-700 px-3 py-1 rounded hover:bg-blue-200">Estimativa de Tempo</a>
-            <a href="{{url_for('estimativa_distancia')}}" class="text-sm bg-blue-100 text-blue-700 px-3 py-1 rounded hover:bg-blue-200">Estimativa de Distância</a>
+            <a href="{{url_for('estimativa_tempo')}}" class="text-sm bg-blue-100 resumo-nave px-3 py-1 rounded hover:bg-blue-200">Estimativa de Tempo</a>
+            <a href="{{url_for('estimativa_distancia')}}" class="text-sm bg-blue-100 resumo-nave px-3 py-1 rounded hover:bg-blue-200">Estimativa de Distância</a>
         </div>
 
             {% if error %}
@@ -38,7 +38,7 @@
                     <option value="ciclismo">Ciclismo</option>
                     <option value="natacao">Natação</option>
                 </select><br>
-                <input class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded cursor-pointer mt-4 w-full" type="submit" value="Calcular">
+                <input class="btn-nave font-bold py-2 px-4 rounded cursor-pointer mt-4 w-full" type="submit" value="Calcular">
             </form>
             {% if pace_km or avg_speed or pace_100m %}
                 <div class="mt-8 p-4 bg-gray-200 rounded">
