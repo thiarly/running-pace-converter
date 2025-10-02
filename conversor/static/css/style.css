@@ -26,5 +26,47 @@ footer {
 }
 
 
+  .btn-nave {
+    background-color: #0a1a2f;
+    color: white;
+  }
+  .btn-nave:hover {
+    background-color: #0F2351; /* tom mais claro/escuro no hover */
+  }
+
+  .title-nave {
+    position: relative;
+    display: inline-block;
+    color: #0F2351;
+    font-weight: 700;
+  }
+  
+  .title-nave::after {
+    content: "";
+    position: absolute;
+    width: 0;
+    height: 3px;
+    left: 0;
+    bottom: -4px;
+    background-color: #0a1a2f;
+    transition: width 0.3s ease;
+  }
+  
+  .title-nave:hover::after {
+    width: 100%;
+  }
 
 
+  .resumo-nave {
+    color: #1b4094;
+    
+  }
+  
+  .resumo-nave:hover {
+    color: #0a1a2f;
+  }
+
+
+  .border-nave {
+    border-color: #1b4094 !important;
+  }

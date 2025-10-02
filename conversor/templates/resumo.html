@@ -28,7 +28,7 @@ Resumo do Planejamento
 
   <!-- Resumo do Planejamento -->
   <div class="bg-white rounded-t-lg shadow-lg p-6 border border-gray-200">
-    <h2 class="text-xl text-center font-semibold mb-6 sm:mb-10">📊 Resumo do Planejamento</h2>
+    <h2 class="text-xl text-center font-semibold mb-6 sm:mb-10 title-nave">RESUMO DO PLANEJAMENTO</h2>
     <form method="POST" class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm text-gray-700">
       {{ form.hidden_tag() }}
 
@@ -39,8 +39,8 @@ Resumo do Planejamento
         <div class="flex flex-col items-center gap-1">
           <label class="text-base font-semibold mb-4">🏊 Natação</label>
           <div class="flex gap-2">
-            {{ form.tempo_natacao_horas(id="natacao_h", class="w-20 text-center py-1 px-1 border-2 border-solid border-blue-500 rounded-md bg-white shadow-sm text-babase font-semibold mb-4 sm:mb-8", placeholder="h") }}
-            {{ form.tempo_natacao_minutos(id="natacao_min", class="w-20 text-center py-1 px-1 border-2 border-solid border-blue-500 rounded-md bg-white shadow-sm text-babase font-semibold mb-4 sm:mb-8", placeholder="min") }}
+            {{ form.tempo_natacao_horas(id="natacao_h", class="w-20 text-center py-1 px-1 border-2 border-solid border-nave rounded-md bg-white shadow-sm text-babase font-semibold mb-4 sm:mb-8", placeholder="h") }}
+            {{ form.tempo_natacao_minutos(id="natacao_min", class="w-20 text-center py-1 px-1 border-2 border-solid border-nave rounded-md bg-white shadow-sm text-babase font-semibold mb-4 sm:mb-8", placeholder="min") }}
           </div>
         </div>
       
@@ -48,8 +48,8 @@ Resumo do Planejamento
         <div class="flex flex-col items-center gap-1">
           <label class="text-base font-semibold mb-4">🚴 Bike</label>
           <div class="flex gap-2">
-            {{ form.tempo_bike_horas(id="bike_h", class="w-20 text-center py-1 px-2 border-2 border-solid border-yellow-300 rounded-md bg-white shadow-sm text-babase font-semibold mb-4 sm:mb-8", placeholder="h") }}
-            {{ form.tempo_bike_minutos(id="bike_min", class="w-20 text-center py-1 px-2 border-2 border-solid border-yellow-300 rounded-md bg-white shadow-sm text-babase font-semibold mb-4 sm:mb-8", placeholder="min") }}
+            {{ form.tempo_bike_horas(id="bike_h", class="w-20 text-center py-1 px-2 border-2 border-solid border-nave rounded-md bg-white shadow-sm text-babase font-semibold mb-4 sm:mb-8", placeholder="h") }}
+            {{ form.tempo_bike_minutos(id="bike_min", class="w-20 text-center py-1 px-2 border-2 border-solid border-nave  rounded-md bg-white shadow-sm text-babase font-semibold mb-4 sm:mb-8", placeholder="min") }}
           </div>
         </div>
       
@@ -57,8 +57,8 @@ Resumo do Planejamento
         <div class="flex flex-col items-center gap-1">
           <label class="text-base font-semibold mb-4">🏃 Corrida</label>
           <div class="flex gap-2">
-            {{ form.tempo_corrida_horas(id="corrida_h", class="w-20 text-center py-1 px-2 border-2 border-solid border-green-300 rounded-md bg-white shadow-sm text-babase font-semibold mb-4 sm:mb-8", placeholder="h") }}
-            {{ form.tempo_corrida_minutos(id="corrida_min", class="w-20 text-center py-1 px-2 border-2 border-solid border-green-300 rounded-md bg-white shadow-sm text-babase font-semibold mb-4 sm:mb-8", placeholder="min") }}
+            {{ form.tempo_corrida_horas(id="corrida_h", class="w-20 text-center py-1 px-2 border-2 border-solid border-nave  rounded-md bg-white shadow-sm text-babase font-semibold mb-4 sm:mb-8", placeholder="h") }}
+            {{ form.tempo_corrida_minutos(id="corrida_min", class="w-20 text-center py-1 px-2 border-2 border-solid border-nave  rounded-md bg-white shadow-sm text-babase font-semibold mb-4 sm:mb-8", placeholder="min") }}
           </div>
         </div>
       
@@ -66,7 +66,7 @@ Resumo do Planejamento
         <div class="md:col-span-3 flex flex-col sm:flex-row justify-center gap-4 mt-4">
           <button id="calcularResumoBtn"
             type="submit"
-            class="bg-blue-600 text-white text-sm px-4 py-1 rounded hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed">
+            class="text-white text-sm px-4 py-1 rounded disabled:opacity-50 disabled:cursor-not-allowed btn-nave">
             Calcular Resumo
           </button>
           <a href="{{ url_for('planejamento') }}" class="bg-gray-600 text-center hover:bg-gray-800 text-white text-sm px-4 py-1 rounded">Editar Planejamento</a>
@@ -313,10 +313,10 @@ Resumo do Planejamento
       <!-- Linha superior com título e setas -->
       <div class="flex justify-between items-start">
         <div onclick="toggleResumo('resumo-{{ loop.index }}')" class="cursor-pointer w-full">
-          <h3 class="text-xl font-semibold">{{ resumo.nome_treino }}</h3>
-          <div class="text-xs mb-4">{{ resumo.data.strftime('%d/%m/%Y') }}</div>
+          <h3 class="text-xl font-semibold title-nave">{{ resumo.nome_treino }}</h3>
+          <div class="text-xs mb-4 mt-2">{{ resumo.data.strftime('%d/%m/%Y') }}</div>
           <div class="text-sm text-gray-600 whitespace-pre-wrap font-sans">{{ resumo.comentario }}</div>
-          <div class="flex items-center gap-1 text-sm text-blue-600 mt-4 cursor-pointer detalhes-link" data-id="resumo-{{ loop.index }}">
+          <div class="flex items-center gap-1 resumo-nave ext-sm mt-4 cursor-pointer detalhes-link" data-id="resumo-{{ loop.index }}">
             <i class="fas fa-eye"></i> Ver detalhes
           </div>
         </div>

@@ -20,7 +20,7 @@ Planejamento de Suplementos
 {% endwith %}
 
 <div class="bg-white shadow-md rounded-xl p-6 border border-gray-200 mb-8">
-  <h1 class="text-2xl font-bold text-left text-gray-800 mb-6 border-b pb-2">Planejamento de Suplementos</h1>
+  <h1 class="text-2xl font-bold text-left mb-6 border-b pb-2 title-nave">Planejamento de Suplementos</h1>
 
 
 
@@ -53,7 +53,7 @@ Planejamento de Suplementos
   
     <!-- Botões externos -->
     <div class="flex flex-col sm:flex-row gap-4 mt-2">
-      <button type="submit" class="bg-blue-500 text-white text-sm px-4 py-1 rounded hover:bg-blue-600 w-full sm:w-auto mt-1 sm:mt-[22px]">
+      <button type="submit" class=" btn-nave text-white text-sm px-4 py-1 rounded w-full sm:w-auto mt-1 sm:mt-[22px]">
         Adicionar
       </button>
     </div>
@@ -100,7 +100,7 @@ Planejamento de Suplementos
               <form method="POST" action="{{ url_for('atualizar_quantidade', item_id=item.id) }}" class="flex items-center gap-2">
                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                 <input type="number" name="quantidade" value="{{ item.quantidade | float | round(2) }}" step="any" min="0.01" class="w-20 px-2 py-1 border rounded">
-                <button type="submit" class="text-blue-600 hover:underline">Atualizar</button>
+                <button type="submit" class="resumo-nave hover:underline">Atualizar</button>
               </form>
             </td>
             <td class="px-4 py-2 border-b whitespace-nowrap">
@@ -137,26 +137,26 @@ Planejamento de Suplementos
           class="w-full sm:flex-1 px-3 py-1 border border-gray-300 rounded text-sm">
 
       <button type="submit"
-            class="bg-gray-800 text-white text-sm px-4 py-1 rounded hover:bg-gray-900 flex items-center gap-2">
+            class="btn-nave text-white text-sm px-4 py-1 rounded flex items-center gap-2">
       <i class="fas fa-save"></i> Salvar Suplementação Livre
       </button>
   </form>
 
 
   <div class="mt-8">
-    <h2 class="text-2xl font-bold text-left text-gray-800 mb-6 border-b pb-2">Totais</h2>
+    <h2 class="text-2xl font-bold text-left mb-6 border-b pb-2 title-nave">Totais</h2>
 
     <div class="bg-white shadow-md rounded-xl p-6">
       <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
         <div>
-          <h3 class="text-sm font-semibold text-gray-900 uppercase bg-gray-200 dark:bg-gray-700 dark:text-gray-400 rounded mb-4">⛽️ Macronutrientes</h3>
+          <h3 class="text-sm font-semibold title-naveuppercase title-nave  rounded mb-4">⛽️ MACRONUTRIENTES</h3>
           <ul class="list-disc pl-5 text-gray-800">
             <li class="px-2 py-1 font-medium text-gray-700 text-sm whitespace-nowrap dark:text-white">Carboidrato: {{ totais.carbo }} g</li>
           </ul>
         </div>
 
         <div>
-          <h3 class="text-sm font-semibold text-gray-900 uppercase bg-gray-200 dark:bg-gray-700 dark:text-gray-400 rounded mb-4">💧 Eletrólitos</h3>
+          <h3 class="text-sm font-semibold title-naveuppercase title-nave rounded mb-4">💧 ELETRÓLITOS</h3>
           <ul class="list-disc pl-5 text-gray-800">
             <li class="px-2 py-1 font-medium text-gray-700 text-sm whitespace-nowrap dark:text-white">Sódio: {{ totais.sodio }} mg</li>
             <li class="px-2 py-1 font-medium text-gray-700 text-sm whitespace-nowrap dark:text-white">Magnésio: {{ totais.magnesio }} mg</li>
@@ -166,7 +166,7 @@ Planejamento de Suplementos
         </div>
 
         <div>
-          <h3 class="text-sm font-semibold text-gray-900 uppercase bg-gray-200 dark:bg-gray-700 dark:text-gray-400 rounded mb-4">🔥 Estimulantes</h3>
+          <h3 class="text-sm font-semibold title-nave uppercase title-nave rounded mb-4">🔥 Estimulantes</h3>
           <ul class="list-disc pl-5 text-gray-800">
             <li class="px-2 py-1 font-medium text-gray-700 text-sm whitespace-nowrap dark:text-white">Cafeína: {{ totais.cafeina }} mg</li>
             <li class="px-2 py-1 font-medium text-gray-700 text-sm whitespace-nowrap dark:text-white">Taurina: {{ totais.taurina }} mg</li>
@@ -179,7 +179,7 @@ Planejamento de Suplementos
         </div>
 
         <div>
-          <h3 class="text-sm font-semibold text-gray-900 uppercase bg-gray-200 dark:bg-gray-700 dark:text-gray-400 rounded mb-4">🧬 Aminoácidos</h3>
+          <h3 class="text-sm font-semibold title-nave uppercase btitle-nave rounded mb-4">🧬 Aminoácidos</h3>
           <ul class="list-disc pl-5 text-gray-800">
             <li class="px-2 py-1 font-medium text-gray-700 text-sm whitespace-nowrap dark:text-white">Leucina: {{ totais.leucina }} mg</li>
             <li class="px-2 py-1 font-medium text-gray-700 text-sm whitespace-nowrap dark:text-white">Isoleucina: {{ totais.isoleucina }} mg</li>
@@ -189,7 +189,7 @@ Planejamento de Suplementos
         </div>
 
         <div>
-          <h3 class="text-sm font-semibold text-gray-900 uppercase bg-gray-200 dark:bg-gray-700 dark:text-gray-400 rounded mb-4">💊 Vitaminas</h3>
+          <h3 class="text-sm font-semibold title-nave uppercase  rounded mb-4">💊 VITAMINAS</h3>
           <ul class="list-disc pl-5 text-gray-800">
             <li class="px-2 py-1 font-medium text-gray-900 text-sm whitespace-nowrap dark:text-white">Vitamina B1: {{ totais.vit_b1 }} mg</span></li> 
             <li class="px-2 py-1 font-medium text-gray-700 text-sm whitespace-nowrap dark:text-white">Vitamina B2: {{ totais.vit_b2 }} mg</li>

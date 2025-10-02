@@ -21,8 +21,8 @@
 <div class="flex flex-col items-center justify-center mt-8 px-4">
     <div class="w-full max-w-8xl p-6 bg-white rounded-lg shadow-md">
         <div class="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4">
-            <h1 class="text-2xl font-bold text-gray-900">Suplementos Cadastrados</h1>
-            <a href="{{ url_for('novo_suplemento') }}" class="bg-green-500 hover:bg-blue-700 text-white px-3 py-1 text-sm rounded text-center">
+            <h1 class="text-2xl font-bold title-nave">Suplementos Cadastrados</h1>
+            <a href="{{ url_for('novo_suplemento') }}" class="btn-nave text-white px-3 py-1 text-sm rounded text-center">
                 Novo Suplemento
             </a>
         </div>
@@ -30,7 +30,7 @@
         <form method="GET" class="flex flex-col sm:flex-row flex-wrap gap-2 mb-6 w-full">
           <input type="text" id="busca" placeholder="Buscar suplemento..." onkeyup="filtrarTabela()" class="border text-sm px-1 py-0.5 rounded w-full sm:w-auto">
 
-            <button type="submit" class="bg-blue-500 text-white px-3 py-1 text-sm rounded hover:bg-blue-700 w-full sm:w-auto">
+            <button type="submit" class="btn-nave text-white px-3 py-1 text-sm rounded  w-full sm:w-auto">
                 Filtrar
             </button>
             <a href="{{ url_for('listar_suplementos') }}" class="bg-gray-500 text-white px-3 py-1 text-sm rounded hover:bg-gray-700 w-full sm:w-auto text-center">
@@ -65,7 +65,7 @@
                         <td class="px-6 py-4 whitespace-nowrap">{{ suplemento.magnesio or 0 }}</td>
                         <td class="px-6 py-4 whitespace-nowrap">{{ suplemento.cafeina or 0 }}</td>
                         <td class="px-6 py-4 whitespace-nowrap">
-                            <a href="{{ url_for('editar_suplemento', id=suplemento.id) }}" class="text-blue-600 text-sm hover:underline">✏️ Editar</a>
+                            <a href="{{ url_for('editar_suplemento', id=suplemento.id) }}" class="resumo-nave text-sm hover:underline">✏️ Editar</a>
                             <span class="mx-1">|</span>
                             <a href="{{ url_for('excluir_suplemento', id=suplemento.id) }}" class="text-red-600 text-sm hover:underline" onclick="return confirm('Tem certeza que deseja excluir?')">🗑️ Excluir</a>
                             <span class="mx-1">|</span>

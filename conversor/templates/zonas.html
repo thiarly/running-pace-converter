@@ -4,9 +4,10 @@
     Zonas de Treinamento
 {% endblock %}
 
+
 {% block content %}
 <div class="container mx-auto px-8 py-10 text-justify">
-    <h1 class="text-2xl font-bold text-blue-600">Guia Detalhado de Zonas de Treinamento</h1>
+    <h1 class="text-2xl font-bold" style="color:#0a1a2f">Guia Detalhado de Zonas de Treinamento</h1>
     <p class="mt-4">O uso de zonas de treinamento é um método consolidado para planejamento e acompanhamento de treinos. Elas ajudam a estruturar a carga de treino com base em intensidade.</p>
     <p>Vamos abordar os modelos mais utilizados, destacando vantagens e desvantagens. Este guia cobre:</p>
 
@@ -16,7 +17,7 @@
     </ul>
 
     <div class="bg-gray-100 p-4 rounded mt-6">
-        <h2 class="text-xl font-bold text-blue-600">Zonas baseadas em FTP ou FC</h2>
+        <h2 class="text-xl font-bold" style="color:#0a1a2f;">Zonas baseadas em FTP ou FC</h2>
         <p class="mt-2">Baseadas no limiar anaeróbio (FTP ou PCR), essas zonas têm propósitos fisiológicos bem definidos. A cada adaptação no condicionamento físico, as zonas devem ser recalculadas.</p>
         <p class="mt-2">Realize testes de FTP, FC ou ergoespirométricos periodicamente para manter as zonas atualizadas.</p>
         <img src="{{ url_for('static', filename='image/zonas.png') }}" class="mt-6 mb-4 h-80 rounded-lg mx-auto" alt="Zonas de Treinamentos 1 a 7">
@@ -25,39 +26,55 @@
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-10">
         <div class="bg-white shadow p-4 rounded">
-            <h3 class="font-bold text-blue-600">Zona 1 - Recuperação</h3>
+            <h3 class="font-bold">Zona 1 - Recuperação</h3>
             <p>Esforço leve, ideal para regenerar. Conversa fácil. Pouco estresse fisiológico.</p>
         </div>
         <div class="bg-white shadow p-4 rounded">
-            <h3 class="font-bold text-blue-600">Zona 2 - Base Aeróbica</h3>
+            <h3 class="font-bold" style="color:#0a1a2f;">Zona 2 - Base Aeróbica</h3>
             <p>Ideal para longos. Treina o uso de gordura como energia. Baixo risco de fadiga.</p>
         </div>
         <div class="bg-white shadow p-4 rounded">
-            <h3 class="font-bold text-blue-600">Zona 3 - Aeróbica Intensa</h3>
+            <h3 class="font-bold" style="color:#0a1a2f;">Zona 3 - Aeróbica Intensa</h3>
             <p>Recruta fibras Tipo IIa. Treina sustentação de ritmo em provas longas.</p>
         </div>
         <div class="bg-white shadow p-4 rounded">
-            <h3 class="font-bold text-blue-600">Zona 4 - Limiar</h3>
+            <h3 class="font-bold" style="color:#0a1a2f;">Zona 4 - Limiar</h3>
             <p>Melhora remoção de lactato. Esforço sustentado. Importante para provas curtas.</p>
         </div>
         <div class="bg-white shadow p-4 rounded">
-            <h3 class="font-bold text-blue-600">Zona 5 - VO2max</h3>
+            <h3 class="font-bold" style="color:#0a1a2f;">Zona 5 - VO2max</h3>
             <p>Intensidade alta. Aumenta capacidade cardiorrespiratória. Intervalações de 3-8min.</p>
         </div>
         <div class="bg-white shadow p-4 rounded">
-            <h3 class="font-bold text-blue-600">Zona 6 - Anaeróbia</h3>
+            <h3 class="font-bold" style="color:#0a1a2f;">Zona 6 - Anaeróbia</h3>
             <p>Esforços curtos e potentes (30s-2min). Melhora capacidade de explosão.</p>
         </div>
         <div class="bg-white shadow p-4 rounded">
-            <h3 class="font-bold text-blue-600">Zona 7 - Neuromuscular</h3>
+            <h3 class="font-bold" style="color:#0a1a2f;">Zona 7 - Neuromuscular</h3>
             <p>Esforços máximos de 10-15s. Desenvolve conexões neurais e ativa fibras rápidas.</p>
         </div>
     </div>
 
+    <style>
+        .btn-nave {
+          background-color: #0a1a2f;
+          color: white;
+          padding: 0.75rem 1.5rem; /* px-6 py-3 */
+          border-radius: 0.375rem; /* rounded */
+          text-decoration: none;
+          display: inline-block;
+        }
+        .btn-nave:hover {
+          background-color: #0F2351; /* tom mais claro/escuro no hover */
+        }
+      </style>
+
     <div class="text-center mt-10">
-        <a href="{{ url_for('calculadora_zonas') }}" class="bg-blue-600 text-white px-6 py-3 rounded hover:bg-blue-700">
+        <a href="{{ url_for('calculadora_zonas') }}" class="text-white px-6 py-3 rounded btn-nave">
             Calcular suas zonas
         </a>
     </div>
 </div>
 {% endblock %}
+
+
