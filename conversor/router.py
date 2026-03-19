@@ -555,13 +555,14 @@ def editar_suplemento(id):
 def planejamento():
     form = PlanningItemForm()
     form.suplemento_id.choices = [
-        (s.id, s.nome) for s in Suplemento.query.filter_by(user_id=current_user.id)
+        (s.id, s.nome) for s in Suplemento.query.order_by(Suplemento.nome.asc()).all()
     ]
 
     if form.validate_on_submit():
         item_existente = PlanejamentoItem.query.filter_by(
             suplemento_id=form.suplemento_id.data, user_id=current_user.id
         ).first()
+
         if item_existente:
             item_existente.quantidade += float(form.quantidade.data)
         else:
@@ -576,7 +577,6 @@ def planejamento():
         flash('Item adicionado/atualizado com sucesso!', 'success')
         return redirect(url_for('planejamento'))
 
-    # 🔽 Limpa automaticamente os itens com suplemento excluído
     itens = PlanejamentoItem.query.filter_by(user_id=current_user.id).all()
     itens_validos = []
 
@@ -586,7 +586,7 @@ def planejamento():
         else:
             itens_validos.append(item)
 
-    database.session.commit()  # aplica exclusões
+    database.session.commit()
     totais = calcular_totais_planejamento(itens_validos)
 
     return render_template('planejamento.html', form=form, itens=itens_validos, totais=totais)
