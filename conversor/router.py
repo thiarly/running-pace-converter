@@ -449,7 +449,7 @@ def listar_suplementos():
     ordenar = request.args.get('ordenar', '')
     direcao = request.args.get('direcao', 'desc')
 
-    query = Suplemento.query.filter_by(user_id=current_user.id)  # 👈 só do usuário logado
+    query = Suplemento.query #Suplemento.query.filter_by(user_id=current_user.id)  # 👈 só do usuário logado
 
     if filtro:
         query = query.filter(
