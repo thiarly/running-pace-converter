@@ -475,7 +475,7 @@ def listar_suplementos():
 @app.route('/duplicar_suplemento/<int:id>', methods=['GET'])
 @login_required
 def duplicar_suplemento(id):
-    suplemento_original = Suplemento.query.filter_by(id=id, user_id=current_user.id).first_or_404()
+    suplemento_original = Suplemento.query.filter_by(id=id).first_or_404()
 
     suplemento_duplicado = Suplemento(
         nome=f"{suplemento_original.nome} (Cópia)",
@@ -527,7 +527,7 @@ def duplicar_suplemento(id):
 @app.route('/suplementos/excluir/<int:id>', methods=['GET'])
 @login_required
 def excluir_suplemento(id):
-    suplemento = Suplemento.query.filter_by(id=id, user_id=current_user.id).first_or_404()
+    suplemento = Suplemento.query.filter_by(id=id).first_or_404()
     database.session.delete(suplemento)
     database.session.commit()
     flash('Suplemento excluído com sucesso!', 'success')
@@ -538,7 +538,7 @@ def excluir_suplemento(id):
 @app.route('/suplementos/editar/<int:id>', methods=['GET', 'POST'])
 @login_required
 def editar_suplemento(id):
-    suplemento = Suplemento.query.filter_by(id=id, user_id=current_user.id).first_or_404()
+    suplemento = Suplemento.query.filter_by(id=id).first_or_404()
     form = SuplementoForm(obj=suplemento)
 
     if form.validate_on_submit():
