@@ -45,6 +45,7 @@ class SuplementoForm(FlaskForm):
     vit_b12 = FloatField('Vitamina B12 (µg)', validators=[Optional()])
     vit_c = FloatField('Vitamina C (mg)', validators=[Optional()])
     vit_e = FloatField('Vitamina E (mg)', validators=[Optional()])
+    vit_ferro = FloatField('Ferro (mg)', validators=[Optional()])
     
     comentario = TextAreaField('Comentário', render_kw={"placeholder": "Anotações, misturas, fabricante..."})
     ingredientes = TextAreaField('Ingredientes', render_kw={"placeholder": "Composição ou ingredientes usados..."})

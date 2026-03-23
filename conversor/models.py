@@ -67,6 +67,7 @@ class Suplemento(database.Model):
     vit_b12 = database.Column(database.Float)
     vit_c = database.Column(database.Float)
     vit_e = database.Column(database.Float)
+    vit_ferro = database.Column(database.Float)
 
     
     comentario = database.Column(database.Text)  # campo livre para observações
@@ -115,6 +116,8 @@ class PlanejamentoItem(database.Model):
             'vit_b9': multi(self.suplemento.vit_b9),
             'vit_b12': multi(self.suplemento.vit_b12),
             'vit_c': multi(self.suplemento.vit_c),
+            'vit_e': multi(self.suplemento.vit_e),
+            'vit_ferro': multi(self.suplemento.vit_ferro),
         }
 
     def __repr__(self):

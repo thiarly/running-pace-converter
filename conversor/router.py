@@ -430,6 +430,7 @@ def novo_suplemento():
             vit_b12=form.vit_b12.data,
             vit_c=form.vit_c.data,
             vit_e=form.vit_e.data,
+            vit_ferro=form.vit_ferro.data,
             ingredientes=form.ingredientes.data,
             comentario=form.comentario.data,
             user_id=current_user.id  # 👈 liga ao usuário
@@ -915,7 +916,7 @@ UNIDADES_PRINT = {
     },
     "Vitaminas": {
         "Vitamina C": "mg", "Vitamina E": "mg", "B1": "mg", "B2": "mg",
-        "B3": "mg", "B6": "mg", "B7": "µg", "B9": "µg", "B12": "µg"
+        "B3": "mg", "B6": "mg", "B7": "µg", "B9": "µg", "B12": "µg", "Ferro": "mg"
     },
     "Aminoácidos": {"Leucina": "mg", "Isoleucina": "mg", "Valina": "mg", "Arginina": "mg", "Niacina": "mg"},
 }
