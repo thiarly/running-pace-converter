@@ -61,6 +61,7 @@ class Suplemento(database.Model):
     vit_b1 = database.Column(database.Float)
     vit_b2 = database.Column(database.Float)
     vit_b3 = database.Column(database.Float)
+    vit_b5 = database.Column(database.Float)
     vit_b6 = database.Column(database.Float)
     vit_b7 = database.Column(database.Float)
     vit_b9 = database.Column(database.Float)
@@ -111,6 +112,7 @@ class PlanejamentoItem(database.Model):
             'vit_b1': multi(self.suplemento.vit_b1),
             'vit_b2': multi(self.suplemento.vit_b2),
             'vit_b3': multi(self.suplemento.vit_b3),
+            'vit_b5': multi(self.suplemento.vit_b5),
             'vit_b6': multi(self.suplemento.vit_b6),
             'vit_b7': multi(self.suplemento.vit_b7),
             'vit_b9': multi(self.suplemento.vit_b9),

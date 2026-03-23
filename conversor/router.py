@@ -424,6 +424,7 @@ def novo_suplemento():
             vit_b1=form.vit_b1.data,
             vit_b2=form.vit_b2.data,
             vit_b3=form.vit_b3.data,
+            vit_b5=form.vit_b5.data,
             vit_b6=form.vit_b6.data,
             vit_b7=form.vit_b7.data,
             vit_b9=form.vit_b9.data,
@@ -899,7 +900,7 @@ def salvar_resumo_livre():
 
 
 
-# --- PRINT: helpers de impressão ---
+# --- PRINT: helpers de impressão --
 def formatar_tempo_decimal(h):
     if h is None:
         return "-"
@@ -916,7 +917,7 @@ UNIDADES_PRINT = {
     },
     "Vitaminas": {
         "Vitamina C": "mg", "Vitamina E": "mg", "B1": "mg", "B2": "mg",
-        "B3": "mg", "B6": "mg", "B7": "µg", "B9": "µg", "B12": "µg", "Ferro": "mg"
+        "B3": "mg", "B5": "mg", "B6": "mg", "B7": "µg", "B9": "µg", "B12": "µg", "Ferro": "mg"
     },
     "Aminoácidos": {"Leucina": "mg", "Isoleucina": "mg", "Valina": "mg", "Arginina": "mg", "Niacina": "mg"},
 }

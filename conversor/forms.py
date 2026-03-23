@@ -39,6 +39,7 @@ class SuplementoForm(FlaskForm):
     vit_b1 = FloatField('Vitamina B1 (mg)', validators=[Optional()])
     vit_b2 = FloatField('Vitamina B2 (mg)', validators=[Optional()])
     vit_b3 = FloatField('Vitamina B3 (mg)', validators=[Optional()])
+    vit_b5 = FloatField('Vitamina B5 (mg)', validators=[Optional()])
     vit_b6 = FloatField('Vitamina B6 (mg)', validators=[Optional()])
     vit_b7 = FloatField('Vitamina B7 (µg)', validators=[Optional()])
     vit_b9 = FloatField('Vitamina B9 (µg)', validators=[Optional()])
