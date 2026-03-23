@@ -50,6 +50,8 @@ class SuplementoForm(FlaskForm):
     descricao_porcao = StringField('Descrição da Porção', validators=[Optional()])
 
     carbo = FloatFieldBR('Carboidrato (g)', validators=[Optional()])
+    gordura_saturada = FloatFieldBR('Gordura Saturada (g)', validators=[Optional()])
+    fibras_alimentares = FloatFieldBR('Fibras Alimentares (g)', validators=[Optional()])
     sodio = FloatFieldBR('Sódio (mg)', validators=[Optional()])
     magnesio = FloatFieldBR('Magnésio (mg)', validators=[Optional()])
     potassio = FloatFieldBR('Potássio (mg)', validators=[Optional()])
@@ -84,6 +86,11 @@ class SuplementoForm(FlaskForm):
     vit_c = FloatFieldBR('Vitamina C (mg)', validators=[Optional()])
     vit_e = FloatFieldBR('Vitamina E (mg)', validators=[Optional()])
     vit_ferro = FloatFieldBR('Ferro (mg)', validators=[Optional()])
+    vit_d = FloatFieldBR('Vitamina D (µg)', validators=[Optional()])
+    acido_pantotenico = FloatFieldBR('Ácido Pantotênico (mg)', validators=[Optional()])
+    acido_folico = FloatFieldBR('Ácido Fólico (µg)', validators=[Optional()])
+    tirosina = FloatFieldBR('Tirosina (mg)', validators=[Optional()])
+    colina = FloatFieldBR('Colina (mg)', validators=[Optional()])
     
     comentario = TextAreaField('Comentário', render_kw={"placeholder": "Anotações, misturas, fabricante..."})
     ingredientes = TextAreaField('Ingredientes', render_kw={"placeholder": "Composição ou ingredientes usados..."})

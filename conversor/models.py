@@ -35,6 +35,8 @@ class Suplemento(database.Model):
     descricao_porcao = database.Column(database.String(50))
 
     carbo = database.Column(database.Float)
+    gordura_saturada = database.Column(database.Float)
+    fibras_alimentares = database.Column(database.Float)
     sodio = database.Column(database.Float)
     magnesio = database.Column(database.Float)
     potassio = database.Column(database.Float)
@@ -69,6 +71,19 @@ class Suplemento(database.Model):
     vit_c = database.Column(database.Float)
     vit_e = database.Column(database.Float)
     vit_ferro = database.Column(database.Float)
+    vit_d = database.Column(database.Float)
+    acido_pantotenico = database.Column(database.Float)
+    acido_folico = database.Column(database.Float)
+    tirosina = database.Column(database.Float)
+    colina = database.Column(database.Float)
+    vitamina_d = database.Column(database.Float)
+    acido_pantotenico = database.Column(database.Float)
+    acido_folico = database.Column(database.Float)
+    tirosina = database.Column(database.Float)
+ 
+    
+    
+
 
     
     comentario = database.Column(database.Text)  # campo livre para observações

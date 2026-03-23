@@ -432,6 +432,13 @@ def novo_suplemento():
             vit_c=form.vit_c.data,
             vit_e=form.vit_e.data,
             vit_ferro=form.vit_ferro.data,
+            gordura_saturada=form.gordura_saturada.data,
+            fibras_alimentares=form.fibras_alimentares.data,
+            vit_d=form.vit_d.data,
+            acido_pantotenico=form.acido_pantotenico.data,
+            acido_folico=form.acido_folico.data,
+            tirosina=form.tirosina.data,
+            colina=form.colina.data,
             ingredientes=form.ingredientes.data,
             comentario=form.comentario.data,
             user_id=current_user.id  # 👈 liga ao usuário
@@ -913,7 +920,7 @@ def formatar_tempo_decimal(h):
     return f"{horas}h{minutos:02d}"
 
 UNIDADES_PRINT = {
-    "Macronutrientes": {"Carboidrato": "g"},
+    "Macronutrientes": {"Carboidrato": "g", "Gordura Saturada": "g", "Fibras Alimentares": "g"}, 
     "Eletrólitos": {"Sódio": "mg", "Magnésio": "mg", "Potássio": "mg", "Cálcio": "mg"},
     "Estimulantes e Compostos": {
         "Cafeína": "mg", "Taurina": "mg", "Beta-alanina": "mg",
@@ -921,9 +928,9 @@ UNIDADES_PRINT = {
     },
     "Vitaminas": {
         "Vitamina C": "mg", "Vitamina E": "mg", "B1": "mg", "B2": "mg",
-        "B3": "mg", "B5": "mg", "B6": "mg", "B7": "µg", "B9": "µg", "B12": "µg", "Ferro": "mg"
+        "B3": "mg", "B5": "mg", "B6": "mg", "B7": "µg", "B9": "µg", "B12": "µg", "Ferro": "mg", "Vitamina D": "µg", "Ácido Pantotênico": "mg", "Ácido fólico": "µg"
     },
-    "Aminoácidos": {"Leucina": "mg", "Isoleucina": "mg", "Valina": "mg", "Arginina": "mg", "Niacina": "mg"},
+    "Aminoácidos": {"Leucina": "mg", "Isoleucina": "mg", "Valina": "mg", "Arginina": "mg", "Niacina": "mg", "Tirosina": "mg", "Colina": "mg"},
 }
 
 # --- PRINT: um resumo ---
