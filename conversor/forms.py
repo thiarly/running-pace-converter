@@ -1,7 +1,44 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, FloatField, SelectField, SubmitField, IntegerField, PasswordField, ValidationError, TextAreaField, DateField, DecimalField
 from wtforms.validators import DataRequired, Optional, NumberRange, InputRequired, Email, Length, EqualTo
+from decimal import Decimal, InvalidOperation
 from conversor.models import User
+
+
+class FloatFieldBR(FloatField):
+    def process_formdata(self, valuelist):
+        if valuelist:
+            valor = valuelist[0]
+
+            if valor is None or valor.strip() == "":
+                self.data = None
+                return
+
+            valor = valor.replace(",", ".").strip()
+
+            try:
+                self.data = float(valor)
+            except ValueError:
+                self.data = None
+                raise ValueError("Número inválido. Use 2,5 ou 2.5")
+
+
+class DecimalFieldBR(DecimalField):
+    def process_formdata(self, valuelist):
+        if valuelist:
+            valor = valuelist[0]
+
+            if valor is None or valor.strip() == "":
+                self.data = None
+                return
+
+            valor = valor.replace(",", ".").strip()
+
+            try:
+                self.data = Decimal(valor)
+            except (InvalidOperation, ValueError):
+                self.data = None
+                raise ValueError("Número inválido. Use 2,5 ou 2.5")
 
 
 class SuplementoForm(FlaskForm):
@@ -9,44 +46,44 @@ class SuplementoForm(FlaskForm):
     tipo = SelectField('Tipo', choices=[('Gel', 'Gel'), ('Carboidrato', 'Carboidrato'), ('Garrafa', 'Garrafa'), ('Proteina', 'Proteína'), ('Eletrólitos', 'Eletrólitos'), ('Pré Treino', 'Pré Treino')], validators=[DataRequired()])
     marca = StringField('Marca', validators=[Optional()])
     
-    gramas_por_porcao = FloatField('Gramas por Porção', validators=[DataRequired(), NumberRange(min=0.01)])
+    gramas_por_porcao = FloatFieldBR('Gramas por Porção', validators=[DataRequired(), NumberRange(min=0.01)])
     descricao_porcao = StringField('Descrição da Porção', validators=[Optional()])
 
-    carbo = FloatField('Carboidrato (g)', validators=[Optional()])
-    sodio = FloatField('Sódio (mg)', validators=[Optional()])
-    magnesio = FloatField('Magnésio (mg)', validators=[Optional()])
-    potassio = FloatField('Potássio (mg)', validators=[Optional()])
-    cloro = FloatField('Cloro (mg)', validators=[Optional()])
-    fosforo = FloatField('Fósforo (mg)', validators=[Optional()])
-    zinco = FloatField('Zinco (mg)', validators=[Optional()])
-    calcio = FloatField('Cálcio (mg)', validators=[Optional()])
+    carbo = FloatFieldBR('Carboidrato (g)', validators=[Optional()])
+    sodio = FloatFieldBR('Sódio (mg)', validators=[Optional()])
+    magnesio = FloatFieldBR('Magnésio (mg)', validators=[Optional()])
+    potassio = FloatFieldBR('Potássio (mg)', validators=[Optional()])
+    cloro = FloatFieldBR('Cloro (mg)', validators=[Optional()])
+    fosforo = FloatFieldBR('Fósforo (mg)', validators=[Optional()])
+    zinco = FloatFieldBR('Zinco (mg)', validators=[Optional()])
+    calcio = FloatFieldBR('Cálcio (mg)', validators=[Optional()])
 
-    cafeina = FloatField('Cafeína (mg)', validators=[Optional()])
-    taurina = FloatField('Taurina (mg)', validators=[Optional()])
-    beta_alanina = FloatField('Beta-Alanina (mg)', validators=[Optional()])
-    citrulina = FloatField('Citrulina (mg)', validators=[Optional()])
-    creatina = FloatField('Creatina (mg)', validators=[Optional()])
+    cafeina = FloatFieldBR('Cafeína (mg)', validators=[Optional()])
+    taurina = FloatFieldBR('Taurina (mg)', validators=[Optional()])
+    beta_alanina = FloatFieldBR('Beta-Alanina (mg)', validators=[Optional()])
+    citrulina = FloatFieldBR('Citrulina (mg)', validators=[Optional()])
+    creatina = FloatFieldBR('Creatina (mg)', validators=[Optional()])
 
-    coq10 = FloatField('Coenzima Q10 (mg)', validators=[Optional()])
-    carnitina = FloatField('L-Carnitina (mg)', validators=[Optional()])
+    coq10 = FloatFieldBR('Coenzima Q10 (mg)', validators=[Optional()])
+    carnitina = FloatFieldBR('L-Carnitina (mg)', validators=[Optional()])
 
-    leucina = FloatField('Leucina (mg)', validators=[Optional()])
-    isoleucina = FloatField('Isoleucina (mg)', validators=[Optional()])
-    valina = FloatField('Valina (mg)', validators=[Optional()])
-    arginina = FloatField('Arginina (mg)', validators=[Optional()])
-    niacina = FloatField('Niacina (mg)', validators=[Optional()])
+    leucina = FloatFieldBR('Leucina (mg)', validators=[Optional()])
+    isoleucina = FloatFieldBR('Isoleucina (mg)', validators=[Optional()])
+    valina = FloatFieldBR('Valina (mg)', validators=[Optional()])
+    arginina = FloatFieldBR('Arginina (mg)', validators=[Optional()])
+    niacina = FloatFieldBR('Niacina (mg)', validators=[Optional()])
 
-    vit_b1 = FloatField('Vitamina B1 (mg)', validators=[Optional()])
-    vit_b2 = FloatField('Vitamina B2 (mg)', validators=[Optional()])
-    vit_b3 = FloatField('Vitamina B3 (mg)', validators=[Optional()])
-    vit_b5 = FloatField('Vitamina B5 (mg)', validators=[Optional()])
-    vit_b6 = FloatField('Vitamina B6 (mg)', validators=[Optional()])
-    vit_b7 = FloatField('Vitamina B7 (µg)', validators=[Optional()])
-    vit_b9 = FloatField('Vitamina B9 (µg)', validators=[Optional()])
-    vit_b12 = FloatField('Vitamina B12 (µg)', validators=[Optional()])
-    vit_c = FloatField('Vitamina C (mg)', validators=[Optional()])
-    vit_e = FloatField('Vitamina E (mg)', validators=[Optional()])
-    vit_ferro = FloatField('Ferro (mg)', validators=[Optional()])
+    vit_b1 = FloatFieldBR('Vitamina B1 (mg)', validators=[Optional()])
+    vit_b2 = FloatFieldBR('Vitamina B2 (mg)', validators=[Optional()])
+    vit_b3 = FloatFieldBR('Vitamina B3 (mg)', validators=[Optional()])
+    vit_b5 = FloatFieldBR('Vitamina B5 (mg)', validators=[Optional()])
+    vit_b6 = FloatFieldBR('Vitamina B6 (mg)', validators=[Optional()])
+    vit_b7 = FloatFieldBR('Vitamina B7 (µg)', validators=[Optional()])
+    vit_b9 = FloatFieldBR('Vitamina B9 (µg)', validators=[Optional()])
+    vit_b12 = FloatFieldBR('Vitamina B12 (µg)', validators=[Optional()])
+    vit_c = FloatFieldBR('Vitamina C (mg)', validators=[Optional()])
+    vit_e = FloatFieldBR('Vitamina E (mg)', validators=[Optional()])
+    vit_ferro = FloatFieldBR('Ferro (mg)', validators=[Optional()])
     
     comentario = TextAreaField('Comentário', render_kw={"placeholder": "Anotações, misturas, fabricante..."})
     ingredientes = TextAreaField('Ingredientes', render_kw={"placeholder": "Composição ou ingredientes usados..."})
@@ -56,7 +93,7 @@ class SuplementoForm(FlaskForm):
 
 class PlanningItemForm(FlaskForm):
     suplemento_id = SelectField('Produto', coerce=int, validators=[DataRequired()])
-    quantidade = DecimalField('Quantidade', places=2, rounding=None, validators=[DataRequired(), NumberRange(min=0.01)])
+    quantidade = DecimalFieldBR('Quantidade', places=2, rounding=None, validators=[DataRequired(), NumberRange(min=0.01)])
     submit = SubmitField('Adicionar')
     
     
@@ -106,6 +143,4 @@ class ResumoForm(FlaskForm):
 
     submit_calcular = SubmitField('Calcular Resumo')
     submit_limpar = SubmitField('Limpar Tela')
-    submit_salvar = SubmitField('Salvar Resumo')  # se já quiser prever esse botão
-
-
+    submit_salvar = SubmitField('Salvar Resumo')

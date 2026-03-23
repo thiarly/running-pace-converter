@@ -440,6 +440,10 @@ def novo_suplemento():
         database.session.commit()
         flash('Suplemento cadastrado com sucesso!', 'success')
         return redirect(url_for('listar_suplementos'))
+    
+    if form.is_submitted() and not form.validate():
+        flash('Não foi possível salvar. Verifique os campos destacados.', 'error')
+        
     return render_template('cadastro_suplemento.html', form=form)
 
 
