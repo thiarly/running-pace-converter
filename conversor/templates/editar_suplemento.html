@@ -5,84 +5,142 @@
   <h1 class="text-2xl font-bold text-center mb-8">Editar Suplemento</h1>
 
   {% with messages = get_flashed_messages(with_categories=true) %}
-  {% if messages %}
-    <div class="mb-6">
-      {% for category, message in messages %}
-        <div class="p-4 rounded-md text-white {{ 'bg-green-500' if category == 'success' else 'bg-red-500' }} flash-message ">
-          {{ message }}
-        </div>
-      {% endfor %}
-    </div>
-  {% endif %}
-{% endwith %}
+    {% if messages %}
+      <div class="mb-6">
+        {% for category, message in messages %}
+          {% if category == 'success' %}
+            <div class="p-4 rounded-md text-white bg-green-500 flash-message">
+              {{ message }}
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
 
   <form method="POST" class="bg-white p-6 rounded-lg shadow space-y-6 mb-8">
     {{ form.hidden_tag() }}
 
+    {% if form.errors %}
+      <div class="mb-6 p-4 rounded bg-red-100 border border-red-300 text-red-700">
+        <strong>Não foi possível salvar.</strong> Verifique os campos destacados abaixo.
+      </div>
+    {% endif %}
+
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-      <div>{{ form.nome.label(class="block text-sm font-semibold text-gray-700") }} {{ form.nome(class="w-full px-2 py-1 border rounded") }}</div>
-      <div>{{ form.tipo.label(class="block text-sm font-semibold text-gray-700") }} {{ form.tipo(class="w-full px-2 py-1 border rounded") }}</div>
-      <div>{{ form.marca.label(class="block text-sm font-semibold text-gray-700") }} {{ form.marca(class="w-full px-2 py-1 border rounded") }}</div>
-      <div>{{ form.gramas_por_porcao.label(class="block text-sm font-semibold text-gray-700") }} {{ form.gramas_por_porcao(class="w-full px-2 py-1 border rounded") }}</div>
-      <div>{{ form.descricao_porcao.label(class="block text-sm font-semibold text-gray-700") }} {{ form.descricao_porcao(class="w-full px-2 py-1 border rounded") }}</div>
+      <div>
+        {{ form.nome.label(class="block text-sm font-semibold text-gray-700") }}
+        {{ form.nome(class="w-full px-2 py-1 border rounded " + ("border-red-500" if form.nome.errors else "border-gray-300")) }}
+        {% for error in form.nome.errors %}
+          <p class="text-red-500 text-xs mt-1">{{ error }}</p>
+        {% endfor %}
+      </div>
+
+      <div>
+        {{ form.tipo.label(class="block text-sm font-semibold text-gray-700") }}
+        {{ form.tipo(class="w-full px-2 py-1 border rounded " + ("border-red-500" if form.tipo.errors else "border-gray-300")) }}
+        {% for error in form.tipo.errors %}
+          <p class="text-red-500 text-xs mt-1">{{ error }}</p>
+        {% endfor %}
+      </div>
+
+      <div>
+        {{ form.marca.label(class="block text-sm font-semibold text-gray-700") }}
+        {{ form.marca(class="w-full px-2 py-1 border rounded " + ("border-red-500" if form.marca.errors else "border-gray-300")) }}
+        {% for error in form.marca.errors %}
+          <p class="text-red-500 text-xs mt-1">{{ error }}</p>
+        {% endfor %}
+      </div>
+
+      <div>
+        {{ form.gramas_por_porcao.label(class="block text-sm font-semibold text-gray-700") }}
+        {{ form.gramas_por_porcao(class="w-full px-2 py-1 border rounded " + ("border-red-500" if form.gramas_por_porcao.errors else "border-gray-300")) }}
+        {% for error in form.gramas_por_porcao.errors %}
+          <p class="text-red-500 text-xs mt-1">{{ error }}</p>
+        {% endfor %}
+      </div>
+
+      <div>
+        {{ form.descricao_porcao.label(class="block text-sm font-semibold text-gray-700") }}
+        {{ form.descricao_porcao(class="w-full px-2 py-1 border rounded " + ("border-red-500" if form.descricao_porcao.errors else "border-gray-300")) }}
+        {% for error in form.descricao_porcao.errors %}
+          <p class="text-red-500 text-xs mt-1">{{ error }}</p>
+        {% endfor %}
+      </div>
     </div>
 
     <hr>
 
     <h2 class="font-semibold text-lg text-gray-800 mt-4">Macronutrientes e Eletrólitos</h2>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-      {{ form.carbo.label(class="block text-sm text-gray-700") }} {{ form.carbo(class="w-full px-2 py-1 border rounded") }}
-      {{ form.sodio.label(class="block text-sm text-gray-700") }} {{ form.sodio(class="w-full px-2 py-1 border rounded") }}
-      {{ form.magnesio.label(class="block text-sm text-gray-700") }} {{ form.magnesio(class="w-full px-2 py-1 border rounded") }}
-      {{ form.potassio.label(class="block text-sm text-gray-700") }} {{ form.potassio(class="w-full px-2 py-1 border rounded") }}
-      {{ form.calcio.label(class="block text-sm text-gray-700") }} {{ form.calcio(class="w-full px-2 py-1 border rounded") }}
-      {{ form.cloro.label(class="block text-sm text-gray-700") }} {{ form.cloro(class="w-full px-2 py-1 border rounded") }}
-      {{ form.fosforo.label(class="block text-sm text-gray-700") }} {{ form.fosforo(class="w-full px-2 py-1 border rounded") }}
-      {{ form.zinco.label(class="block text-sm text-gray-700") }} {{ form.zinco(class="w-full px-2 py-1 border rounded") }}
-
+      {% for campo in [form.carbo, form.sodio, form.magnesio, form.potassio, form.calcio, form.cloro, form.fosforo, form.zinco] %}
+        <div>
+          {{ campo.label(class="block text-sm text-gray-700") }}
+          {{ campo(class="w-full px-2 py-1 border rounded " + ("border-red-500" if campo.errors else "border-gray-300")) }}
+          {% for error in campo.errors %}
+            <p class="text-red-500 text-xs mt-1">{{ error }}</p>
+          {% endfor %}
+        </div>
+      {% endfor %}
     </div>
 
     <h2 class="font-semibold text-lg text-gray-800 mt-6">Estimulantes e Compostos</h2>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-      {{ form.cafeina.label(class="block text-sm text-gray-700") }} {{ form.cafeina(class="w-full px-2 py-1 border rounded") }}
-      {{ form.taurina.label(class="block text-sm text-gray-700") }} {{ form.taurina(class="w-full px-2 py-1 border rounded") }}
-      {{ form.beta_alanina.label(class="block text-sm text-gray-700") }} {{ form.beta_alanina(class="w-full px-2 py-1 border rounded") }}
-      {{ form.citrulina.label(class="block text-sm text-gray-700") }} {{ form.citrulina(class="w-full px-2 py-1 border rounded") }}
-      {{ form.creatina.label(class="block text-sm text-gray-700") }} {{ form.creatina(class="w-full px-2 py-1 border rounded") }}
-      {{ form.coq10.label(class="block text-sm text-gray-700") }} {{ form.coq10(class="w-full px-2 py-1 border rounded") }}
-      {{ form.carnitina.label(class="block text-sm text-gray-700") }} {{ form.carnitina(class="w-full px-2 py-1 border rounded") }}
+      {% for campo in [form.cafeina, form.taurina, form.beta_alanina, form.citrulina, form.creatina, form.coq10, form.carnitina] %}
+        <div>
+          {{ campo.label(class="block text-sm text-gray-700") }}
+          {{ campo(class="w-full px-2 py-1 border rounded " + ("border-red-500" if campo.errors else "border-gray-300")) }}
+          {% for error in campo.errors %}
+            <p class="text-red-500 text-xs mt-1">{{ error }}</p>
+          {% endfor %}
+        </div>
+      {% endfor %}
     </div>
 
     <h2 class="font-semibold text-lg text-gray-800 mt-6">Aminoácidos</h2>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-      {{ form.leucina.label(class="block text-sm text-gray-700") }} {{ form.leucina(class="w-full px-2 py-1 border rounded") }}
-      {{ form.isoleucina.label(class="block text-sm text-gray-700") }} {{ form.isoleucina(class="w-full px-2 py-1 border rounded") }}
-      {{ form.valina.label(class="block text-sm text-gray-700") }} {{ form.valina(class="w-full px-2 py-1 border rounded") }}
-      {{ form.arginina.label(class="block text-sm text-gray-700") }} {{ form.arginina(class="w-full px-2 py-1 border rounded") }}
-      {{ form.niacina.label(class="block text-sm text-gray-700") }} {{ form.niacina(class="w-full px-2 py-1 border rounded") }}
+      {% for campo in [form.leucina, form.isoleucina, form.valina, form.arginina, form.niacina] %}
+        <div>
+          {{ campo.label(class="block text-sm text-gray-700") }}
+          {{ campo(class="w-full px-2 py-1 border rounded " + ("border-red-500" if campo.errors else "border-gray-300")) }}
+          {% for error in campo.errors %}
+            <p class="text-red-500 text-xs mt-1">{{ error }}</p>
+          {% endfor %}
+        </div>
+      {% endfor %}
     </div>
 
     <h2 class="font-semibold text-lg text-gray-800 mt-6">Vitaminas</h2>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-      {{ form.vit_b1.label(class="block text-sm text-gray-700") }} {{ form.vit_b1(class="w-full px-2 py-1 border rounded") }}
-      {{ form.vit_b2.label(class="block text-sm text-gray-700") }} {{ form.vit_b2(class="w-full px-2 py-1 border rounded") }}
-      {{ form.vit_b3.label(class="block text-sm text-gray-700") }} {{ form.vit_b3(class="w-full px-2 py-1 border rounded") }}
-      {{ form.vit_b5.label(class="block text-sm text-gray-700") }} {{ form.vit_b5(class="w-full px-2 py-1 border rounded") }}
-      {{ form.vit_b6.label(class="block text-sm text-gray-700") }} {{ form.vit_b6(class="w-full px-2 py-1 border rounded") }}
-      {{ form.vit_b7.label(class="block text-sm text-gray-700") }} {{ form.vit_b7(class="w-full px-2 py-1 border rounded") }}
-      {{ form.vit_b9.label(class="block text-sm text-gray-700") }} {{ form.vit_b9(class="w-full px-2 py-1 border rounded") }}
-      {{ form.vit_b12.label(class="block text-sm text-gray-700") }} {{ form.vit_b12(class="w-full px-2 py-1 border rounded") }}
-      {{ form.vit_c.label(class="block text-sm text-gray-700") }} {{ form.vit_c(class="w-full px-2 py-1 border rounded") }}
-      {{ form.vit_e.label(class="block text-sm text-gray-700") }} {{ form.vit_e(class="w-full px-2 py-1 border rounded") }}
-      {{ form.vit_ferro.label(class="block text-sm text-gray-700") }} {{ form.vit_ferro(class="w-full px-2 py-1 border rounded") }}
+      {% for campo in [form.vit_b1, form.vit_b2, form.vit_b3, form.vit_b5, form.vit_b6, form.vit_b7, form.vit_b9, form.vit_b12, form.vit_c, form.vit_e, form.vit_ferro] %}
+        <div>
+          {{ campo.label(class="block text-sm text-gray-700") }}
+          {{ campo(class="w-full px-2 py-1 border rounded " + ("border-red-500" if campo.errors else "border-gray-300")) }}
+          {% for error in campo.errors %}
+            <p class="text-red-500 text-xs mt-1">{{ error }}</p>
+          {% endfor %}
+        </div>
+      {% endfor %}
     </div>
 
     <h2 class="font-semibold text-lg text-gray-800 mt-6">Ingredientes e Comentário</h2>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-      {{ form.ingredientes.label(class="block text-sm text-gray-700") }} {{ form.ingredientes(class="w-full px-2 py-1 border rounded") }}
-      {{ form.comentario.label(class="block text-sm text-gray-700") }} {{ form.comentario(class="w-full px-2 py-1 border rounded") }}
-    </div>
+      <div>
+        {{ form.ingredientes.label(class="block text-sm text-gray-700") }}
+        {{ form.ingredientes(class="w-full px-2 py-1 border rounded " + ("border-red-500" if form.ingredientes.errors else "border-gray-300")) }}
+        {% for error in form.ingredientes.errors %}
+          <p class="text-red-500 text-xs mt-1">{{ error }}</p>
+        {% endfor %}
+      </div>
 
+      <div>
+        {{ form.comentario.label(class="block text-sm text-gray-700") }}
+        {{ form.comentario(class="w-full px-2 py-1 border rounded " + ("border-red-500" if form.comentario.errors else "border-gray-300")) }}
+        {% for error in form.comentario.errors %}
+          <p class="text-red-500 text-xs mt-1">{{ error }}</p>
+        {% endfor %}
+      </div>
+    </div>
 
     <div class="text-center mt-6">
       <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded shadow">
@@ -91,5 +149,4 @@
     </div>
   </form>
 </div>
-
 {% endblock %}

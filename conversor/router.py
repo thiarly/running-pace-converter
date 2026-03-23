@@ -441,8 +441,8 @@ def novo_suplemento():
         flash('Suplemento cadastrado com sucesso!', 'success')
         return redirect(url_for('listar_suplementos'))
     
-    if form.is_submitted() and not form.validate():
-        flash('Não foi possível salvar. Verifique os campos destacados.', 'error')
+    elif form.is_submitted():
+        pass
         
     return render_template('cadastro_suplemento.html', form=form)
 
