@@ -79,6 +79,16 @@
                             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2 text-xs sm:text-sm">
                               <div><strong>Porção:</strong> {{ suplemento.gramas_por_porcao or '–' }}</div>
                               <div><strong>Descrição Porção:</strong> {{ suplemento.descricao_porcao or '–' }}</div>
+
+                                <div><strong>Carboidrato:</strong> {{ suplemento.carbo or 0 }} g</div>
+                                <div><strong>Proteína:</strong> {{ suplemento.proteina or 0 }} g</div>
+                                <div><strong>Gordura:</strong> {{ suplemento.gordura_saturada or 0 }} g</div>
+                                <div><strong>Fibra:</strong> {{ suplemento.fibras_alimentares or 0 }} g</div>
+
+                                fibra
+                                gordura
+                                <div><strong>Sódio:</strong> {{ suplemento.sodio or 0 }} mg</div>
+
                                 <div><strong>Magnésio:</strong> {{ suplemento.magnesio or 0 }} mg</div>
                                 <div><strong>Potássio:</strong> {{ suplemento.potassio or 0 }} mg</div>
                                 <div><strong>Cálcio:</strong> {{ suplemento.calcio or 0 }} mg</div>
@@ -94,6 +104,7 @@
                                 <div><strong>Isoleucina:</strong> {{ suplemento.isoleucina or 0 }} mg</div>
                                 <div><strong>Valina:</strong> {{ suplemento.valina or 0 }} mg</div>
                                 <div><strong>Arginina:</strong> {{ suplemento.arginina or 0 }} mg</div>
+                                
                                 <div><strong>Vit. B1:</strong> {{ suplemento.vit_b1 or 0 }} mg</div>
                                 <div><strong>Vit. B2:</strong> {{ suplemento.vit_b2 or 0 }} mg</div>
                                 <div><strong>Vit. B3:</strong> {{ suplemento.vit_b3 or 0 }} mg</div>
@@ -103,6 +114,11 @@
                                 <div><strong>Vit. B12:</strong> {{ suplemento.vit_b12 or 0 }} µg</div>
                                 <div><strong>Vit. E:</strong> {{ suplemento.vit_e or 0 }} mg</div>
                                 <div><strong>Vit. C:</strong> {{ suplemento.vit_c or 0 }} mg</div>
+                                <div><strong>Vit. D:</strong> {{ suplemento.vit_d or 0 }} µg</div>
+                                <div><strong>Ferro:</strong> {{ suplemento.vit_ferro or 0 }} mg</div>
+                                <div><strong>Ácido Pantotênico:</strong> {{ suplemento.acido_pantotenico or 0 }} mg</div>
+                              
+
                                 <div><strong>Ingredientes:</strong> {{ suplemento.ingredientes or '–' }}</div>
                                 <div><strong>Comentário:</strong> {{ suplemento.comentario or '–' }}</div>
                             </div>

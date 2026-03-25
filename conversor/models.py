@@ -37,6 +37,7 @@ class Suplemento(database.Model):
     carbo = database.Column(database.Float)
     gordura_saturada = database.Column(database.Float)
     fibras_alimentares = database.Column(database.Float)
+    
     sodio = database.Column(database.Float)
     magnesio = database.Column(database.Float)
     potassio = database.Column(database.Float)
@@ -59,6 +60,7 @@ class Suplemento(database.Model):
     valina = database.Column(database.Float)
     arginina = database.Column(database.Float)
     niacina = database.Column(database.Float)
+    tirosina = database.Column(database.Float)
 
     vit_b1 = database.Column(database.Float)
     vit_b2 = database.Column(database.Float)
@@ -68,18 +70,15 @@ class Suplemento(database.Model):
     vit_b7 = database.Column(database.Float)
     vit_b9 = database.Column(database.Float)
     vit_b12 = database.Column(database.Float)
+    
     vit_c = database.Column(database.Float)
     vit_e = database.Column(database.Float)
     vit_ferro = database.Column(database.Float)
     vit_d = database.Column(database.Float)
-    acido_pantotenico = database.Column(database.Float)
-    acido_folico = database.Column(database.Float)
-    tirosina = database.Column(database.Float)
     colina = database.Column(database.Float)
-    vitamina_d = database.Column(database.Float)
     acido_pantotenico = database.Column(database.Float)
     acido_folico = database.Column(database.Float)
-    tirosina = database.Column(database.Float)
+   
  
     
     
@@ -109,6 +108,9 @@ class PlanejamentoItem(database.Model):
 
         return {
             'carbo': multi(self.suplemento.carbo),
+            'fibra': multi(self.suplemento.fibra),
+            'gordura': multi(self.suplemento.gordura),
+            
             'sodio': multi(self.suplemento.sodio),
             'magnesio': multi(self.suplemento.magnesio),
             'potassio': multi(self.suplemento.potassio),
@@ -132,9 +134,15 @@ class PlanejamentoItem(database.Model):
             'vit_b7': multi(self.suplemento.vit_b7),
             'vit_b9': multi(self.suplemento.vit_b9),
             'vit_b12': multi(self.suplemento.vit_b12),
+
             'vit_c': multi(self.suplemento.vit_c),
             'vit_e': multi(self.suplemento.vit_e),
             'vit_ferro': multi(self.suplemento.vit_ferro),
+            'vit_d': multi(self.suplemento.vit_d),
+            'acido_pantotenico': multi(self.suplemento.acido_pantotenico),
+            'acido_folico': multi(self.suplemento.acido_folico),
+            'tirosina': multi(self.suplemento.tirosina),
+            'colina': multi(self.suplemento.colina)
         }
 
     def __repr__(self):
