@@ -91,8 +91,8 @@ class SuplementoForm(FlaskForm):
     vit_e = FloatFieldBR('Vitamina E (mg)', validators=[Optional()])
     vit_ferro = FloatFieldBR('Ferro (mg)', validators=[Optional()])
     vit_d = FloatFieldBR('Vitamina D (µg)', validators=[Optional()])
-    acido_pantotenico = FloatFieldBR('Ácido Pantotênico (mg)', validators=[Optional()])
-    acido_folico = FloatFieldBR('Ácido Fólico (µg)', validators=[Optional()])
+    acido_pantotenico = FloatFieldBR('Ác. Pantotênico (mg)', validators=[Optional()])
+    acido_folico = FloatFieldBR('Ác. Fólico (µg)', validators=[Optional()])
     colina = FloatFieldBR('Colina (mg)', validators=[Optional()])
     
     comentario = TextAreaField('Comentário', render_kw={"placeholder": "Anotações, misturas, fabricante..."})
