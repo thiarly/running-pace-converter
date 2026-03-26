@@ -64,64 +64,115 @@
                         <td class="px-6 py-4 whitespace-nowrap">{{ suplemento.sodio or 0 }}</td>
                         <td class="px-6 py-4 whitespace-nowrap">{{ suplemento.magnesio or 0 }}</td>
                         <td class="px-6 py-4 whitespace-nowrap">{{ suplemento.cafeina or 0 }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <a href="{{ url_for('editar_suplemento', id=suplemento.id) }}" class="resumo-nave text-sm hover:underline">✏️ Editar</a>
-                            <span class="mx-1">|</span>
-                            <a href="{{ url_for('excluir_suplemento', id=suplemento.id) }}" class="text-red-600 text-sm hover:underline" onclick="return confirm('Tem certeza que deseja excluir?')">🗑️ Excluir</a>
-                            <span class="mx-1">|</span>
-                            <button onclick="toggleDetails('{{ suplemento.id }}')" class="text-green-600 text-sm hover:underline">🔎 Detalhes</button>
-                            <span class="mx-1">|</span>
-                            <a href="{{ url_for('duplicar_suplemento', id=suplemento.id) }}" class="text-gray-600 text-sm hover:underline">📄 Duplicar</a>
-                        </td>
+<td class="px-6 py-4 whitespace-nowrap">
+    <div class="flex items-center gap-2 text-sm">
+        <a href="{{ url_for('editar_suplemento', id=suplemento.id) }}" class="text-blue-600 hover:underline">✏️ Editar</a>
+        <span class="text-gray-300">|</span>
+        <a href="{{ url_for('excluir_suplemento', id=suplemento.id) }}" class="text-red-600 hover:underline" onclick="return confirm('Tem certeza que deseja excluir?')">🗑️ Excluir</a>
+        <span class="text-gray-300">|</span>
+        <button onclick="toggleDetails('{{ suplemento.id }}')" class="text-green-600 hover:underline">🔎 Detalhes</button>
+        <span class="text-gray-300">|</span>
+        <a href="{{ url_for('duplicar_suplemento', id=suplemento.id) }}" class="text-gray-600 hover:underline">📄 Duplicar</a>
+    </div>
+</td>
                     </tr>
-                    <tr id="details-{{ suplemento.id }}" class="hidden bg-gray-100 border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
-                        <td colspan="6" class="p-4">
-                            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2 text-xs sm:text-sm">
-                              <div><strong>Porção:</strong> {{ suplemento.gramas_por_porcao or '–' }}</div>
-                              <div><strong>Descrição Porção:</strong> {{ suplemento.descricao_porcao or '–' }}</div>
+<tr id="details-{{ suplemento.id }}" class="hidden bg-gray-50 border-b border-gray-200">
+    <td colspan="8" class="px-4 py-3">
+        <div class="space-y-5 text-sm text-gray-700">
 
-                                <div><strong>Carboidrato:</strong> {{ suplemento.carbo or 0 }} g</div>
-                                <div><strong>Proteína:</strong> {{ suplemento.proteina or 0 }} g</div>
-                                <div><strong>Gordura:</strong> {{ suplemento.gordura_saturada or 0 }} g</div>
-                                <div><strong>Fibra:</strong> {{ suplemento.fibras_alimentares or 0 }} g</div>
+            <!-- Bloco 1: informações gerais -->
+            <div>
+                <h3 class="text-xs font-semibold uppercase tracking-wide text-gray-700 mb-1">Informações Gerais</h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-2">
+                    <div class="bg-white rounded border px-2.5 py-1.5 leading-tight"><strong>Porção:</strong> {{ suplemento.gramas_por_porcao or '–' }}</div>
+                    <div class="bg-white rounded border px-2.5 py-1.5 leading-tight"><strong>Descrição da Porção:</strong> {{ suplemento.descricao_porcao or '–' }}</div>
+                    <div class="bg-white rounded border px-2.5 py-1.5 leading-tight"><strong>Tipo:</strong> {{ suplemento.tipo or '–' }}</div>
+                    <div class="bg-white rounded border px-2.5 py-1.5 leading-tight"><strong>Marca:</strong> {{ suplemento.marca or '–' }}</div>
+                </div>
+            </div>
 
-                                fibra
-                                gordura
-                                <div><strong>Sódio:</strong> {{ suplemento.sodio or 0 }} mg</div>
+            <!-- Bloco 2: macros -->
+            <div>
+                <h3 class="text-xs font-semibold uppercase tracking-wide text-gray-700 mb-1">Macronutrientes</h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-2">
+                    <div class="bg-white rounded border px-2.5 py-1.5 leading-tight"><strong>Carboidrato:</strong> {{ suplemento.carbo or 0 }} g</div>
+                    <div class="bg-white rounded border px-2.5 py-1.5 leading-tight"><strong>Proteína:</strong> {{ suplemento.proteina or 0 }} g</div>
+                    <div class="bg-white rounded border px-2.5 py-1.5 leading-tight"><strong>Gordura Saturada:</strong> {{ suplemento.gordura_saturada or 0 }} g</div>
+                    <div class="bg-white rounded border px-2.5 py-1.5 leading-tight"><strong>Fibra:</strong> {{ suplemento.fibras_alimentares or 0 }} g</div>
+                </div>
+            </div>
 
-                                <div><strong>Magnésio:</strong> {{ suplemento.magnesio or 0 }} mg</div>
-                                <div><strong>Potássio:</strong> {{ suplemento.potassio or 0 }} mg</div>
-                                <div><strong>Cálcio:</strong> {{ suplemento.calcio or 0 }} mg</div>
-                                <div><strong>Cafeína:</strong> {{ suplemento.cafeina or 0 }} mg</div>
-                                <div><strong>Taurina:</strong> {{ suplemento.taurina or 0 }} mg</div>
-                                <div><strong>Beta-Alanina:</strong> {{ suplemento.beta_alanina or 0 }} mg</div>
-                                <div><strong>Citrulina:</strong> {{ suplemento.citrulina or 0 }} mg</div>
-                                <div><strong>Arginina:</strong> {{ suplemento.arginina or 0 }} mg</div>
-                                <div><strong>Creatina:</strong> {{ suplemento.creatina or 0 }} mg</div>
-                                <div><strong>CoQ10:</strong> {{ suplemento.coq10 or 0 }} mg</div>
-                                <div><strong>Carnitina:</strong> {{ suplemento.carnitina or 0 }} mg</div>
-                                <div><strong>Leucina:</strong> {{ suplemento.leucina or 0 }} mg</div>
-                                <div><strong>Isoleucina:</strong> {{ suplemento.isoleucina or 0 }} mg</div>
-                                <div><strong>Valina:</strong> {{ suplemento.valina or 0 }} mg</div>
-                                <div><strong>Arginina:</strong> {{ suplemento.arginina or 0 }} mg</div>
-                                
-                                <div><strong>Vit. B1:</strong> {{ suplemento.vit_b1 or 0 }} mg</div>
-                                <div><strong>Vit. B2:</strong> {{ suplemento.vit_b2 or 0 }} mg</div>
-                                <div><strong>Vit. B3:</strong> {{ suplemento.vit_b3 or 0 }} mg</div>
-                                <div><strong>Vit. B6:</strong> {{ suplemento.vit_b6 or 0 }} mg</div>
-                                <div><strong>Vit. B7:</strong> {{ suplemento.vit_b7 or 0 }} µg</div>
-                                <div><strong>Vit. B9:</strong> {{ suplemento.vit_b9 or 0 }} µg</div>
-                                <div><strong>Vit. B12:</strong> {{ suplemento.vit_b12 or 0 }} µg</div>
-                                <div><strong>Vit. E:</strong> {{ suplemento.vit_e or 0 }} mg</div>
-                                <div><strong>Vit. C:</strong> {{ suplemento.vit_c or 0 }} mg</div>
-                                <div><strong>Vit. D:</strong> {{ suplemento.vit_d or 0 }} µg</div>
-                                <div><strong>Ferro:</strong> {{ suplemento.vit_ferro or 0 }} mg</div>
-                                <div><strong>Ácido Pantotênico:</strong> {{ suplemento.acido_pantotenico or 0 }} mg</div>
-                              
+            <!-- Bloco 3: eletrólitos e estimulantes -->
+            <div>
+                <h3 class="text-xs font-semibold uppercase tracking-wide text-gray-700 mb-1">Eletrólitos e Estimulantes</h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-2">
+                    <div class="bg-white rounded border px-2.5 py-1.5 leading-tight"><strong>Sódio:</strong> {{ suplemento.sodio or 0 }} mg</div>
+                    <div class="bg-white rounded border px-2.5 py-1.5 leading-tight"><strong>Magnésio:</strong> {{ suplemento.magnesio or 0 }} mg</div>
+                    <div class="bg-white rounded border px-2.5 py-1.5 leading-tight"><strong>Potássio:</strong> {{ suplemento.potassio or 0 }} mg</div>
+                    <div class="bg-white rounded border px-2.5 py-1.5 leading-tight"><strong>Cálcio:</strong> {{ suplemento.calcio or 0 }} mg</div>
+                    <div class="bg-white rounded border px-2.5 py-1.5 leading-tight"><strong>Cafeína:</strong> {{ suplemento.cafeina or 0 }} mg</div>
+                    <div class="bg-white rounded border px-2.5 py-1.5 leading-tight"><strong>Taurina:</strong> {{ suplemento.taurina or 0 }} mg</div>
+                    <div class="bg-white rounded border px-2.5 py-1.5 leading-tight"><strong>CoQ10:</strong> {{ suplemento.coq10 or 0 }} mg</div>
+                    <div class="bg-white rounded border px-2.5 py-1.5 leading-tight"><strong>Carnitina:</strong> {{ suplemento.carnitina or 0 }} mg</div>
+                </div>
+            </div>
 
-                                <div><strong>Ingredientes:</strong> {{ suplemento.ingredientes or '–' }}</div>
-                                <div><strong>Comentário:</strong> {{ suplemento.comentario or '–' }}</div>
-                            </div>
+            <!-- Bloco 4: aminoácidos e compostos -->
+            <div>
+                <h3 class="text-xs font-semibold uppercase tracking-wide text-gray-700 mb-1">Aminoácidos e Compostos</h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                    <div class="bg-white rounded border px-2.5 py-1.5 leading-tight"><strong>Beta-Alanina:</strong> {{ suplemento.beta_alanina or 0 }} mg</div>
+                    <div class="bg-white rounded border px-2.5 py-1.5 leading-tight"><strong>Citrulina:</strong> {{ suplemento.citrulina or 0 }} mg</div>
+                    <div class="bg-white rounded border px-2.5 py-1.5 leading-tight"><strong>Arginina:</strong> {{ suplemento.arginina or 0 }} mg</div>
+                    <div class="bg-white rounded border px-2.5 py-1.5 leading-tight"><strong>Creatina:</strong> {{ suplemento.creatina or 0 }} mg</div>
+                    <div class="bg-white rounded border px-2.5 py-1.5 leading-tight"><strong>Leucina:</strong> {{ suplemento.leucina or 0 }} mg</div>
+                    <div class="bg-white rounded border px-2.5 py-1.5 leading-tight"><strong>Isoleucina:</strong> {{ suplemento.isoleucina or 0 }} mg</div>
+                    <div class="bg-white rounded border px-2.5 py-1.5 leading-tight"><strong>Valina:</strong> {{ suplemento.valina or 0 }} mg</div>
+                </div>
+            </div>
+
+            <!-- Bloco 5: vitaminas -->
+            <div>
+                <h3 class="text-xs font-semibold uppercase tracking-wide text-gray-700 mb-1">Vitaminas e Minerais</h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-2">
+                    <div class="bg-white rounded border px-2.5 py-1.5 leading-tight"><strong>Vit. B1:</strong> {{ suplemento.vit_b1 or 0 }} mg</div>
+                    <div class="bg-white rounded border px-2.5 py-1.5 leading-tight"><strong>Vit. B2:</strong> {{ suplemento.vit_b2 or 0 }} mg</div>
+                    <div class="bg-white rounded border px-2.5 py-1.5 leading-tight"><strong>Vit. B3:</strong> {{ suplemento.vit_b3 or 0 }} mg</div>
+                    <div class="bg-white rounded border px-2.5 py-1.5 leading-tight"><strong>Vit. B6:</strong> {{ suplemento.vit_b6 or 0 }} mg</div>
+                    <div class="bg-white rounded border px-2.5 py-1.5 leading-tight"><strong>Vit. B7:</strong> {{ suplemento.vit_b7 or 0 }} µg</div>
+                    <div class="bg-white rounded border px-2.5 py-1.5 leading-tight"><strong>Vit. B9:</strong> {{ suplemento.vit_b9 or 0 }} µg</div>
+                    <div class="bg-white rounded border px-2.5 py-1.5 leading-tight"><strong>Vit. B12:</strong> {{ suplemento.vit_b12 or 0 }} µg</div>
+                    <div class="bg-white rounded border px-2.5 py-1.5 leading-tight"><strong>Vit. C:</strong> {{ suplemento.vit_c or 0 }} mg</div>
+                    <div class="bg-white rounded border px-2.5 py-1.5 leading-tight"><strong>Vit. D:</strong> {{ suplemento.vit_d or 0 }} µg</div>
+                    <div class="bg-white rounded border px-2.5 py-1.5 leading-tight"><strong>Vit. E:</strong> {{ suplemento.vit_e or 0 }} mg</div>
+                    <div class="bg-white rounded border px-2.5 py-1.5 leading-tight"><strong>Ferro:</strong> {{ suplemento.vit_ferro or 0 }} mg</div>
+                    <div class="bg-white rounded border px-2.5 py-1.5 leading-tight"><strong>Ácido Pantotênico:</strong> {{ suplemento.acido_pantotenico or 0 }} mg</div>
+                </div>
+            </div>
+
+            <!-- Bloco 6: textos grandes -->
+            <div>
+                <h3 class="text-xs font-semibold uppercase tracking-wide text-gray-700 mb-1">Detalhes Adicionais</h3>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-2">
+                    <div class="bg-white rounded border px-3 py-2">
+                        <strong class="block mb-2 text-gray-800">Ingredientes</strong>
+                        <p class="text-sm text-gray-600 leading-5 whitespace-pre-line break-words">
+                            {{ suplemento.ingredientes or '–' }}
+                        </p>
+                    </div>
+
+                    <div class="bg-white rounded border px-3 py-2">
+                        <strong class="block mb-2 text-gray-800">Comentário</strong>
+                        <p class="text-sm text-gray-600 leading-5 whitespace-pre-line break-words">
+                            {{ suplemento.comentario or '–' }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </td>
+</tr>
                         </td>
                     </tr>
                     {% endfor %}
