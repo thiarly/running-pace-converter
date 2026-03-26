@@ -101,59 +101,52 @@ Resumo do Planejamento
     } %}
 
 
-    {% set unidades = {
-      "Macronutrientes": {
-        "Carboidrato": "g",
-        "Proteína": "g",
-        "Gordura Saturada": "g",
-        "Fibras Alimentares": "g"
-      },
-      "Eletrólitos": {
-        "Sódio": "mg",
-        "Magnésio": "mg",
-        "Potássio": "mg",
-        "Cálcio": "mg"
-      },
-      "Estimulantes e Compostos": {
-        "Cafeína": "mg",
-        "Taurina": "mg",
-        "Beta-Alanina": "mg",
-        "Citrulina": "mg",
-        "Creatina": "mg",
-        "CoQ10": "mg",
-        "Carnitina": "mg",
-        "Tirosina": "mg",
-        "Niacina": "mg",
-        "Colina": "mg",
-      },
-      "Vitaminas": {
-        "Vitamina B1": "mg",
-        "Vitamina B2": "mg",
-        "Vitamina B3": "mg",
-        "Vitamina B6": "mg",
-        "Vitamina B7": "µg",
-        "Vitamina B9": "µg",
-        "Vitamina B12": "µg",
-        "Vitamina C": "mg",
-        "Vitamina E": "mg",
-        "Ferro": "mg",
-        "Vitamina D": "µg",
-        "Ác. Pantotênico": "mg",
-        "Ác. Fólico": "µg",
-        "Colina": "mg",
-
-
-      },
-      "Aminoácidos": {
-        "Leucina": "mg",
-        "Isoleucina": "mg",
-        "Valina": "mg",
-        "Arginina": "mg",
-        "Niacina": "mg",
-        "Tirosina": "mg",
-        
-      }
-    } %}
+  {% set unidades = {
+    "Macronutrientes": {
+      "Carboidrato": "g",
+      "Proteína": "g",
+      "Gordura Saturada": "g",
+      "Fibras Alimentares": "g"
+    },
+    "Eletrólitos": {
+      "Sódio": "mg",
+      "Magnésio": "mg",
+      "Potássio": "mg",
+      "Cálcio": "mg"
+    },
+    "Estimulantes e Compostos": {
+      "Cafeína": "mg",
+      "Taurina": "mg",
+      "Beta-Alanina": "mg",
+      "Citrulina": "mg",
+      "Creatina": "mg",
+      "CoQ10": "mg",
+      "Carnitina": "mg",
+      "Colina": "mg"
+    },
+    "Vitaminas": {
+      "Vitamina B1": "mg",
+      "Vitamina B2": "mg",
+      "Vitamina B3": "mg",
+      "Vitamina B6": "mg",
+      "Vitamina B7": "µg",
+      "Vitamina B9": "µg",
+      "Vitamina B12": "µg",
+      "Vitamina C": "mg",
+      "Vitamina E": "mg",
+      "Ferro": "mg",
+      "Vitamina D": "µg",
+      "Ác. Pantotênico": "mg",
+      "Ác. Fólico": "µg"
+    },
+    "Aminoácidos": {
+      "Leucina": "mg",
+      "Isoleucina": "mg",
+      "Valina": "mg",
+      "Arginina": "mg",
+      "Tirosina": "mg"
+    }
+  } %}
 
 
 
@@ -178,46 +171,63 @@ Resumo do Planejamento
     {% endif %}
 
     
-    {% for categoria in ordem %}
-      {% if resumo[categoria] %}
-    
+  {% for categoria in ordem %}
+    {% if resumo[categoria] %}
+      {% set dados = resumo[categoria] %}
+
+      {% if categoria == "Eletrólitos" %}
+        {% set total = namespace(value=0) %}
+        {% for item in ordem_eletrolitos %}
+          {% if dados.get(item, 0) > 0 %}
+            {% set total.value = total.value + dados.get(item, 0) %}
+          {% endif %}
+        {% endfor %}
+        {% set mostrar_categoria = total.value > 0 %}
+      {% else %}
+        {% set soma = dados.values() | map('float') | sum %}
+        {% set mostrar_categoria = soma > 0 %}
+      {% endif %}
+
+      {% if mostrar_categoria %}
+
         {% if categoria == "Vitaminas" %}
         <div id="detalhes-secundarios" class="hidden grid grid-cols-1 md:grid-cols-2 gap-4 md:col-span-3 transition-all duration-300 ease-in-out">
         {% endif %}
-    
+
         <div class="{% if categoria in ['Macronutrientes', 'Eletrólitos', 'Estimulantes e Compostos'] %}md:col-span-3{% else %}md:col-span-1{% endif %} rounded-xl shadow p-4 {{ cores[categoria] }}">
           <h3 class="font-bold text-gray-800 mb-2">{{ icones[categoria] }} {{ categoria }}</h3>
           <ul class="list-disc pl-5 text-sm text-gray-700">
             {% if categoria == "Eletrólitos" %}
-                {% for item in ordem_eletrolitos %}
-                {% if resumo[categoria][item] > 0 %}
+              {% for item in ordem_eletrolitos %}
+                {% if dados.get(item, 0) > 0 %}
                 <li>
                   <strong>{{ item }}:</strong>
-                  {{ resumo[categoria][item] | round(1) }} {{ unidades[categoria].get(item, '') }}/h ⇥
-                  {{ (resumo[categoria][item] * tempo_horas) | round(1) }} {{ unidades[categoria].get(item, '') }}/total
+                  {{ dados.get(item, 0) | round(1) }} {{ unidades[categoria].get(item, '') }}/h ⇥
+                  {{ (dados.get(item, 0) * tempo_horas) | round(1) }} {{ unidades[categoria].get(item, '') }}/total
                 </li>
                 {% endif %}
               {% endfor %}
             {% else %}
-            {% for nome, valor in resumo[categoria].items() %}
-              {% if valor > 0 %}
-              <li>
-                <strong>{{ nome }}:</strong>
-                {{ valor | round(1) }} {{ unidades[categoria].get(nome, '') }}/h ⇥
-                {{ (valor * tempo_horas) | round(1) }} {{ unidades[categoria].get(nome, '') }}/total
-              </li>
-              {% endif %}
-            {% endfor %}
+              {% for nome, valor in dados.items() %}
+                {% if valor > 0 %}
+                <li>
+                  <strong>{{ nome }}:</strong>
+                  {{ valor | round(1) }} {{ unidades[categoria].get(nome, '') }}/h ⇥
+                  {{ (valor * tempo_horas) | round(1) }} {{ unidades[categoria].get(nome, '') }}/total
+                </li>
+                {% endif %}
+              {% endfor %}
             {% endif %}
           </ul>
         </div>
-    
+
         {% if categoria == "Aminoácidos" %}
         </div>
         {% endif %}
-    
+
       {% endif %}
-    {% endfor %}
+    {% endif %}
+  {% endfor %}
 
 
 
@@ -291,56 +301,52 @@ Resumo do Planejamento
 
     {% for resumo in resumos %}
 
-
-    {% set unidades = {
-      "Macronutrientes": {
-        "Carboidrato": "g",
-        "Proteína": "g",
-        "Gordura Saturada": "g",
-        "Fibras Alimentares": "g"
-      },
-      "Eletrólitos": {
-        "Sódio": "mg",
-        "Magnésio": "mg",
-        "Potássio": "mg",
-        "Cálcio": "mg"
-      },
-      "Estimulantes e Compostos": {
-        "Cafeína": "mg",
-        "Taurina": "mg",
-        "Beta-Alanina": "mg",
-        "Citrulina": "mg",
-        "Creatina": "mg",
-        "CoQ10": "mg",
-        "Carnitina": "mg",
-
-        
-      },
-      "Vitaminas": {
-        "Vitamina B1": "mg",
-        "Vitamina B2": "mg",
-        "Vitamina B3": "mg",
-        "Vitamina B6": "mg",
-        "Vitamina B7": "µg",
-        "Vitamina B9": "µg",
-        "Vitamina B12": "µg",
-        "Vitamina C": "mg",
-        "Vitamina E": "mg",
-        "Ferro": "mg",
-        "Vitamina D": "µg",
-        "Ác. Pantotênico": "mg",
-        "Ác. Fólico": "µg",
-        "Colina": "mg"
-      },
-      "Aminoácidos": {
-        "Leucina": "mg",
-        "Isoleucina": "mg",
-        "Valina": "mg",
-        "Arginina": "mg",
-        "Tirosina": "mg",
-        "Niacina": "mg",
-      }
-    } %}
+  {% set unidades = {
+    "Macronutrientes": {
+      "Carboidrato": "g",
+      "Proteína": "g",
+      "Gordura Saturada": "g",
+      "Fibras Alimentares": "g"
+    },
+    "Eletrólitos": {
+      "Sódio": "mg",
+      "Magnésio": "mg",
+      "Potássio": "mg",
+      "Cálcio": "mg"
+    },
+    "Estimulantes e Compostos": {
+      "Cafeína": "mg",
+      "Taurina": "mg",
+      "Beta-Alanina": "mg",
+      "Citrulina": "mg",
+      "Creatina": "mg",
+      "CoQ10": "mg",
+      "Carnitina": "mg",
+      "Colina": "mg"
+    },
+    "Vitaminas": {
+      "Vitamina B1": "mg",
+      "Vitamina B2": "mg",
+      "Vitamina B3": "mg",
+      "Vitamina B6": "mg",
+      "Vitamina B7": "µg",
+      "Vitamina B9": "µg",
+      "Vitamina B12": "µg",
+      "Vitamina C": "mg",
+      "Vitamina E": "mg",
+      "Ferro": "mg",
+      "Vitamina D": "µg",
+      "Ác. Pantotênico": "mg",
+      "Ác. Fólico": "µg"
+    },
+    "Aminoácidos": {
+      "Leucina": "mg",
+      "Isoleucina": "mg",
+      "Valina": "mg",
+      "Arginina": "mg",
+      "Tirosina": "mg"
+    }
+  } %}
 
 
     <div class="bg-white rounded shadow p-4 mb-4 border border-gray-200">
@@ -417,65 +423,65 @@ Resumo do Planejamento
 
 
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {% for categoria in ordem %}
-            {% if resumo[categoria] %}
-              {% set dados = resumo[categoria] %}
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      {% for categoria in ordem %}
+        {% set dados = resumo.resumo_dados.get(categoria, {}) %}
 
+        {% if dados %}
+          {% if categoria == "Eletrólitos" %}
+            {% set total = namespace(value=0) %}
+            {% for item in ordem_eletrolitos %}
+              {% set valor = dados.get(item, 0) | float %}
+              {% if valor > 0 %}
+                {% set total.value = total.value + valor %}
+              {% endif %}
+            {% endfor %}
+            {% set mostrar_categoria = total.value > 0 %}
+          {% else %}
+            {% set total = namespace(value=0) %}
+            {% for _, valor in dados.items() %}
+              {% set valor_num = valor | float %}
+              {% if valor_num > 0 %}
+                {% set total.value = total.value + valor_num %}
+              {% endif %}
+            {% endfor %}
+            {% set mostrar_categoria = total.value > 0 %}
+          {% endif %}
+
+          {% if mostrar_categoria %}
+          <div class="p-3 rounded-xl shadow {{ cores[categoria] }}">
+            <h4 class="font-semibold text-gray-900 mb-1">{{ icones[categoria] }} {{ categoria }}</h4>
+            <ul class="list-disc pl-5 text-sm text-gray-800">
               {% if categoria == "Eletrólitos" %}
-                {% set total = namespace(value=0) %}
                 {% for item in ordem_eletrolitos %}
-                  {% if dados.get(item, 0) > 0 %}
-                    {% set total.value = total.value + dados.get(item, 0) %}
+                  {% set valor = dados.get(item, 0) | float %}
+                  {% if valor > 0 %}
+                  <li>
+                    <strong>{{ item }}:</strong>
+                    {{ valor | round(1) }} {{ unidades[categoria].get(item, '') }}/h ⇥
+                    {{ (valor * resumo.tempo_total) | round(1) }} {{ unidades[categoria].get(item, '') }} total
+                  </li>
                   {% endif %}
                 {% endfor %}
-                {% set mostrar_categoria = total.value > 0 %}
               {% else %}
-                {% set total = dados.values() | map('float') | sum %}
-                {% set mostrar_categoria = total > 0 %}
+                {% for nome, valor in dados.items() %}
+                  {% set valor_num = valor | float %}
+                  {% if valor_num > 0 %}
+                  <li>
+                    <strong>{{ nome }}:</strong>
+                    {{ valor_num | round(1) }} {{ unidades[categoria].get(nome, '') }}/h ⇥
+                    {{ (valor_num * resumo.tempo_total) | round(1) }} {{ unidades[categoria].get(nome, '') }} total
+                  </li>
+                  {% endif %}
+                {% endfor %}
               {% endif %}
+            </ul>
+          </div>
+          {% endif %}
+        {% endif %}
+      {% endfor %}
+    </div>
 
-              {% if mostrar_categoria %}
-
-                {% if categoria == "Vitaminas" %}
-                <div id="detalhes-secundarios" class="hidden grid grid-cols-1 md:grid-cols-2 gap-4 md:col-span-3 transition-all duration-300 ease-in-out">
-                {% endif %}
-
-                <div class="{% if categoria in ['Macronutrientes', 'Eletrólitos', 'Estimulantes e Compostos'] %}md:col-span-3{% else %}md:col-span-1{% endif %} rounded-xl shadow p-4 {{ cores[categoria] }}">
-                  <h3 class="font-bold text-gray-800 mb-2">{{ icones[categoria] }} {{ categoria }}</h3>
-                  <ul class="list-disc pl-5 text-sm text-gray-700">
-                    {% if categoria == "Eletrólitos" %}
-                      {% for item in ordem_eletrolitos %}
-                        {% if dados.get(item, 0) > 0 %}
-                        <li>
-                          <strong>{{ item }}:</strong>
-                          {{ dados.get(item, 0) | round(1) }} {{ unidades[categoria].get(item, '') }}/h ⇥
-                          {{ (dados.get(item, 0) * tempo_horas) | round(1) }} {{ unidades[categoria].get(item, '') }}/total
-                        </li>
-                        {% endif %}
-                      {% endfor %}
-                    {% else %}
-                      {% for nome, valor in dados.items() %}
-                        {% if valor > 0 %}
-                        <li>
-                          <strong>{{ nome }}:</strong>
-                          {{ valor | round(1) }} {{ unidades[categoria].get(nome, '') }}/h ⇥
-                          {{ (valor * tempo_horas) | round(1) }} {{ unidades[categoria].get(nome, '') }}/total
-                        </li>
-                        {% endif %}
-                      {% endfor %}
-                    {% endif %}
-                  </ul>
-                </div>
-
-                {% if categoria == "Aminoácidos" %}
-                </div>
-                {% endif %}
-
-              {% endif %}
-            {% endif %}
-          {% endfor %}
-        </div>
 
       </div>
     </div>
