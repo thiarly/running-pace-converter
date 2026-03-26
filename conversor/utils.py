@@ -297,7 +297,7 @@ def calcular_zonas_pace(pace_threshold_segundos):
 
 def calcular_totais_planejamento(itens):
     totais = {
-        'carbo': 0, 'fibras_alimentares': 0, 'gordura_saturada': 0,
+        'carbo': 0, 'proteina': 0, 'fibras_alimentares': 0, 'gordura_saturada': 0,
         'sodio': 0, 'magnesio': 0, 'potassio': 0, 'calcio': 0,
         'cafeina': 0, 'taurina': 0, 'beta_alanina': 0, 'citrulina': 0, 'creatina': 0, 'coq10': 0, 'carnitina': 0,
         'leucina': 0, 'isoleucina': 0, 'valina': 0, 'arginina': 0,                           

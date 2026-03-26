@@ -35,6 +35,7 @@ class Suplemento(database.Model):
     descricao_porcao = database.Column(database.String(50))
 
     carbo = database.Column(database.Float)
+    proteina = database.Column(database.Float)
     gordura_saturada = database.Column(database.Float)
     fibras_alimentares = database.Column(database.Float)
     
@@ -108,6 +109,7 @@ class PlanejamentoItem(database.Model):
 
         return {
             'carbo': multi(self.suplemento.carbo),
+            'proteina': multi(self.suplemento.proteina),
             'fibra': multi(self.suplemento.fibra),
             'gordura': multi(self.suplemento.gordura),
             

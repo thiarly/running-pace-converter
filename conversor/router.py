@@ -400,6 +400,7 @@ def novo_suplemento():
             tipo=form.tipo.data,
             marca=form.marca.data,
             carbo=form.carbo.data,
+            proteina=form.proteina.data,
             sodio=form.sodio.data,
             magnesio=form.magnesio.data,
             potassio=form.potassio.data,
@@ -920,7 +921,7 @@ def formatar_tempo_decimal(h):
     return f"{horas}h{minutos:02d}"
 
 UNIDADES_PRINT = {
-    "Macronutrientes": {"Carboidrato": "g", "Gordura Saturada": "g", "Fibras Alimentares": "g"}, 
+    "Macronutrientes": {"Carboidrato": "g", "Proteína": "g", "Gordura Saturada": "g", "Fibras Alimentares": "g"}, 
     "Eletrólitos": {"Sódio": "mg", "Magnésio": "mg", "Potássio": "mg", "Cálcio": "mg"},
     "Estimulantes e Compostos": {
         "Cafeína": "mg", "Taurina": "mg", "Beta-alanina": "mg",

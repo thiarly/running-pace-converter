@@ -52,6 +52,7 @@ class SuplementoForm(FlaskForm):
     carbo = FloatFieldBR('Carboidrato (g)', validators=[Optional()])
     gordura_saturada = FloatFieldBR('Gordura Saturada (g)', validators=[Optional()])
     fibras_alimentares = FloatFieldBR('Fibras Alimentares (g)', validators=[Optional()])
+    proteina = FloatFieldBR('Proteína (g)', validators=[Optional()])
     
     sodio = FloatFieldBR('Sódio (mg)', validators=[Optional()])
     magnesio = FloatFieldBR('Magnésio (mg)', validators=[Optional()])

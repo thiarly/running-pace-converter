@@ -90,6 +90,14 @@ Cadastro de Suplemento
         </div>
 
         <div>
+          {{ form.proteina.label(class="block text-sm text-gray-600") }}
+          {{ form.proteina(class="w-full px-1 py-0.5 border rounded " + ("border-red-500" if form.proteina.errors else "border-gray-300")) }}
+          {% for error in form.proteina.errors %}
+            <p class="text-red-500 text-xs mt-1">{{ error }}</p>
+          {% endfor %}
+        </div>
+
+        <div>
           {{ form.gordura_saturada.label(class="block text-sm text-gray-600") }}
           {{ form.gordura_saturada(class="w-full px-1 py-0.5 border rounded " + ("border-red-500" if form.gordura_saturada.errors else "border-gray-300")) }}
           {% for error in form.gordura_saturada.errors %}
