@@ -921,17 +921,50 @@ def formatar_tempo_decimal(h):
     return f"{horas}h{minutos:02d}"
 
 UNIDADES_PRINT = {
-    "Macronutrientes": {"Carboidrato": "g", "Proteína": "g", "Gordura Saturada": "g", "Fibras Alimentares": "g"}, 
-    "Eletrólitos": {"Sódio": "mg", "Magnésio": "mg", "Potássio": "mg", "Cálcio": "mg"},
+    "Macronutrientes": {
+        "Carboidrato": "g",
+        "Proteína": "g",
+        "Gordura Saturada": "g",
+        "Fibras Alimentares": "g"
+    },
+    "Eletrólitos": {
+        "Sódio": "mg",
+        "Magnésio": "mg",
+        "Potássio": "mg",
+        "Cálcio": "mg"
+    },
     "Estimulantes e Compostos": {
-        "Cafeína": "mg", "Taurina": "mg", "Beta-alanina": "mg",
-        "Citrulina": "mg", "Creatina": "mg", "CoQ10": "mg", "Carnitina": "mg"
+        "Cafeína": "mg",
+        "Taurina": "mg",
+        "Beta-Alanina": "mg",   # corrigido (case)
+        "Citrulina": "mg",
+        "Creatina": "mg",
+        "CoQ10": "mg",
+        "Carnitina": "mg",
+        "Colina": "mg"          # adicionado
     },
     "Vitaminas": {
-        "Vitamina C": "mg", "Vitamina E": "mg", "B1": "mg", "B2": "mg",
-        "B3": "mg", "B5": "mg", "B6": "mg", "B7": "µg", "B9": "µg", "B12": "µg", "Ferro": "mg", "Vitamina D": "µg", "Ácido Pantotênico": "mg", "Ácido fólico": "µg"
+        "Vitamina B1": "mg",
+        "Vitamina B2": "mg",
+        "Vitamina B3": "mg",
+        "Vitamina B6": "mg",
+        "Vitamina B7": "µg",
+        "Vitamina B9": "µg",
+        "Vitamina B12": "µg",
+        "Vitamina C": "mg",
+        "Vitamina E": "mg",
+        "Ferro": "mg",
+        "Vitamina D": "µg",
+        "Ác. Pantotênico": "mg",  # alinhado com template
+        "Ác. Fólico": "µg"        # alinhado com template
     },
-    "Aminoácidos": {"Leucina": "mg", "Isoleucina": "mg", "Valina": "mg", "Arginina": "mg", "Niacina": "mg", "Tirosina": "mg", "Colina": "mg"},
+    "Aminoácidos": {
+        "Leucina": "mg",
+        "Isoleucina": "mg",
+        "Valina": "mg",
+        "Arginina": "mg",
+        "Tirosina": "mg"
+    }
 }
 
 # --- PRINT: um resumo ---
