@@ -12,6 +12,8 @@ from datetime import date
 
 import os
 
+from conversor.schema import RESUMO_SCHEMA
+
 from conversor.utils import (
     convert_pace, calc_average_speed_bike,
     calc_swim_pace, calculate_estimated_time,
@@ -921,50 +923,11 @@ def formatar_tempo_decimal(h):
     return f"{horas}h{minutos:02d}"
 
 UNIDADES_PRINT = {
-    "Macronutrientes": {
-        "Carboidrato": "g",
-        "Proteína": "g",
-        "Gordura Saturada": "g",
-        "Fibras Alimentares": "g"
-    },
-    "Eletrólitos": {
-        "Sódio": "mg",
-        "Magnésio": "mg",
-        "Potássio": "mg",
-        "Cálcio": "mg"
-    },
-    "Estimulantes e Compostos": {
-        "Cafeína": "mg",
-        "Taurina": "mg",
-        "Beta-Alanina": "mg",   # corrigido (case)
-        "Citrulina": "mg",
-        "Creatina": "mg",
-        "CoQ10": "mg",
-        "Carnitina": "mg",
-        "Colina": "mg"          # adicionado
-    },
-    "Vitaminas": {
-        "Vitamina B1": "mg",
-        "Vitamina B2": "mg",
-        "Vitamina B3": "mg",
-        "Vitamina B6": "mg",
-        "Vitamina B7": "µg",
-        "Vitamina B9": "µg",
-        "Vitamina B12": "µg",
-        "Vitamina C": "mg",
-        "Vitamina E": "mg",
-        "Ferro": "mg",
-        "Vitamina D": "µg",
-        "Ác. Pantotênico": "mg",  # alinhado com template
-        "Ác. Fólico": "µg"        # alinhado com template
-    },
-    "Aminoácidos": {
-        "Leucina": "mg",
-        "Isoleucina": "mg",
-        "Valina": "mg",
-        "Arginina": "mg",
-        "Tirosina": "mg"
+    categoria: {
+        meta["label"]: meta["unidade"]
+        for _, meta in campos.items()
     }
+    for categoria, campos in RESUMO_SCHEMA.items()
 }
 
 # --- PRINT: um resumo ---

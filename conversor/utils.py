@@ -1,4 +1,5 @@
 from flask import flash
+from conversor.schema import RESUMO_SCHEMA
 
 def convert_pace(time, distance):
     time_minutes = time // 60  # Obter a parte inteira dos minutos
@@ -218,53 +219,16 @@ def race_predictions_from_3k(time_seconds, distance_km):
 
 
 def agrupar_por_categoria(dados):
-    return {
-        "Macronutrientes": {
-            "Carboidrato": dados.get("carbo", 0),
-            "Proteína": dados.get("proteina", 0),
-            "Gordura Saturada": dados.get("gordura_saturada", 0),
-            "Fibras Alimentares": dados.get("fibras_alimentares", 0),
-        },
-        "Eletrólitos": {
-            "Sódio": dados.get("sodio", 0),
-            "Magnésio": dados.get("magnesio", 0),
-            "Potássio": dados.get("potassio", 0),
-            "Cálcio": dados.get("calcio", 0),
-        },
-        "Estimulantes e Compostos": {
-            "Cafeína": dados.get("cafeina", 0),
-            "Taurina": dados.get("taurina", 0),
-            "Beta-Alanina": dados.get("beta_alanina", 0),
-            "Citrulina": dados.get("citrulina", 0),
-            "Creatina": dados.get("creatina", 0),
-            "CoQ10": dados.get("coq10", 0),
-            "Carnitina": dados.get("carnitina", 0),
-            "Colina": dados.get("colina", 0),
-        },
-        "Aminoácidos": {
-            "Leucina": dados.get("leucina", 0),
-            "Isoleucina": dados.get("isoleucina", 0),
-            "Valina": dados.get("valina", 0),
-            "Arginina": dados.get("arginina", 0),
-            "Tirosina": dados.get("tirosina", 0),
-        },
-        "Vitaminas": {
-            "Vitamina B1": dados.get("vit_b1", 0),
-            "Vitamina B2": dados.get("vit_b2", 0),
-            "Vitamina B3": dados.get("vit_b3", 0),
-            "Vitamina B6": dados.get("vit_b6", 0),
-            "Vitamina B7": dados.get("vit_b7", 0),
-            "Vitamina B9": dados.get("vit_b9", 0),
-            "Vitamina B12": dados.get("vit_b12", 0),
-            "Vitamina C": dados.get("vit_c", 0),
-            "Vitamina E": dados.get("vit_e", 0),
-            "Ferro": dados.get("vit_ferro", 0),
-            "Vitamina D": dados.get("vit_d", 0),
-            "Ác. Pantotênico": dados.get("acido_pantotenico", 0),
-            "Ác. Fólico": dados.get("acido_folico", 0),
-        }
-    }
-    
+    resultado = {}
+
+    for categoria, campos in RESUMO_SCHEMA.items():
+        resultado[categoria] = {}
+
+        for chave, meta in campos.items():
+            label = meta["label"]
+            resultado[categoria][label] = dados.get(chave, 0)
+
+    return resultado
     
 def calcular_zonas_fc(fc_max):
     return {

@@ -1,0 +1,46 @@
+RESUMO_SCHEMA = {
+    "Macronutrientes": {
+        "carbo": {"label": "Carboidrato", "unidade": "g"},
+        "proteina": {"label": "Proteína", "unidade": "g"},
+        "gordura_saturada": {"label": "Gordura Saturada", "unidade": "g"},
+        "fibras_alimentares": {"label": "Fibras Alimentares", "unidade": "g"},
+    },
+    "Eletrólitos": {
+        "sodio": {"label": "Sódio", "unidade": "mg"},
+        "magnesio": {"label": "Magnésio", "unidade": "mg"},
+        "potassio": {"label": "Potássio", "unidade": "mg"},
+        "calcio": {"label": "Cálcio", "unidade": "mg"},
+    },
+    "Estimulantes e Compostos": {
+        "cafeina": {"label": "Cafeína", "unidade": "mg"},
+        "taurina": {"label": "Taurina", "unidade": "mg"},
+        "beta_alanina": {"label": "Beta-Alanina", "unidade": "mg"},
+        "citrulina": {"label": "Citrulina", "unidade": "mg"},
+        "creatina": {"label": "Creatina", "unidade": "mg"},
+        "coq10": {"label": "CoQ10", "unidade": "mg"},
+        "carnitina": {"label": "Carnitina", "unidade": "mg"},
+        "colina": {"label": "Colina", "unidade": "mg"},
+    },
+    "Vitaminas": {
+        "vit_b1": {"label": "Vitamina B1", "unidade": "mg"},
+        "vit_b2": {"label": "Vitamina B2", "unidade": "mg"},
+        "vit_b3": {"label": "Vitamina B3", "unidade": "mg"},
+        "vit_b6": {"label": "Vitamina B6", "unidade": "mg"},
+        "vit_b7": {"label": "Vitamina B7", "unidade": "µg"},
+        "vit_b9": {"label": "Vitamina B9", "unidade": "µg"},
+        "vit_b12": {"label": "Vitamina B12", "unidade": "µg"},
+        "vit_c": {"label": "Vitamina C", "unidade": "mg"},
+        "vit_e": {"label": "Vitamina E", "unidade": "mg"},
+        "vit_ferro": {"label": "Ferro", "unidade": "mg"},
+        "vit_d": {"label": "Vitamina D", "unidade": "µg"},
+        "acido_pantotenico": {"label": "Ác. Pantotênico", "unidade": "mg"},
+        "acido_folico": {"label": "Ác. Fólico", "unidade": "µg"},
+    },
+    "Aminoácidos": {
+        "leucina": {"label": "Leucina", "unidade": "mg"},
+        "isoleucina": {"label": "Isoleucina", "unidade": "mg"},
+        "valina": {"label": "Valina", "unidade": "mg"},
+        "arginina": {"label": "Arginina", "unidade": "mg"},
+        "tirosina": {"label": "Tirosina", "unidade": "mg"},
+    }
+}
