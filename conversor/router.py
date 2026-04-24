@@ -1024,10 +1024,13 @@ def ferramentas_calculadora():
 
         except Exception as e:
             error = "Erro no cálculo"
+        
+    form_data = request.form.to_dict() if request.method == 'POST' else {}
 
     return render_template(
         'ferramentas/calculadora.html',
         tipo=tipo,
         resultado=resultado,
-        error=error
+        error=error,
+        form_data=form_data 
     )

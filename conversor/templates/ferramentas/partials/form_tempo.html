@@ -2,15 +2,17 @@
     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
 
     <div>
-        <label class="block text-gray-800 mb-1" for="distance">Distância (km)</label>
-        <input type="text" id="distance" name="distance"
+        <label class="block text-gray-800 mb-1">Distância (km)</label>
+        <input type="text" name="distance"
+               value="{{ form_data.distance or '' }}"
                class="w-full text-gray-800 py-2 px-4 border border-gray-300 rounded-lg"
                placeholder="Ex: 21.1">
     </div>
 
     <div>
-        <label class="block text-gray-800 mb-1" for="pace">Pace (MM:SS)</label>
-        <input type="text" id="pace" name="pace"
+        <label class="block text-gray-800 mb-1">Pace (MM:SS)</label>
+        <input type="text" name="pace"
+               value="{{ form_data.pace or '' }}"
                class="w-full text-gray-800 py-2 px-4 border border-gray-300 rounded-lg"
                placeholder="Ex: 04:30">
     </div>
