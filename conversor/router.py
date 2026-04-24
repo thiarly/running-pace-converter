@@ -962,3 +962,72 @@ def print_resumos():
         unidades=UNIDADES_PRINT,
         formatar_tempo_decimal=formatar_tempo_decimal
     )
+    
+    
+#NOVAS ROTAS DE REFATORAÇÃO 
+
+@app.route('/ferramentas/calculadora', methods=['GET', 'POST'])
+def ferramentas_calculadora():
+    tipo = request.args.get('tipo', 'ritmo')  # padrão
+
+    resultado = None
+    error = None
+
+    if request.method == 'POST':
+        try:
+            if tipo == 'tempo':
+                from conversor.services.calculos_performance import calculate_estimated_time
+
+                distance = float(request.form.get('distance'))
+                pace = request.form.get('pace')
+
+                tempo_calculado = calculate_estimated_time(distance, pace)
+
+                resultado = {
+                    "Tempo estimado": tempo_calculado
+                }
+
+            elif tipo == 'distancia':
+                from conversor.services.calculos_performance import calculate_estimated_distance
+                from conversor.services.formatadores import tempo_para_segundos
+
+                hour = request.form.get('hour')
+                minute = request.form.get('minute')
+                second = request.form.get('second')
+                pace = request.form.get('pace')
+
+                tempo = tempo_para_segundos(hour, minute, second)
+
+                distancia = calculate_estimated_distance(tempo, pace)
+
+                resultado = {
+                    "Distância estimada": f"{distancia} km"
+                }
+
+            elif tipo == 'ritmo':
+                from conversor.services.calculos_performance import convert_pace
+                from conversor.services.formatadores import tempo_para_segundos
+
+                hour = request.form.get('hour')
+                minute = request.form.get('minute')
+                second = request.form.get('second')
+                distance = float(request.form.get('distance'))
+
+                tempo = tempo_para_segundos(hour, minute, second)
+
+                pace_km, pace_mile = convert_pace(tempo, distance)
+
+                resultado = {
+                    "Pace por km": pace_km,
+                    "Pace por milha": pace_mile
+                }
+
+        except Exception as e:
+            error = "Erro no cálculo"
+
+    return render_template(
+        'ferramentas/calculadora.html',
+        tipo=tipo,
+        resultado=resultado,
+        error=error
+    )

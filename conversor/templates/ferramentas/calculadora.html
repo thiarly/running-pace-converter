@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block titulo %}
+    Calculadora
+{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-100 flex justify-center px-4 py-16">
+    <div class="w-full max-w-xl bg-white rounded-3xl shadow-lg p-6 sm:p-10">
+
+        <h1 class="text-2xl sm:text-3xl font-bold title-nave mb-2">
+            Calculadora
+        </h1>
+
+        <p class="text-gray-500 mb-6">
+            Escolha a ferramenta que deseja usar.
+        </p>
+
+        <div class="grid grid-cols-3 gap-2 mb-8">
+            <a href="{{ url_for('ferramentas_calculadora', tipo='ritmo') }}"
+               class="text-center text-sm px-3 py-2 rounded-lg {% if tipo == 'ritmo' %}btn-nave text-white{% else %}bg-blue-100 resumo-nave{% endif %}">
+                Ritmo
+            </a>
+
+            <a href="{{ url_for('ferramentas_calculadora', tipo='tempo') }}"
+               class="text-center text-sm px-3 py-2 rounded-lg {% if tipo == 'tempo' %}btn-nave text-white{% else %}bg-blue-100 resumo-nave{% endif %}">
+                Tempo
+            </a>
+
+            <a href="{{ url_for('ferramentas_calculadora', tipo='distancia') }}"
+               class="text-center text-sm px-3 py-2 rounded-lg {% if tipo == 'distancia' %}btn-nave text-white{% else %}bg-blue-100 resumo-nave{% endif %}">
+                Distância
+            </a>
+        </div>
+
+        {% if tipo == 'tempo' %}
+            {% include 'ferramentas/partials/form_tempo.html' %}
+        {% elif tipo == 'distancia' %}
+            {% include 'ferramentas/partials/form_distancia.html' %}
+        {% else %}
+            {% include 'ferramentas/partials/form_ritmo.html' %}
+        {% endif %}
+
+        {% if error %}
+            <div class="mt-6 bg-red-100 border border-red-300 text-red-700 px-4 py-3 rounded-xl">
+                {{ error }}
+            </div>
+        {% endif %}
+
+        {% if resultado %}
+            <div class="mt-6 grid gap-3">
+                {% for titulo, valor in resultado.items() %}
+                    <div class="bg-gray-100 rounded-xl p-4 text-gray-800">
+                        <p class="text-sm text-gray-500 mb-1">{{ titulo }}</p>
+                        <p class="text-2xl font-bold title-nave">{{ valor }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+    </div>
+</div>
+{% endblock %}
