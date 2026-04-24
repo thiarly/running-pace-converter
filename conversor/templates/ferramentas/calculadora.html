@@ -12,11 +12,15 @@
             Calculadora
         </h1>
 
-        <p class="text-gray-500 mb-6">
+        <p class="text-gray-500 mb-8">
             Escolha a ferramenta que deseja usar.
         </p>
 
-        <div class="grid grid-cols-3 gap-2 mb-8">
+        <p class="text-sm font-semibold text-gray-500 mb-2">
+            Cálculos
+        </p>
+
+        <div class="grid grid-cols-3 gap-2 mb-6">
             <a href="{{ url_for('ferramentas_calculadora', tipo='ritmo') }}"
                class="text-center text-sm px-3 py-2 rounded-lg {% if tipo == 'ritmo' %}btn-nave text-white{% else %}bg-blue-100 resumo-nave{% endif %}">
                 Ritmo
@@ -33,10 +37,38 @@
             </a>
         </div>
 
+        <p class="text-sm font-semibold text-gray-500 mb-2">
+            Conversores
+        </p>
+
+        <div class="grid grid-cols-2 gap-2 mb-8">
+            <a href="{{ url_for('ferramentas_calculadora', tipo='pace_velocidade') }}"
+               class="text-center text-sm px-3 py-2 rounded-lg {% if tipo == 'pace_velocidade' %}btn-nave text-white{% else %}bg-blue-100 resumo-nave{% endif %}">
+                Pace ↔ km/h
+            </a>
+
+            <a href="{{ url_for('ferramentas_calculadora', tipo='km_milhas') }}"
+               class="text-center text-sm px-3 py-2 rounded-lg {% if tipo == 'km_milhas' %}btn-nave text-white{% else %}bg-blue-100 resumo-nave{% endif %}">
+                Km ↔ Milhas
+            </a>
+
+            <a href="{{ url_for('ferramentas_calculadora', tipo='pace_milha') }}"
+               class="text-center text-sm px-3 py-2 rounded-lg {% if tipo == 'pace_milha' %}btn-nave text-white{% else %}bg-blue-100 resumo-nave{% endif %}">
+                Pace ↔ Milha
+            </a>
+
+        </div>
+
         {% if tipo == 'tempo' %}
             {% include 'ferramentas/partials/form_tempo.html' %}
         {% elif tipo == 'distancia' %}
             {% include 'ferramentas/partials/form_distancia.html' %}
+        {% elif tipo == 'pace_velocidade' %}
+            {% include 'ferramentas/partials/form_pace_velocidade.html' %}
+        {% elif tipo == 'km_milhas' %}
+            {% include 'ferramentas/partials/form_km_milhas.html' %}
+        {% elif tipo == 'pace_milha' %}
+            {% include 'ferramentas/partials/form_pace_milha.html' %}
         {% else %}
             {% include 'ferramentas/partials/form_ritmo.html' %}
         {% endif %}

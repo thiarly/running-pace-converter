@@ -1,0 +1,23 @@
+<form method="POST" class="space-y-4">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+    <div>
+        <label class="block text-gray-800 mb-1">Pace (MM:SS)</label>
+        <input type="text" name="pace"
+               value="{{ form_data.pace or '' }}"
+               class="w-full py-2 px-4 border rounded-lg"
+               placeholder="Ex: 04:30">
+    </div>
+
+    <div>
+        <label class="block text-gray-800 mb-1">Velocidade (km/h)</label>
+        <input type="text" name="speed"
+               value="{{ form_data.speed or '' }}"
+               class="w-full py-2 px-4 border rounded-lg"
+               placeholder="Ex: 13.33">
+    </div>
+
+    <button type="submit" class="btn-nave font-bold py-3 w-full rounded-lg">
+        Converter
+    </button>
+</form>

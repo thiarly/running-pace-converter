@@ -1021,6 +1021,72 @@ def ferramentas_calculadora():
                     "Pace por km": pace_km,
                     "Pace por milha": pace_mile
                 }
+                
+            
+            elif tipo == 'pace_velocidade':
+                from conversor.services.calculos_performance import convert_pace_to_speed, convert_speed_to_pace
+
+                pace = request.form.get('pace')
+                speed = request.form.get('speed')
+
+                if pace:
+                    velocidade = convert_pace_to_speed(pace)
+                    resultado = {
+                        "Velocidade": f"{velocidade} km/h"
+                    }
+
+                elif speed:
+                    pace_convertido = convert_speed_to_pace(float(speed))
+                    resultado = {
+                        "Pace": f"{pace_convertido} /km"
+                    }
+
+                else:
+                    error = "Informe o pace ou a velocidade."
+                    
+                    
+            elif tipo == 'km_milhas':
+                from conversor.services.calculos_performance import convert_km_to_miles, convert_miles_to_km
+
+                km = request.form.get('km')
+                miles = request.form.get('miles')
+
+                if km:
+                    milhas = convert_km_to_miles(float(km))
+                    resultado = {
+                        "Milhas": f"{milhas} mi"
+                    }
+
+                elif miles:
+                    quilometros = convert_miles_to_km(float(miles))
+                    resultado = {
+                        "Quilômetros": f"{quilometros} km"
+                    }
+
+                else:
+                    error = "Informe km ou milhas."  
+                    
+                    
+            elif tipo == 'pace_milha':
+                from conversor.services.calculos_performance import convert_milha_pace, convert_pace_milha
+
+                pace_km = request.form.get('pace_km')
+                pace_mile = request.form.get('pace_mile')
+
+                if pace_km:
+                    resultado = {
+                        "Pace milha": convert_milha_pace(pace_km)
+                    }
+
+                elif pace_mile:
+                    resultado = {
+                        "Pace km": convert_pace_milha(pace_mile)
+                    }
+
+                else:
+                    error = "Informe um dos campos."
+                                
+                    
 
         except Exception as e:
             error = "Erro no cálculo"
