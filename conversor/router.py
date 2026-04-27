@@ -1003,24 +1003,42 @@ def ferramentas_calculadora():
                 resultado = {
                     "Distância estimada": f"{distancia} km"
                 }
-
+                
+                
             elif tipo == 'ritmo':
-                from conversor.services.calculos_performance import convert_pace
+                from conversor.services.calculos_performance import (
+                    convert_pace,
+                    calc_average_speed_bike,
+                    calc_swim_pace
+                )
                 from conversor.services.formatadores import tempo_para_segundos
 
                 hour = request.form.get('hour')
                 minute = request.form.get('minute')
                 second = request.form.get('second')
                 distance = float(request.form.get('distance'))
+                activity = request.form.get('activity', 'corrida')
 
                 tempo = tempo_para_segundos(hour, minute, second)
 
-                pace_km, pace_mile = convert_pace(tempo, distance)
+                if activity == 'corrida':
+                    pace_km, pace_mile = convert_pace(tempo, distance)
+                    resultado = {
+                        "Pace por km": pace_km,
+                        "Pace por milha": pace_mile
+                    }
 
-                resultado = {
-                    "Pace por km": pace_km,
-                    "Pace por milha": pace_mile
-                }
+                elif activity == 'ciclismo':
+                    avg_speed = calc_average_speed_bike(tempo, distance)
+                    resultado = {
+                        "Velocidade média": f"{avg_speed} km/h"
+                    }
+
+                elif activity == 'natacao':
+                    pace_100m = calc_swim_pace(tempo, distance)
+                    resultado = {
+                        "Pace por 100m": f"{pace_100m} /100m"
+                    }
                 
             
             elif tipo == 'pace_velocidade':

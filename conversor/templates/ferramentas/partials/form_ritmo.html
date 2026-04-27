@@ -19,8 +19,14 @@
         <input type="text" name="distance"
                value="{{ form_data.distance or '' }}"
                class="w-full py-2 px-4 border rounded-lg"
-               placeholder="Distância (km)">
+               placeholder="(km) corrida e ciclismo / (m) natação">
     </div>
+
+    <select name="activity" class="w-full py-2 px-4 border rounded-lg">
+        <option value="corrida" {% if form_data.activity == 'corrida' %}selected{% endif %}>Corrida</option>
+        <option value="ciclismo" {% if form_data.activity == 'ciclismo' %}selected{% endif %}>Ciclismo</option>
+        <option value="natacao" {% if form_data.activity == 'natacao' %}selected{% endif %}>Natação</option>
+    </select>
 
     <button type="submit" class="btn-nave font-bold py-3 w-full rounded-lg">
         Calcular ritmo
