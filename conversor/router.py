@@ -18,8 +18,7 @@ from conversor.utils import (
     convert_pace, calc_average_speed_bike,
     calc_swim_pace, calculate_estimated_time,
     calculate_estimated_distance, convert_pace_to_speed,
-    convert_speed_to_pace, convert_milha_pace,
-    convert_pace_milha, convert_km_to_miles,
+    convert_speed_to_pace, convert_km_to_miles,
     convert_miles_to_km, calculate_vo2max,
     calculate_pace_km, calculate_paces_by_vo2max,
     race_predictions_from_3k, agrupar_por_categoria,
@@ -972,6 +971,8 @@ def ferramentas_calculadora():
 
     resultado = None
     error = None
+    tabela_pace = None
+    form_data = request.form.to_dict() if request.method == 'POST' else {}
 
     if request.method == 'POST':
         try:
@@ -1086,35 +1087,48 @@ def ferramentas_calculadora():
                     
                     
             elif tipo == 'pace_milha':
-                from conversor.services.calculos_performance import convert_milha_pace, convert_pace_milha
+                from conversor.services.calculos_performance import pace_km_para_milha, pace_milha_para_km
 
                 pace_km = request.form.get('pace_km')
                 pace_mile = request.form.get('pace_mile')
 
                 if pace_km:
                     resultado = {
-                        "Pace milha": convert_milha_pace(pace_km)
+                        "Pace milha": pace_km_para_milha(pace_km)
                     }
 
                 elif pace_mile:
                     resultado = {
-                        "Pace km": convert_pace_milha(pace_mile)
+                        "Pace km": pace_milha_para_km(pace_mile)
                     }
 
                 else:
                     error = "Informe um dos campos."
-                                
+                    
+                    
+            elif tipo == 'tabela_pace':
+                from conversor.services.calculos_performance import gerar_tabela_pace
+
+                pace_inicio = request.form.get('pace_inicio')
+                pace_fim = request.form.get('pace_fim')
+                intervalo = request.form.get('intervalo')
+
+                tabela_pace = gerar_tabela_pace(pace_inicio, pace_fim, intervalo)
+                resultado = None
+                    
                     
 
         except Exception as e:
             error = "Erro no cálculo"
         
-    form_data = request.form.to_dict() if request.method == 'POST' else {}
+
+    
 
     return render_template(
         'ferramentas/calculadora.html',
         tipo=tipo,
         resultado=resultado,
+        tabela_pace=tabela_pace,
         error=error,
-        form_data=form_data 
+        form_data=form_data
     )

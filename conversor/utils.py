@@ -68,22 +68,28 @@ def convert_speed_to_pace(speed_kmh):
     return f'{pace_min:02}:{pace_sec:02}'
 
 
-def convert_milha_pace(pace_km):
+def pace_km_para_milha(pace_km):
     pace_min, pace_sec = map(int, pace_km.split(':'))
     pace_total_minutes = pace_min + pace_sec / 60
-    pace_total_minutes_mile = pace_total_minutes / 1.60934  # 1 milha = 1.60934 km
+
+    pace_total_minutes_mile = pace_total_minutes * 1.60934  # ✔ correto
+
     pace_mile_min = int(pace_total_minutes_mile)
     pace_mile_sec = int((pace_total_minutes_mile - pace_mile_min) * 60)
+
     return f'{pace_mile_min:02}:{pace_mile_sec:02}'
 
 
-def convert_pace_milha(pace_km):
-    pace_min, pace_sec = map(int, pace_km.split(':'))
+def pace_milha_para_km(pace_mile):
+    pace_min, pace_sec = map(int, pace_mile.split(':'))
     pace_total_minutes = pace_min + pace_sec / 60
-    pace_total_minutes_mile = pace_total_minutes * 1.60934  # Convertendo pace de km para milha
-    pace_mile_min = int(pace_total_minutes_mile)
-    pace_mile_sec = int((pace_total_minutes_mile - pace_mile_min) * 60)
-    return f'{pace_mile_min:02}:{pace_mile_sec:02}'
+
+    pace_total_minutes_km = pace_total_minutes / 1.60934  # ✔ correto
+
+    pace_km_min = int(pace_total_minutes_km)
+    pace_km_sec = int((pace_total_minutes_km - pace_km_min) * 60)
+
+    return f'{pace_km_min:02}:{pace_km_sec:02}'
 
 
 def convert_km_to_miles(km):

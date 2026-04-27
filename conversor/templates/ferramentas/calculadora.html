@@ -57,6 +57,11 @@
                 Pace ↔ Milha
             </a>
 
+            <a href="{{ url_for('ferramentas_calculadora', tipo='tabela_pace') }}"
+                class="text-center text-sm px-3 py-2 rounded-lg {% if tipo == 'tabela_pace' %}btn-nave text-white{% else %}bg-blue-100 resumo-nave{% endif %}">
+                    Tabela de Pace
+            </a>
+
         </div>
 
         {% if tipo == 'tempo' %}
@@ -69,9 +74,14 @@
             {% include 'ferramentas/partials/form_km_milhas.html' %}
         {% elif tipo == 'pace_milha' %}
             {% include 'ferramentas/partials/form_pace_milha.html' %}
+        {% elif tipo == 'tabela_pace' %}
+            {% include 'ferramentas/partials/form_tabela_pace.html' %}
+
         {% else %}
             {% include 'ferramentas/partials/form_ritmo.html' %}
         {% endif %}
+
+
 
         {% if error %}
             <div class="mt-6 bg-red-100 border border-red-300 text-red-700 px-4 py-3 rounded-xl">
@@ -89,6 +99,31 @@
                 {% endfor %}
             </div>
         {% endif %}
+
+
+        {% if tabela_pace %}
+    <div class="mt-6 overflow-hidden rounded-xl border border-gray-200">
+        <table class="w-full text-sm text-left text-gray-800">
+            <thead class="bg-gray-100 text-gray-500">
+                <tr>
+                    <th class="px-4 py-3">Pace</th>
+                    <th class="px-4 py-3">Milha</th>
+                    <th class="px-4 py-3">Velocidade</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for linha in tabela_pace %}
+                    <tr class="border-t border-gray-200">
+                        <td class="px-4 py-3 font-semibold title-nave">{{ linha.Pace }}</td>
+                        <td class="px-4 py-3">{{ linha.Milha }}</td>
+                        <td class="px-4 py-3">{{ linha.Velocidade }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endif %}
 
     </div>
 </div>

@@ -1,5 +1,6 @@
 from flask import flash
 from conversor.schema import RESUMO_SCHEMA
+from conversor.services.formatadores import pace_para_segundos, segundos_para_mmss
 
 def convert_pace(time, distance):
     time_minutes = time // 60  # Obter a parte inteira dos minutos
@@ -68,22 +69,28 @@ def convert_speed_to_pace(speed_kmh):
     return f'{pace_min:02}:{pace_sec:02}'
 
 
-def convert_milha_pace(pace_km):
+def pace_km_para_milha(pace_km):
     pace_min, pace_sec = map(int, pace_km.split(':'))
     pace_total_minutes = pace_min + pace_sec / 60
-    pace_total_minutes_mile = pace_total_minutes / 1.60934  # 1 milha = 1.60934 km
+
+    pace_total_minutes_mile = pace_total_minutes * 1.60934  # ✔ correto
+
     pace_mile_min = int(pace_total_minutes_mile)
     pace_mile_sec = int((pace_total_minutes_mile - pace_mile_min) * 60)
+
     return f'{pace_mile_min:02}:{pace_mile_sec:02}'
 
 
-def convert_pace_milha(pace_km):
-    pace_min, pace_sec = map(int, pace_km.split(':'))
+def pace_milha_para_km(pace_mile):
+    pace_min, pace_sec = map(int, pace_mile.split(':'))
     pace_total_minutes = pace_min + pace_sec / 60
-    pace_total_minutes_mile = pace_total_minutes * 1.60934  # Convertendo pace de km para milha
-    pace_mile_min = int(pace_total_minutes_mile)
-    pace_mile_sec = int((pace_total_minutes_mile - pace_mile_min) * 60)
-    return f'{pace_mile_min:02}:{pace_mile_sec:02}'
+
+    pace_total_minutes_km = pace_total_minutes / 1.60934  # ✔ correto
+
+    pace_km_min = int(pace_total_minutes_km)
+    pace_km_sec = int((pace_total_minutes_km - pace_km_min) * 60)
+
+    return f'{pace_km_min:02}:{pace_km_sec:02}'
 
 
 def convert_km_to_miles(km):
@@ -255,3 +262,31 @@ def calcular_zonas_pace(pace_threshold_segundos):
         zonas_formatadas[nome] = (int(min_seg), int(max_seg))
 
     return zonas_formatadas
+
+
+
+
+def gerar_tabela_pace(pace_inicio, pace_fim, intervalo=10):
+    inicio = pace_para_segundos(pace_inicio)
+    fim = pace_para_segundos(pace_fim)
+    intervalo = int(intervalo or 10)
+
+    tabela = []
+
+    for pace_seg in range(inicio, fim + 1, intervalo):
+        pace_km = segundos_para_mmss(pace_seg)
+
+        # conversão para milha
+        pace_milha_seg = pace_seg * 1.60934
+        pace_milha = segundos_para_mmss(int(pace_milha_seg))
+
+        # velocidade
+        velocidade = round(3600 / pace_seg, 2)
+
+        tabela.append({
+            "Pace": f"{pace_km} /km",
+            "Milha": f"{pace_milha} /mi",
+            "Velocidade": f"{velocidade} km/h"
+        })
+
+    return tabela
