@@ -117,6 +117,22 @@
             </div>
         {% endif %}
 
+        
+        {% if zonas_vo2 %}
+            <div class="mt-6 grid gap-2">
+                <p class="text-sm font-semibold text-gray-500 mb-2">
+                    Zonas de treino
+                </p>
+
+                {% for nome, faixa in zonas_vo2.items() %}
+                    <div class="bg-gray-100 rounded-lg px-4 py-3 flex justify-between">
+                        <span class="text-gray-700">{{ nome }}</span>
+                        <span class="font-semibold title-nave">{{ faixa }}</span>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
 
         {% if tabela_pace %}
     <div class="mt-6 overflow-hidden rounded-xl border border-gray-200">
