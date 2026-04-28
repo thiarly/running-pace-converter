@@ -1115,6 +1115,23 @@ def ferramentas_calculadora():
 
                 tabela_pace = gerar_tabela_pace(pace_inicio, pace_fim, intervalo)
                 resultado = None
+                
+            elif tipo == 'vo2max':
+                from conversor.services.calculos_performance import calculate_vo2max
+                from conversor.services.formatadores import tempo_para_segundos
+
+                hour = request.form.get('hour')
+                minute = request.form.get('minute')
+                second = request.form.get('second')
+
+                tempo = tempo_para_segundos(hour, minute, second)
+
+                dados_vo2 = calculate_vo2max(tempo)
+
+                resultado = {
+                    "Pace médio 10K": dados_vo2["pace"],
+                    "VO2Max estimado": dados_vo2["vo2max"]
+                }
                     
                     
 
