@@ -22,6 +22,11 @@ agrupar_por_categoria,
 
 
 
+from flask import redirect, url_for
+
+@app.route('/')
+def home():
+    return redirect(url_for('zonas'))
 
 
 @app.route('/login', methods=['GET', 'POST'])
