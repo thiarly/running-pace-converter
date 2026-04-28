@@ -972,6 +972,7 @@ def ferramentas_calculadora():
     resultado = None
     error = None
     tabela_pace = None
+    zonas_vo2 = None
     form_data = request.form.to_dict() if request.method == 'POST' else {}
 
     if request.method == 'POST':
@@ -1132,6 +1133,8 @@ def ferramentas_calculadora():
                     "Pace médio 10K": dados_vo2["pace"],
                     "VO2Max estimado": dados_vo2["vo2max"]
                 }
+
+                zonas_vo2 = dados_vo2["zonas"]
                     
                     
 
@@ -1147,5 +1150,6 @@ def ferramentas_calculadora():
         resultado=resultado,
         tabela_pace=tabela_pace,
         error=error,
-        form_data=form_data
+        form_data=form_data,
+        zonas_vo2=zonas_vo2
     )
