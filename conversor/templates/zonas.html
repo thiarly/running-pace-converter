@@ -4,77 +4,143 @@
     Zonas de Treinamento
 {% endblock %}
 
-
 {% block content %}
-<div class="container mx-auto px-8 py-10 text-justify">
-    <h1 class="text-2xl font-bold" style="color:#0a1a2f">Guia Detalhado de Zonas de Treinamento</h1>
-    <p class="mt-4">O uso de zonas de treinamento é um método consolidado para planejamento e acompanhamento de treinos. Elas ajudam a estruturar a carga de treino com base em intensidade.</p>
-    <p>Vamos abordar os modelos mais utilizados, destacando vantagens e desvantagens. Este guia cobre:</p>
+<div class="bg-gray-100 min-h-screen">
+    <div class="container mx-auto px-6 py-12 max-w-6xl">
+        
+        <section class="bg-white rounded-3xl shadow p-6 md:p-10 mb-10">
+            <h1 class="text-3xl font-bold title-nave mb-3">
+                Guia de Zonas de Treinamento
+            </h1>
 
-    <ul class="list-decimal ml-6 mt-2">
-        <li>Zonas de treinamento com base em FTP ou Frequência Cardíaca (FC)</li>
-        <li>Modelo de iLevels ou Intervalos Otimizados</li>
-    </ul>
+            <p class="text-gray-600 max-w-3xl">
+                Entenda como usar zonas de treino para organizar intensidade, controlar carga e treinar com mais clareza.
+            </p>
 
-    <div class="bg-gray-100 p-4 rounded mt-6">
-        <h2 class="text-xl font-bold" style="color:#0a1a2f;">Zonas baseadas em FTP ou FC</h2>
-        <p class="mt-2">Baseadas no limiar anaeróbio (FTP ou PCR), essas zonas têm propósitos fisiológicos bem definidos. A cada adaptação no condicionamento físico, as zonas devem ser recalculadas.</p>
-        <p class="mt-2">Realize testes de FTP, FC ou ergoespirométricos periodicamente para manter as zonas atualizadas.</p>
-        <img src="{{ url_for('static', filename='image/zonas.png') }}" class="mt-6 mb-4 h-80 rounded-lg mx-auto" alt="Zonas de Treinamentos 1 a 7">
-        <p class="text-center text-sm">Zonas de Treinamento: Escala de Percepção de Esforço (1 a 10)</p>
-    </div>
+            <p class="text-sm text-blue-600 mt-2">
+                Baseado no seu desempenho real → use a calculadora abaixo para personalizar.
+            </p>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-10">
-        <div class="bg-white shadow p-4 rounded">
-            <h3 class="font-bold">Zona 1 - Recuperação</h3>
-            <p>Esforço leve, ideal para regenerar. Conversa fácil. Pouco estresse fisiológico.</p>
-        </div>
-        <div class="bg-white shadow p-4 rounded">
-            <h3 class="font-bold" style="color:#0a1a2f;">Zona 2 - Base Aeróbica</h3>
-            <p>Ideal para longos. Treina o uso de gordura como energia. Baixo risco de fadiga.</p>
-        </div>
-        <div class="bg-white shadow p-4 rounded">
-            <h3 class="font-bold" style="color:#0a1a2f;">Zona 3 - Aeróbica Intensa</h3>
-            <p>Recruta fibras Tipo IIa. Treina sustentação de ritmo em provas longas.</p>
-        </div>
-        <div class="bg-white shadow p-4 rounded">
-            <h3 class="font-bold" style="color:#0a1a2f;">Zona 4 - Limiar</h3>
-            <p>Melhora remoção de lactato. Esforço sustentado. Importante para provas curtas.</p>
-        </div>
-        <div class="bg-white shadow p-4 rounded">
-            <h3 class="font-bold" style="color:#0a1a2f;">Zona 5 - VO2max</h3>
-            <p>Intensidade alta. Aumenta capacidade cardiorrespiratória. Intervalações de 3-8min.</p>
-        </div>
-        <div class="bg-white shadow p-4 rounded">
-            <h3 class="font-bold" style="color:#0a1a2f;">Zona 6 - Anaeróbia</h3>
-            <p>Esforços curtos e potentes (30s-2min). Melhora capacidade de explosão.</p>
-        </div>
-        <div class="bg-white shadow p-4 rounded">
-            <h3 class="font-bold" style="color:#0a1a2f;">Zona 7 - Neuromuscular</h3>
-            <p>Esforços máximos de 10-15s. Desenvolve conexões neurais e ativa fibras rápidas.</p>
-        </div>
-    </div>
+            <div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="bg-gray-100 rounded-xl p-4">
+                    <p class="font-bold title-nave">Z1/Z2</p>
+                    <p class="text-sm text-gray-600">Base, recuperação e longões.</p>
+                </div>
 
-    <style>
-        .btn-nave {
-          background-color: #0a1a2f;
-          color: white;
-          padding: 0.75rem 1.5rem; /* px-6 py-3 */
-          border-radius: 0.375rem; /* rounded */
-          text-decoration: none;
-          display: inline-block;
-        }
-        .btn-nave:hover {
-          background-color: #0F2351; /* tom mais claro/escuro no hover */
-        }
-      </style>
+                <div class="bg-gray-100 rounded-xl p-4">
+                    <p class="font-bold title-nave">Z3/Z4</p>
+                    <p class="text-sm text-gray-600">Ritmo sustentado e limiar.</p>
+                </div>
 
-    <div class="text-center mt-10">
-        <a href="{{ url_for('ferramentas_calculadora') }}" class="text-white px-6 py-3 rounded btn-nave">
-            Calcular suas zonas
-        </a>
+                <div class="bg-gray-100 rounded-xl p-4">
+                    <p class="font-bold title-nave">Z5+</p>
+                    <p class="text-sm text-gray-600">VO2max, potência e tiros curtos.</p>
+                </div>
+            </div>
+
+            <div class="mt-8 flex flex-col sm:flex-row gap-3">
+                <a href="{{ url_for('ferramentas_calculadora', tipo='vo2max') }}"
+                   class="btn-nave text-center font-semibold px-6 py-3 rounded-xl">
+                    Calcular zonas pelo 10K
+                </a>
+
+                <a href="{{ url_for('ferramentas_calculadora', tipo='vo2max_3k') }}"
+                   class="bg-blue-100 resumo-nave text-center font-semibold px-6 py-3 rounded-xl hover:bg-blue-200">
+                    Calcular zonas pelo 3K
+                </a>
+            </div>
+        </section>
+
+        <section class="bg-white rounded-3xl shadow p-6 md:p-10 mb-10">
+            <h2 class="text-2xl font-bold title-nave mb-4">
+                Como usar na prática
+            </h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="border rounded-xl p-4">
+                    <h3 class="font-bold title-nave">Rodagem leve</h3>
+                    <p class="text-gray-600 text-sm">Use Z1/Z2 para recuperar, acumular volume e controlar fadiga.</p>
+                </div>
+
+                <div class="border rounded-xl p-4">
+                    <h3 class="font-bold title-nave">Longão</h3>
+                    <p class="text-gray-600 text-sm">Normalmente fica em Z2, com trechos em Z3 quando há objetivo específico.</p>
+                </div>
+
+                <div class="border rounded-xl p-4">
+                    <h3 class="font-bold title-nave">Tempo / Ritmo</h3>
+                    <p class="text-gray-600 text-sm">Z3/Z4 para sustentar intensidade próxima de prova.</p>
+                </div>
+
+                <div class="border rounded-xl p-4">
+                    <h3 class="font-bold title-nave">Intervalados</h3>
+                    <p class="text-gray-600 text-sm">Z4/Z5 para trabalhar limiar, VO2max e velocidade.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="bg-white rounded-3xl shadow p-6 md:p-10 mb-10">
+            <h2 class="text-2xl font-bold title-nave mb-4">
+                Referência geral das zonas
+            </h2>
+
+            <p class="text-gray-600 mb-6">
+                Cada método pode variar, mas a lógica principal é controlar intensidade e ajustar as zonas conforme sua evolução.
+            </p>
+
+            <img src="{{ url_for('static', filename='image/zonas.png') }}"
+                 class="w-full max-w-3xl rounded-xl mx-auto"
+                 alt="Zonas de Treinamento">
+
+            <p class="text-center text-sm text-gray-500 mt-3">
+                Zonas de treinamento: percepção de esforço, FTP, VO2max e limiar.
+            </p>
+        </section>
+
+        <section class="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <div class="bg-white shadow rounded-2xl p-5 border-l-4 border-green-300">
+                <h3 class="font-bold title-nave">Zona 1 - Recuperação</h3>
+                <p class="text-gray-600 text-sm mt-1">Esforço leve, ideal para regenerar. Conversa fácil e pouco estresse.</p>
+            </div>
+
+            <div class="bg-white shadow rounded-2xl p-5 border-l-4 border-green-500">
+                <h3 class="font-bold title-nave">Zona 2 - Base Aeróbica</h3>
+                <p class="text-gray-600 text-sm mt-1">Ideal para longos e construção de base. Baixo risco de fadiga.</p>
+            </div>
+
+            <div class="bg-white shadow rounded-2xl p-5 border-l-4 border-yellow-400">
+                <h3 class="font-bold title-nave">Zona 3 - Tempo</h3>
+                <p class="text-gray-600 text-sm mt-1">Ritmo moderado/forte. Ajuda a sustentar esforço em provas longas.</p>
+            </div>
+
+            <div class="bg-white shadow rounded-2xl p-5 border-l-4 border-orange-400">
+                <h3 class="font-bold title-nave">Zona 4 - Limiar</h3>
+                <p class="text-gray-600 text-sm mt-1">Esforço sustentado, melhora tolerância e remoção de lactato.</p>
+            </div>
+
+            <div class="bg-white shadow rounded-2xl p-5 border-l-4 border-red-400">
+                <h3 class="font-bold title-nave">Zona 5 - VO2max</h3>
+                <p class="text-gray-600 text-sm mt-1">Alta intensidade. Muito usada em intervalos de 3 a 8 minutos.</p>
+            </div>
+
+            <div class="bg-white shadow rounded-2xl p-5 border-l-4 border-red-600">
+                <h3 class="font-bold title-nave">Zona 6 - Anaeróbia</h3>
+                <p class="text-gray-600 text-sm mt-1">Esforços curtos e potentes. Melhora capacidade de explosão.</p>
+            </div>
+
+            <div class="bg-white shadow rounded-2xl p-5 border-l-4 border-red-900">
+                <h3 class="font-bold title-nave">Zona 7 - Neuromuscular</h3>
+                <p class="text-gray-600 text-sm mt-1">Esforços máximos de poucos segundos, focados em potência neural.</p>
+            </div>
+        </section>
+
+        <div class="text-center mt-10">
+            <a href="{{ url_for('ferramentas_calculadora') }}"
+               class="btn-nave inline-block font-semibold px-8 py-3 rounded-xl">
+                Abrir ferramentas
+            </a>
+        </div>
+
     </div>
 </div>
 {% endblock %}
-
-

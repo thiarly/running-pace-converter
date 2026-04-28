@@ -1,35 +1,124 @@
 {% extends "base.html" %}
+
 {% block titulo %}
     Sobre a TC Racing
 {% endblock %}
+
 {% block content %}
-<div class="container mx-auto px-8 py-10 text-justify">
+<div class="bg-gray-100 min-h-screen">
+    <div class="container mx-auto px-6 py-12 max-w-6xl">
 
+        <section class="bg-white rounded-3xl shadow p-6 md:p-10 mb-10 text-center">
+            <h1 class="text-3xl font-bold title-nave mb-4">
+                Ferramentas criadas por atleta, para atleta.
+            </h1>
 
-  <div class="max-w-2xl mx-auto px-6 py-12 text-center">
-    <h2 class="text-3xl font-bold mb-6" style="color:#0a1a2f;">Sobre o TC Racing</h2>
-    
-    <p class="text-lg leading-relaxed text-gray-800 mb-4">
-      Este site foi desenvolvido por <strong style="color:#0a1a2f;">Thiarly Cavalcante</strong>, atleta amador, empresário e programador, com o objetivo de contribuir com a comunidade esportiva.
-    </p>
-  
-    <p class="text-lg leading-relaxed text-gray-800 mb-4">
-      Todas as funcionalidades surgiram de necessidades reais durante sua jornada como atleta — da <strong style="color:#0a1a2f;">conversão de pace</strong> à <strong style="color:#0a1a2f;">calculadora de zonas</strong> e o <strong style="color:#0a1a2f;">planejamento de suplementação</strong>.
-    </p>
-  
-    <p class="text-lg leading-relaxed text-gray-800 mb-6">
-      Aqui, tudo está em um só lugar. Um projeto feito com dedicação para apoiar atletas que, como ele, buscam performance com clareza e praticidade.
-    </p>
-  
-    <p class="text-lg">
-      <a href="https://www.tccavalcante.com" target="_blank" class="hover:underline font-semibold" style="color:#0a1a2f;">
-        tccavalcante.com
-      </a>
-       &nbsp; | &nbsp;
-      <a href="https://www.tcracing.com.br" target="_blank" class="hover:underline font-semibold" style="color:#0a1a2f;">
-        tcracing.com.br
-      </a>
-    </p>
-  </div>
+            <p class="text-gray-600 max-w-3xl mx-auto text-lg">
+                O TC Racing nasceu da necessidade de transformar dados de treino em informações simples, úteis e aplicáveis na rotina esportiva.
+            </p>
+
+            <div class="mt-8">
+                <a href="{{ url_for('ferramentas_calculadora') }}"
+                   class="btn-nave inline-block font-semibold px-8 py-3 rounded-xl">
+                    Abrir ferramentas
+                </a>
+            </div>
+        </section>
+
+        <section class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-10">
+            <div class="bg-white rounded-2xl shadow p-5">
+                <h3 class="font-bold title-nave mb-2">Performance</h3>
+                <p class="text-sm text-gray-600">
+                    Conversores, ritmos, previsões e zonas para apoiar decisões práticas de treino.
+                </p>
+            </div>
+
+            <div class="bg-white rounded-2xl shadow p-5">
+                <h3 class="font-bold title-nave mb-2">Praticidade</h3>
+                <p class="text-sm text-gray-600">
+                    Tudo organizado em um só lugar, sem complicação e com foco no uso real.
+                </p>
+            </div>
+
+            <div class="bg-white rounded-2xl shadow p-5">
+                <h3 class="font-bold title-nave mb-2">Experiência real</h3>
+                <p class="text-sm text-gray-600">
+                    Criado a partir da rotina de treinos, provas, triathlon e preparação de endurance.
+                </p>
+            </div>
+        </section>
+
+        <section class="bg-white rounded-3xl shadow p-6 md:p-10 mb-10">
+            <h2 class="text-2xl font-bold title-nave mb-4">
+                Sobre o projeto
+            </h2>
+
+            <div class="space-y-4 text-gray-700 leading-relaxed">
+                <p>
+                    Este site foi desenvolvido por <strong class="title-nave">Thiarly Cavalcante</strong>, atleta amador, empresário e programador.
+                </p>
+
+                <p>
+                    As ferramentas surgiram de necessidades reais durante sua jornada no esporte: conversão de pace, estimativa de tempo, cálculo de zonas, previsão de prova e planejamento de suplementação.
+                </p>
+
+                <p>
+                    A proposta é simples: entregar clareza para quem treina, compete e quer tomar decisões melhores com base em números fáceis de entender.
+                </p>
+            </div>
+        </section>
+
+        <section class="bg-white rounded-3xl shadow p-6 md:p-10 mb-10">
+            <h2 class="text-2xl font-bold title-nave mb-4">
+                O que você encontra aqui
+            </h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="border rounded-xl p-4">
+                    <h3 class="font-bold title-nave">Calculadoras</h3>
+                    <p class="text-sm text-gray-600 mt-1">
+                        Ritmo, tempo, distância, pace, velocidade e conversões úteis para corrida, bike e natação.
+                    </p>
+                </div>
+
+                <div class="border rounded-xl p-4">
+                    <h3 class="font-bold title-nave">Zonas de treino</h3>
+                    <p class="text-sm text-gray-600 mt-1">
+                        Apoio para entender intensidades e organizar melhor a carga de treino.
+                    </p>
+                </div>
+
+                <div class="border rounded-xl p-4">
+                    <h3 class="font-bold title-nave">Previsões de prova</h3>
+                    <p class="text-sm text-gray-600 mt-1">
+                        Estimativas de desempenho com base em testes e referências de ritmo.
+                    </p>
+                </div>
+
+                <div class="border rounded-xl p-4">
+                    <h3 class="font-bold title-nave">Suplementação</h3>
+                    <p class="text-sm text-gray-600 mt-1">
+                        Planejamento e cálculo de nutrientes para treinos e provas de endurance.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section class="bg-white rounded-3xl shadow p-6 md:p-10 text-center">
+            <h2 class="text-2xl font-bold title-nave mb-3">
+                Use as ferramentas na prática
+            </h2>
+
+            <p class="text-gray-600 mb-6">
+                Calcule ritmos, zonas, conversões e previsões de forma simples.
+            </p>
+
+            <a href="{{ url_for('ferramentas_calculadora') }}"
+               class="btn-nave inline-block font-semibold px-8 py-3 rounded-xl">
+                Começar agora
+            </a>
+        </section>
+
+    </div>
 </div>
 {% endblock %}
