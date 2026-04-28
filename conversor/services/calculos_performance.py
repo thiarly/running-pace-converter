@@ -125,6 +125,37 @@ def calculate_paces_by_vo2max(pace_seconds_per_km):
     return {key: f"{int(pace // 60):02}:{int(pace % 60):02}" for key, pace in paces.items()}
 
 
+
+def calculate_vo2max_3k(time_seconds):
+    # pace médio do 3K
+    pace_segundos = time_seconds / 3
+
+    # velocidade km/h
+    velocidade_kmh = 3600 / pace_segundos
+
+    # VO2 estimado
+    vo2max = 3.5 + 12 * (velocidade_kmh / 3.5)
+
+    zonas = {
+        "Z1 (Leve)": (pace_segundos / 0.50, pace_segundos / 0.60),
+        "Z2 (Endurance)": (pace_segundos / 0.60, pace_segundos / 0.70),
+        "Z3 (Tempo)": (pace_segundos / 0.70, pace_segundos / 0.80),
+        "Z4 (Limiar)": (pace_segundos / 0.80, pace_segundos / 0.90),
+        "Z5 (VO2Max)": (pace_segundos / 0.90, pace_segundos / 1.00),
+    }
+
+    zonas_formatadas = {
+        nome: f"{int(maximo // 60):02d}:{int(maximo % 60):02d} → {int(minimo // 60):02d}:{int(minimo % 60):02d}"
+        for nome, (minimo, maximo) in zonas.items()
+    }
+
+    return {
+        "pace": f"{int(pace_segundos // 60):02d}:{int(pace_segundos % 60):02d}",
+        "vo2max": round(vo2max, 1),
+        "zonas": zonas_formatadas
+    }
+
+
 def riegel_prediction(base_time_seconds, base_distance_km, target_distance_km):
     exponent = 1.06
     predicted_time_seconds = base_time_seconds * (target_distance_km / base_distance_km) ** exponent

@@ -16,11 +16,11 @@
             Escolha a ferramenta que deseja usar.
         </p>
 
-        <p class="text-sm font-semibold text-gray-500 mb-2">
-            Cálculos
-        </p>
+    <p class="text-sm font-bold text-gray-700 mb-2 border-b pb-1">
+        Cálculos
+    </p>
 
-        <div class="grid grid-cols-3 gap-2 mb-6">
+        <div class="grid grid-cols-3 gap-2 mb-4">
             <a href="{{ url_for('ferramentas_calculadora', tipo='ritmo') }}"
                class="text-center text-sm px-3 py-2 rounded-lg {% if tipo == 'ritmo' %}btn-nave text-white{% else %}bg-blue-100 resumo-nave{% endif %}">
                 Ritmo
@@ -37,9 +37,9 @@
             </a>
         </div>
 
-        <p class="text-sm font-semibold text-gray-500 mb-2">
-            Conversores
-        </p>
+    <p class="text-sm font-bold text-gray-700 mb-2 border-b pb-1">
+        Conversores
+    </p>
 
         <div class="grid grid-cols-2 gap-2 mb-8">
             <a href="{{ url_for('ferramentas_calculadora', tipo='pace_velocidade') }}"
@@ -61,21 +61,33 @@
                 class="text-center text-sm px-3 py-2 rounded-lg {% if tipo == 'tabela_pace' %}btn-nave text-white{% else %}bg-blue-100 resumo-nave{% endif %}">
                     Tabela de Pace
             </a>
+        </div>
 
-
-        <p class="text-sm font-semibold text-gray-500 mb-2">
-            Testes
-        </p>
+        
+    <p class="text-sm font-bold text-gray-700 mb-2 border-b pb-1">
+        Testes
+    </p>
 
             <div class="grid grid-cols-2 gap-2 mb-8">
                 <a href="{{ url_for('ferramentas_calculadora', tipo='vo2max') }}"
                 class="text-center text-sm px-3 py-2 rounded-lg {% if tipo == 'vo2max' %}btn-nave text-white{% else %}bg-blue-100 resumo-nave{% endif %}">
                     VO2Max 10K
                 </a>
+
+                <a href="{{ url_for('ferramentas_calculadora', tipo='vo2max_3k') }}"
+                class="text-center text-sm px-3 py-2 rounded-lg {% if tipo == 'vo2max_3k' %}btn-nave text-white{% else %}bg-blue-100 resumo-nave{% endif %}">
+                    Teste 3K
+                </a>
+
+                <a href="{{ url_for('ferramentas_calculadora', tipo='previsao_prova') }}"
+                class="text-center text-sm px-3 py-2 rounded-lg {% if tipo == 'previsao_prova' %}btn-nave text-white{% else %}bg-blue-100 resumo-nave{% endif %}">
+                    Previsão de Prova
+                </a>
+
             </div>
 
 
-        </div>
+     
 
         {% if tipo == 'tempo' %}
             {% include 'ferramentas/partials/form_tempo.html' %}
@@ -92,6 +104,12 @@
 
         {% elif tipo == 'vo2max' %}
         {% include 'ferramentas/partials/form_vo2max.html' %}
+
+        {% elif tipo == 'vo2max_3k' %}
+        {% include 'ferramentas/partials/form_vo2max_3k.html' %}
+
+        {% elif tipo == 'previsao_prova' %}
+        {% include 'ferramentas/partials/form_previsao_prova.html' %}
 
         {% else %}
             {% include 'ferramentas/partials/form_ritmo.html' %}
@@ -117,7 +135,7 @@
             </div>
         {% endif %}
 
-        
+
         {% if zonas_vo2 %}
             <div class="mt-6 grid gap-2">
                 <p class="text-sm font-semibold text-gray-500 mb-2">
@@ -135,28 +153,50 @@
 
 
         {% if tabela_pace %}
-    <div class="mt-6 overflow-hidden rounded-xl border border-gray-200">
-        <table class="w-full text-sm text-left text-gray-800">
-            <thead class="bg-gray-100 text-gray-500">
-                <tr>
-                    <th class="px-4 py-3">Pace</th>
-                    <th class="px-4 py-3">Milha</th>
-                    <th class="px-4 py-3">Velocidade</th>
-                </tr>
-            </thead>
+            <div class="mt-6 overflow-hidden rounded-xl border border-gray-200">
+                <table class="w-full text-sm text-left text-gray-800">
+                    <thead class="bg-gray-100 text-gray-500">
+                        <tr>
+                            <th class="px-4 py-3">Pace</th>
+                            <th class="px-4 py-3">Milha</th>
+                            <th class="px-4 py-3">Velocidade</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for linha in tabela_pace %}
+                            <tr class="border-t border-gray-200">
+                                <td class="px-4 py-3 font-semibold title-nave">{{ linha.Pace }}</td>
+                                <td class="px-4 py-3">{{ linha.Milha }}</td>
+                                <td class="px-4 py-3">{{ linha.Velocidade }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% endif %}
 
-            <tbody>
-                {% for linha in tabela_pace %}
-                    <tr class="border-t border-gray-200">
-                        <td class="px-4 py-3 font-semibold title-nave">{{ linha.Pace }}</td>
-                        <td class="px-4 py-3">{{ linha.Milha }}</td>
-                        <td class="px-4 py-3">{{ linha.Velocidade }}</td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
-{% endif %}
+        {% if previsoes_prova %}
+            <div class="mt-6 overflow-hidden rounded-xl border border-gray-200">
+                <table class="w-full text-sm text-left text-gray-800">
+                    <thead class="bg-gray-100 text-gray-500">
+                        <tr>
+                            <th class="px-4 py-3">Prova</th>
+                            <th class="px-4 py-3">Tempo</th>
+                            <th class="px-4 py-3">Pace</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for prova, dados in previsoes_prova.items() %}
+                            <tr class="border-t border-gray-200">
+                                <td class="px-4 py-3 font-semibold title-nave">{{ prova }}</td>
+                                <td class="px-4 py-3">{{ dados.Tempo }}</td>
+                                <td class="px-4 py-3">{{ dados.Pace }} /km</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% endif %}
 
     </div>
 </div>

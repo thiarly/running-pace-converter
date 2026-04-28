@@ -973,6 +973,7 @@ def ferramentas_calculadora():
     error = None
     tabela_pace = None
     zonas_vo2 = None
+    previsoes_prova = None
     form_data = request.form.to_dict() if request.method == 'POST' else {}
 
     if request.method == 'POST':
@@ -1135,6 +1136,40 @@ def ferramentas_calculadora():
                 }
 
                 zonas_vo2 = dados_vo2["zonas"]
+                
+                
+            elif tipo == 'vo2max_3k':
+                from conversor.services.calculos_performance import calculate_vo2max_3k
+                from conversor.services.formatadores import tempo_para_segundos
+
+                hour = request.form.get('hour')
+                minute = request.form.get('minute')
+                second = request.form.get('second')
+
+                tempo = tempo_para_segundos(hour, minute, second)
+
+                dados = calculate_vo2max_3k(tempo)
+
+                resultado = {
+                    "Pace médio 3K": dados["pace"],
+                    "VO2Max estimado": dados["vo2max"]
+                }
+
+                zonas_vo2 = dados["zonas"]
+                
+            
+            elif tipo == 'previsao_prova':
+                from conversor.services.calculos_performance import race_predictions_from_3k
+                from conversor.services.formatadores import tempo_para_segundos
+
+                hour = request.form.get('hour')
+                minute = request.form.get('minute')
+                second = request.form.get('second')
+
+                tempo = tempo_para_segundos(hour, minute, second)
+
+                previsoes_prova = race_predictions_from_3k(tempo, 3)
+                resultado = None
                     
                     
 
@@ -1151,5 +1186,6 @@ def ferramentas_calculadora():
         tabela_pace=tabela_pace,
         error=error,
         form_data=form_data,
-        zonas_vo2=zonas_vo2
+        zonas_vo2=zonas_vo2,
+        previsoes_prova=previsoes_prova
     )

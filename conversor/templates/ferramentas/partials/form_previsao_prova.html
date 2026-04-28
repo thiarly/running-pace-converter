@@ -1,0 +1,25 @@
+<form method="POST" class="space-y-4">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+    <p class="text-sm text-gray-500">
+        Informe seu tempo no teste de 3 km.
+    </p>
+
+    <div class="flex gap-2">
+        <input type="number" name="hour" placeholder="Hora"
+               value="{{ form_data.hour or '' }}"
+               class="w-1/3 text-center py-2 border rounded-lg">
+
+        <input type="number" name="minute" placeholder="Min"
+               value="{{ form_data.minute or '' }}"
+               class="w-1/3 text-center py-2 border rounded-lg">
+
+        <input type="number" name="second" placeholder="Seg"
+               value="{{ form_data.second or '' }}"
+               class="w-1/3 text-center py-2 border rounded-lg">
+    </div>
+
+    <button type="submit" class="btn-nave font-bold py-3 w-full rounded-lg">
+        Gerar previsão
+    </button>
+</form>
