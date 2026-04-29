@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+
+{% block titulo %}
+Plano Compartilhado
+{% endblock %}
+
+{% block content %}
+
+{% macro formatar_tempo_decimal(decimal) %}
+  {% set horas = decimal|int %}
+  {% set minutos = ((decimal - horas) * 60)|round(0, 'floor') %}
+  {{ horas }}h{{ "%02d"|format(minutos) }}m
+{% endmacro %}
+
+<div class="bg-gray-100 min-h-screen py-10 px-4">
+  <div class="max-w-4xl mx-auto bg-white rounded-3xl shadow p-6 md:p-10">
+
+    <div class="text-center mb-8">
+      <h1 class="text-3xl font-bold title-nave mb-2">
+        {{ resumo.nome_treino }}
+      </h1>
+
+      <p class="text-sm text-gray-500">
+        {{ resumo.data.strftime('%d/%m/%Y') }}
+      </p>
+
+      {% if resumo.pessoa %}
+        <p class="text-sm text-gray-600 mt-2">
+          👤 {{ resumo.pessoa.nome }}
+        </p>
+      {% endif %}
+
+      {% if resumo.comentario %}
+        <p class="text-gray-700 mt-4">
+          {{ resumo.comentario }}
+        </p>
+      {% endif %}
+    </div>
+
+    {% if resumo.suplementos_utilizados %}
+      <div class="mb-8 bg-gray-100 rounded-xl p-4">
+        <h2 class="font-bold title-nave mb-2">🧪 Suplementos utilizados</h2>
+        <ul class="list-disc list-inside text-sm text-gray-700">
+          {% for item in resumo.suplementos_utilizados.split(',') %}
+            <li>{{ item.strip() }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+    {% endif %}
+
+    <div class="mb-8 bg-gray-100 rounded-xl p-4 text-sm text-gray-700">
+      <p><strong>Tempo total:</strong> {{ formatar_tempo_decimal(resumo.tempo_total) }}</p>
+      <p>
+        <strong>Natação:</strong> {{ formatar_tempo_decimal(resumo.tempo_natacao) }} |
+        <strong>Bike:</strong> {{ formatar_tempo_decimal(resumo.tempo_bike) }} |
+        <strong>Corrida:</strong> {{ formatar_tempo_decimal(resumo.tempo_corrida) }}
+      </p>
+    </div>
+
+    {% set ordem = ["Macronutrientes", "Eletrólitos", "Estimulantes e Compostos", "Vitaminas", "Aminoácidos"] %}
+    {% set icones = {
+      "Macronutrientes": "⛽️",
+      "Eletrólitos": "💧",
+      "Estimulantes e Compostos": "🔥",
+      "Vitaminas": "💊",
+      "Aminoácidos": "🧬"
+    } %}
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      {% for categoria in ordem %}
+        {% set dados = resumo.resumo_dados.get(categoria, {}) %}
+
+        {% if dados %}
+          {% set total = namespace(value=0) %}
+          {% for nome, valor in dados.items() %}
+            {% if valor|float > 0 %}
+              {% set total.value = total.value + valor|float %}
+            {% endif %}
+          {% endfor %}
+
+          {% if total.value > 0 %}
+            <div class="bg-blue-50 rounded-xl p-4 shadow">
+              <h3 class="font-bold title-nave mb-2">
+                {{ icones[categoria] }} {{ categoria }}
+              </h3>
+
+              <ul class="list-disc pl-5 text-sm text-gray-700">
+                {% for nome, valor in dados.items() %}
+                  {% if valor|float > 0 %}
+                    <li>
+                      <strong>{{ nome }}:</strong> {{ valor|round(1) }}
+                    </li>
+                  {% endif %}
+                {% endfor %}
+              </ul>
+            </div>
+          {% endif %}
+        {% endif %}
+      {% endfor %}
+    </div>
+
+  </div>
+</div>
+
+{% endblock %}

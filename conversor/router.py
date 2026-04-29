@@ -12,6 +12,8 @@ from datetime import date
 
 import os
 
+import secrets
+
 from conversor.schema import RESUMO_SCHEMA
 
 from conversor.utils import (
@@ -465,6 +467,7 @@ def salvar_resumo():
         novo_resumo = ResumoSalvo(
             user_id=current_user.id,
             pessoa_id=form.pessoa_id.data if form.pessoa_id.data != 0 else None,
+            token_publico=secrets.token_urlsafe(16),  # Gera um token seguro e curto
             nome_treino=form.nome_treino.data,
             data=form.data.data,
             comentario=form.comentario.data,
@@ -507,7 +510,13 @@ def deletar_resumo(id):
 def buscar_resumos():
     termo = request.args.get("termo", "").strip().lower()
 
+    pessoa_filtro = request.args.get("pessoa_filtro")
     query = ResumoSalvo.query.filter_by(user_id=current_user.id)
+
+    if pessoa_filtro == "eu":
+        query = query.filter(ResumoSalvo.pessoa_id.is_(None))
+    elif pessoa_filtro:
+        query = query.filter(ResumoSalvo.pessoa_id == int(pessoa_filtro))
 
     if termo:
         query = query.filter(
@@ -931,3 +940,14 @@ def pessoas():
     pessoas = Pessoa.query.filter_by(user_id=current_user.id).order_by(Pessoa.nome.asc()).all()
 
     return render_template('pessoas.html', form=form, pessoas=pessoas)
+
+    
+    
+@app.route('/resumo/publico/<token>')
+def resumo_publico(token):
+    resumo = ResumoSalvo.query.filter_by(token_publico=token).first_or_404()
+
+    return render_template(
+        'plano_publico.html',
+        resumo=resumo
+    )

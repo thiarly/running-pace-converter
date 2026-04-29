@@ -162,6 +162,7 @@ class ResumoSalvo(database.Model):
     id = database.Column(database.Integer, primary_key=True)
     pessoa_id = database.Column(database.Integer, database.ForeignKey('pessoas.id'), nullable=True)
     user_id = database.Column(database.Integer, database.ForeignKey('user.id'), nullable=False)
+    token_publico = database.Column(database.String(100), unique=True, nullable=True)
     nome_treino = database.Column(database.String(100), nullable=False)
     data = database.Column(database.Date, nullable=False)
     comentario = database.Column(database.Text)

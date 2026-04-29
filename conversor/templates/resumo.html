@@ -422,8 +422,24 @@ Resumo do Planejamento
        <i class="fas fa-print text-gray-500 hover:text-gray-800"></i> Imprimir
      </a>
 
-      </div>
+       <!-- 👇 NOVO -->
 
+        {% if resumo.token_publico %}
+          <a href="{{ url_for('resumo_publico', token=resumo.token_publico) }}"
+            target="_blank"
+            class="flex items-center gap-1 text-sm text-blue-600 hover:underline">
+            🔗 Compartilhar
+          </a>
+
+          <button type="button"
+            data-link="{{ url_for('resumo_publico', token=resumo.token_publico, _external=True) }}"
+            onclick="copiarLink(this)"
+            class="flex items-center gap-1 text-sm text-gray-600 hover:underline">
+            📋 Copiar link
+          </button>
+        {% endif %}
+
+      </div>
 
       <div id="resumo-{{ loop.index }}" class="mt-4 hidden">
 
@@ -531,7 +547,9 @@ Resumo do Planejamento
   input.addEventListener('input', async () => {
     const termo = input.value.trim();
 
-    const res = await fetch(`/buscar_resumos?termo=${encodeURIComponent(termo)}`);
+    const pessoaFiltro = document.querySelector('[name="pessoa_filtro"]').value;
+    const res = await fetch(`/buscar_resumos?termo=${encodeURIComponent(termo)}&pessoa_filtro=${pessoaFiltro}`);
+
     const dados = await res.json();
 
     container.innerHTML = '';
@@ -664,4 +682,25 @@ Resumo do Planejamento
             : `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" />`;        // -
         }
       </script>
+
+      <script>
+      function copiarLink(el) {
+        const link = el.getAttribute("data-link");
+
+        if (navigator.clipboard && window.isSecureContext) {
+          navigator.clipboard.writeText(link).then(() => {
+            alert("Link copiado!");
+          });
+        } else {
+          const input = document.createElement("input");
+          input.value = link;
+          document.body.appendChild(input);
+          input.select();
+          document.execCommand("copy");
+          document.body.removeChild(input);
+          alert("Link copiado!");
+        }
+      }
+      </script>
+
 {% endblock %}
