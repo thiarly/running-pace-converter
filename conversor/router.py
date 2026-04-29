@@ -386,8 +386,16 @@ def resumo_view():
 
 # 🔽 Adicione isso aqui
     search = request.args.get("search", "").strip()
+    pessoa_filtro = request.args.get("pessoa_filtro", "")
+
+    pessoas = Pessoa.query.filter_by(user_id=current_user.id).order_by(Pessoa.nome.asc()).all()
 
     resumos_query = ResumoSalvo.query.filter_by(user_id=current_user.id)
+
+    if pessoa_filtro == "eu":
+        resumos_query = resumos_query.filter(ResumoSalvo.pessoa_id.is_(None))
+    elif pessoa_filtro:
+        resumos_query = resumos_query.filter(ResumoSalvo.pessoa_id == int(pessoa_filtro))
 
     if search:
         resumos_query = resumos_query.filter(
@@ -410,7 +418,9 @@ def resumo_view():
         current_date=date.today().isoformat(),
         resumos=resumos,  # <-- novo contexto
         itens_utilizados=itens_utilizados_str,
-        form_salvar=form_salvar
+        form_salvar=form_salvar,
+        pessoas=pessoas,
+        pessoa_filtro=pessoa_filtro
         
     )
             
