@@ -160,6 +160,7 @@ class ResumoSalvo(database.Model):
     __tablename__ = 'resumos_salvos'
 
     id = database.Column(database.Integer, primary_key=True)
+    pessoa_id = database.Column(database.Integer, database.ForeignKey('pessoas.id'), nullable=True)
     user_id = database.Column(database.Integer, database.ForeignKey('user.id'), nullable=False)
     nome_treino = database.Column(database.String(100), nullable=False)
     data = database.Column(database.Date, nullable=False)
@@ -171,10 +172,28 @@ class ResumoSalvo(database.Model):
     tempo_corrida = database.Column(database.Float)
     tempo_total = database.Column(database.Float)
     ordem = database.Column(database.Integer, nullable=False, default=0)
+    pessoa = database.relationship('Pessoa', backref='resumos')
     criado_em = database.Column(database.DateTime, default=datetime.utcnow)
 
     def __repr__(self):
         return f'<ResumoSalvo {self.nome_treino} - {self.data}>'
 
     
-    
+class Pessoa(database.Model):
+    __tablename__ = 'pessoas'
+
+    id = database.Column(database.Integer, primary_key=True)
+    user_id = database.Column(database.Integer, database.ForeignKey('user.id'), nullable=False)
+
+    nome = database.Column(database.String(150), nullable=False)
+    email = database.Column(database.String(150), nullable=True)
+    peso = database.Column(database.Float, nullable=True)
+    objetivo = database.Column(database.String(200), nullable=True)
+    observacoes = database.Column(database.Text, nullable=True)
+
+    criado_em = database.Column(database.DateTime, default=datetime.utcnow)
+
+    usuario = database.relationship('User', backref='pessoas')
+
+    def __repr__(self):
+        return f'<Pessoa {self.nome}>'

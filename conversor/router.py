@@ -1,8 +1,8 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session, jsonify
 from conversor import app, database
 
-from conversor.forms import SuplementoForm, PlanningItemForm, ResumoForm, LoginForm, RegisterForm, ResumoForm, SalvarResumoForm
-from conversor.models import Suplemento, PlanejamentoItem, User, ResumoSalvo
+from conversor.forms import SuplementoForm, PlanningItemForm, ResumoForm, LoginForm, RegisterForm, ResumoForm, SalvarResumoForm, PessoaForm
+from conversor.models import Suplemento, PlanejamentoItem, User, ResumoSalvo, Pessoa
 
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, login_required, logout_user, current_user, logout_user
@@ -350,6 +350,10 @@ def remover_todos_itens():
 @login_required
 def resumo_view():
     form = ResumoForm()
+    
+    form_salvar = SalvarResumoForm()
+    form_salvar.pessoa_id.choices = [(0, 'Eu mesmo')] + [
+        (p.id, p.nome) for p in Pessoa.query.filter_by(user_id=current_user.id).order_by(Pessoa.nome.asc()).all()]
 
     if request.method == 'POST' and 'limpar' in request.form:
         return redirect(url_for('resumo_view'))
@@ -405,7 +409,9 @@ def resumo_view():
         tempo_total=round(tempo_total, 2),
         current_date=date.today().isoformat(),
         resumos=resumos,  # <-- novo contexto
-        itens_utilizados=itens_utilizados_str
+        itens_utilizados=itens_utilizados_str,
+        form_salvar=form_salvar
+        
     )
             
 
@@ -413,6 +419,9 @@ def resumo_view():
 @login_required
 def salvar_resumo():
     form = SalvarResumoForm()
+    
+    form.pessoa_id.choices = [(0, 'Eu mesmo')] + [
+    (p.id, p.nome) for p in Pessoa.query.filter_by(user_id=current_user.id).order_by(Pessoa.nome.asc()).all()]
 
     def parse_float(value):
         try:
@@ -445,6 +454,7 @@ def salvar_resumo():
 
         novo_resumo = ResumoSalvo(
             user_id=current_user.id,
+            pessoa_id=form.pessoa_id.data if form.pessoa_id.data != 0 else None,
             nome_treino=form.nome_treino.data,
             data=form.data.data,
             comentario=form.comentario.data,
@@ -883,3 +893,31 @@ def ferramentas_calculadora():
         zonas_vo2=zonas_vo2,
         previsoes_prova=previsoes_prova
     )
+
+
+
+
+@app.route('/pessoas', methods=['GET', 'POST'])
+@login_required
+def pessoas():
+    form = PessoaForm()
+
+    if form.validate_on_submit():
+        pessoa = Pessoa(
+            user_id=current_user.id,
+            nome=form.nome.data,
+            email=form.email.data,
+            peso=form.peso.data,
+            objetivo=form.objetivo.data,
+            observacoes=form.observacoes.data
+        )
+
+        database.session.add(pessoa)
+        database.session.commit()
+
+        flash('Pessoa cadastrada com sucesso!', 'success')
+        return redirect(url_for('pessoas'))
+
+    pessoas = Pessoa.query.filter_by(user_id=current_user.id).order_by(Pessoa.nome.asc()).all()
+
+    return render_template('pessoas.html', form=form, pessoas=pessoas)

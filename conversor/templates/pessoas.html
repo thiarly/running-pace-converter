@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+
+{% block titulo %}
+Pessoas / Atletas
+{% endblock %}
+
+{% block content %}
+
+<div class="max-w-6xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+
+  <!-- Flash -->
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div class="mb-6">
+        {% for category, message in messages %}
+          <div class="p-4 rounded-md text-white {{ 'bg-green-500' if category == 'success' else 'bg-red-500' }}">
+            {{ message }}
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+
+  <!-- Form -->
+  <div class="bg-white shadow-md rounded-xl p-6 border border-gray-200 mb-8">
+    <h1 class="text-2xl font-bold mb-6 border-b pb-2 title-nave">
+      Cadastro de Pessoa / Atleta
+    </h1>
+
+    <form method="POST" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      {{ form.hidden_tag() }}
+
+      <div>
+        {{ form.nome.label(class="block text-sm font-medium text-gray-700") }}
+        {{ form.nome(class="w-full border border-gray-300 rounded px-3 py-2") }}
+      </div>
+
+      <div>
+        {{ form.email.label(class="block text-sm font-medium text-gray-700") }}
+        {{ form.email(class="w-full border border-gray-300 rounded px-3 py-2") }}
+      </div>
+
+      <div>
+        {{ form.peso.label(class="block text-sm font-medium text-gray-700") }}
+        {{ form.peso(class="w-full border border-gray-300 rounded px-3 py-2", placeholder="Ex: 70") }}
+      </div>
+
+      <div>
+        {{ form.objetivo.label(class="block text-sm font-medium text-gray-700") }}
+        {{ form.objetivo(class="w-full border border-gray-300 rounded px-3 py-2", placeholder="Ex: Ironman, Maratona...") }}
+      </div>
+
+      <div class="md:col-span-2">
+        {{ form.observacoes.label(class="block text-sm font-medium text-gray-700") }}
+        {{ form.observacoes(class="w-full border border-gray-300 rounded px-3 py-2", rows="3") }}
+      </div>
+
+      <div class="md:col-span-2 flex justify-end">
+        <button type="submit" class="btn-nave text-white px-4 py-2 rounded">
+          Salvar
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Lista -->
+  <div class="bg-white shadow-md rounded-xl p-6 border border-gray-200">
+    <h2 class="text-xl font-bold mb-6 border-b pb-2 title-nave">
+      Pessoas cadastradas
+    </h2>
+
+    {% if pessoas %}
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {% for p in pessoas %}
+        <div class="border rounded-lg p-4 bg-gray-50">
+          <h3 class="font-semibold text-lg title-nave">{{ p.nome }}</h3>
+
+          {% if p.email %}
+            <p class="text-sm text-gray-600">📧 {{ p.email }}</p>
+          {% endif %}
+
+          {% if p.peso %}
+            <p class="text-sm text-gray-600">⚖️ {{ p.peso }} kg</p>
+          {% endif %}
+
+          {% if p.objetivo %}
+            <p class="text-sm text-gray-700 mt-1">
+              🎯 {{ p.objetivo }}
+            </p>
+          {% endif %}
+
+          {% if p.observacoes %}
+            <p class="text-sm text-gray-500 mt-2">
+              {{ p.observacoes }}
+            </p>
+          {% endif %}
+        </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p class="text-gray-500">Nenhuma pessoa cadastrada ainda.</p>
+    {% endif %}
+  </div>
+
+</div>
+
+{% endblock %}

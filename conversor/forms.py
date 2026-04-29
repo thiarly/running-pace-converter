@@ -137,6 +137,7 @@ class RegisterForm(FlaskForm):
         
 
 class SalvarResumoForm(FlaskForm):
+    pessoa_id = SelectField('Pessoa / Atleta', coerce=int, choices=[], validators=[Optional()])
     nome_treino = StringField('Nome do Treino', validators=[DataRequired()])
     data = DateField("Data", format="%Y-%m-%d", validators=[DataRequired()])
     comentario = TextAreaField('Comentário')
@@ -154,3 +155,12 @@ class ResumoForm(FlaskForm):
     submit_calcular = SubmitField('Calcular Resumo')
     submit_limpar = SubmitField('Limpar Tela')
     submit_salvar = SubmitField('Salvar Resumo')
+    
+    
+class PessoaForm(FlaskForm):
+    nome = StringField('Nome', validators=[DataRequired()])
+    email = StringField('Email', validators=[Optional(), Email()])
+    peso = FloatFieldBR('Peso', validators=[Optional()])
+    objetivo = StringField('Objetivo', validators=[Optional()])
+    observacoes = TextAreaField('Observações', validators=[Optional()])
+    submit = SubmitField('Salvar')
