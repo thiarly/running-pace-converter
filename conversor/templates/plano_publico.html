@@ -48,9 +48,9 @@
         </p>
 
         {% if resumo.comentario %}
-          <p class="text-gray-700 mt-5 max-w-2xl mx-auto">
+            <div class="text-gray-700 mt-5 max-w-2xl mx-auto text-left whitespace-pre-line leading-relaxed">
             {{ resumo.comentario }}
-          </p>
+            </div>
         {% endif %}
       </div>
 
@@ -112,6 +112,19 @@
         <h2 class="text-xl font-bold mb-5" style="color:#0a1a2f;">
           Resumo nutricional
         </h2>
+
+
+        
+
+
+
+
+
+
+
+
+
+
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           {% for categoria in ordem %}
