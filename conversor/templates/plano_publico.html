@@ -1,10 +1,14 @@
-{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Plano Compartilhado</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="icon" href="{{ url_for('static', filename='image/logotc-fiveicon.png') }}">
+</head>
 
-{% block titulo %}
-Plano Compartilhado
-{% endblock %}
-
-{% block content %}
+<body class="bg-gray-100 text-gray-800">
 
 {% macro formatar_tempo_decimal(decimal) %}
   {% set horas = decimal|int %}
@@ -12,94 +16,149 @@ Plano Compartilhado
   {{ horas }}h{{ "%02d"|format(minutos) }}m
 {% endmacro %}
 
-<div class="bg-gray-100 min-h-screen py-10 px-4">
-  <div class="max-w-4xl mx-auto bg-white rounded-3xl shadow p-6 md:p-10">
+<div class="min-h-screen py-8 px-4">
+  <div class="max-w-4xl mx-auto">
 
-    <div class="text-center mb-8">
-      <h1 class="text-3xl font-bold title-nave mb-2">
-        {{ resumo.nome_treino }}
-      </h1>
+    <div class="text-center mb-6">
+      <img src="{{ url_for('static', filename='image/logotc-navbar.png') }}"
+           alt="TC Racing"
+           class="h-12 mx-auto mb-4">
 
-      <p class="text-sm text-gray-500">
-        {{ resumo.data.strftime('%d/%m/%Y') }}
+      <p class="text-xs uppercase tracking-widest text-gray-400">
+        TC Racing • Plano Compartilhado
       </p>
-
-      {% if resumo.pessoa %}
-        <p class="text-sm text-gray-600 mt-2">
-          👤 {{ resumo.pessoa.nome }}
-        </p>
-      {% endif %}
-
-      {% if resumo.comentario %}
-        <p class="text-gray-700 mt-4">
-          {{ resumo.comentario }}
-        </p>
-      {% endif %}
     </div>
 
-    {% if resumo.suplementos_utilizados %}
-      <div class="mb-8 bg-gray-100 rounded-xl p-4">
-        <h2 class="font-bold title-nave mb-2">🧪 Suplementos utilizados</h2>
-        <ul class="list-disc list-inside text-sm text-gray-700">
+    <div class="bg-white rounded-3xl shadow-lg p-6 md:p-10">
+
+      <div class="border-b pb-6 mb-8 text-center">
+        <h1 class="text-3xl font-bold mb-2" style="color:#0a1a2f;">
+          {{ resumo.nome_treino }}
+        </h1>
+
+        <p class="text-sm text-gray-500">
+          {{ resumo.data.strftime('%d/%m/%Y') }}
+        </p>
+
+        {% if resumo.pessoa %}
+          <p class="text-sm text-gray-600 mt-2">
+            👤 Atleta: <strong>{{ resumo.pessoa.nome }}</strong>
+          </p>
+        {% else %}
+          <p class="text-sm text-gray-600 mt-2">
+            👤 Atleta: <strong>Eu mesmo</strong>
+          </p>
+        {% endif %}
+
+        {% if resumo.comentario %}
+          <p class="text-gray-700 mt-5 max-w-2xl mx-auto">
+            {{ resumo.comentario }}
+          </p>
+        {% endif %}
+      </div>
+
+      {% if resumo.suplementos_utilizados %}
+      <section class="mb-8 bg-gray-100 rounded-2xl p-5">
+        <h2 class="text-lg font-bold mb-3" style="color:#0a1a2f;">
+          🧪 Suplementos utilizados
+        </h2>
+
+        <ul class="list-disc list-inside text-sm text-gray-700 space-y-1">
           {% for item in resumo.suplementos_utilizados.split(',') %}
             <li>{{ item.strip() }}</li>
           {% endfor %}
         </ul>
-      </div>
-    {% endif %}
+      </section>
+      {% endif %}
 
-    <div class="mb-8 bg-gray-100 rounded-xl p-4 text-sm text-gray-700">
-      <p><strong>Tempo total:</strong> {{ formatar_tempo_decimal(resumo.tempo_total) }}</p>
-      <p>
-        <strong>Natação:</strong> {{ formatar_tempo_decimal(resumo.tempo_natacao) }} |
-        <strong>Bike:</strong> {{ formatar_tempo_decimal(resumo.tempo_bike) }} |
-        <strong>Corrida:</strong> {{ formatar_tempo_decimal(resumo.tempo_corrida) }}
-      </p>
-    </div>
+      <section class="mb-8 grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div class="bg-gray-100 rounded-2xl p-4">
+          <p class="text-xs text-gray-500 mb-1">Tempo total</p>
+          <p class="font-bold text-lg" style="color:#0a1a2f;">
+            {{ formatar_tempo_decimal(resumo.tempo_total) }}
+          </p>
+        </div>
 
-    {% set ordem = ["Macronutrientes", "Eletrólitos", "Estimulantes e Compostos", "Vitaminas", "Aminoácidos"] %}
-    {% set icones = {
-      "Macronutrientes": "⛽️",
-      "Eletrólitos": "💧",
-      "Estimulantes e Compostos": "🔥",
-      "Vitaminas": "💊",
-      "Aminoácidos": "🧬"
-    } %}
+        <div class="bg-gray-100 rounded-2xl p-4">
+          <p class="text-xs text-gray-500 mb-1">Natação</p>
+          <p class="font-semibold">{{ formatar_tempo_decimal(resumo.tempo_natacao) }}</p>
+        </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-      {% for categoria in ordem %}
-        {% set dados = resumo.resumo_dados.get(categoria, {}) %}
+        <div class="bg-gray-100 rounded-2xl p-4">
+          <p class="text-xs text-gray-500 mb-1">Bike</p>
+          <p class="font-semibold">{{ formatar_tempo_decimal(resumo.tempo_bike) }}</p>
+        </div>
 
-        {% if dados %}
-          {% set total = namespace(value=0) %}
-          {% for nome, valor in dados.items() %}
-            {% if valor|float > 0 %}
-              {% set total.value = total.value + valor|float %}
+        <div class="bg-gray-100 rounded-2xl p-4">
+          <p class="text-xs text-gray-500 mb-1">Corrida</p>
+          <p class="font-semibold">{{ formatar_tempo_decimal(resumo.tempo_corrida) }}</p>
+        </div>
+      </section>
+
+      {% set ordem = ["Macronutrientes", "Eletrólitos", "Estimulantes e Compostos", "Vitaminas", "Aminoácidos"] %}
+      {% set icones = {
+        "Macronutrientes": "⛽️",
+        "Eletrólitos": "💧",
+        "Estimulantes e Compostos": "🔥",
+        "Vitaminas": "💊",
+        "Aminoácidos": "🧬"
+      } %}
+      {% set cores = {
+        "Macronutrientes": "bg-blue-100",
+        "Eletrólitos": "bg-cyan-50",
+        "Estimulantes e Compostos": "bg-orange-50",
+        "Vitaminas": "bg-green-50",
+        "Aminoácidos": "bg-purple-50"
+      } %}
+
+      <section>
+        <h2 class="text-xl font-bold mb-5" style="color:#0a1a2f;">
+          Resumo nutricional
+        </h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {% for categoria in ordem %}
+            {% set dados = resumo.resumo_dados.get(categoria, {}) %}
+
+            {% if dados %}
+              {% set total = namespace(value=0) %}
+              {% for nome, valor in dados.items() %}
+                {% if valor|float > 0 %}
+                  {% set total.value = total.value + valor|float %}
+                {% endif %}
+              {% endfor %}
+
+              {% if total.value > 0 %}
+              <div class="{{ cores[categoria] }} rounded-2xl p-5 border border-gray-100">
+                <h3 class="font-bold mb-3" style="color:#0a1a2f;">
+                  {{ icones[categoria] }} {{ categoria }}
+                </h3>
+
+                <ul class="space-y-2 text-sm text-gray-700">
+                  {% for nome, valor in dados.items() %}
+                    {% if valor|float > 0 %}
+                      <li class="flex justify-between gap-4 border-b border-white/60 pb-1">
+                        <span>{{ nome }}</span>
+                        <strong>{{ valor|round(1) }}</strong>
+                      </li>
+                    {% endif %}
+                  {% endfor %}
+                </ul>
+              </div>
+              {% endif %}
             {% endif %}
           {% endfor %}
+        </div>
+      </section>
 
-          {% if total.value > 0 %}
-            <div class="bg-blue-50 rounded-xl p-4 shadow">
-              <h3 class="font-bold title-nave mb-2">
-                {{ icones[categoria] }} {{ categoria }}
-              </h3>
+    </div>
 
-              <ul class="list-disc pl-5 text-sm text-gray-700">
-                {% for nome, valor in dados.items() %}
-                  {% if valor|float > 0 %}
-                    <li>
-                      <strong>{{ nome }}:</strong> {{ valor|round(1) }}
-                    </li>
-                  {% endif %}
-                {% endfor %}
-              </ul>
-            </div>
-          {% endif %}
-        {% endif %}
-      {% endfor %}
+    <div class="text-center mt-6 text-xs text-gray-400">
+      TC Racing • Only Five • Performance Tools
     </div>
 
   </div>
 </div>
 
-{% endblock %}
+</body>
+</html>
