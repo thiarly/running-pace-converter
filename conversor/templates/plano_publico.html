@@ -47,11 +47,17 @@
           <strong>{{ resumo.pessoa.nome if resumo.pessoa else "Eu mesmo" }}</strong>
         </p>
 
-        {% if resumo.comentario %}
-            <div class="text-gray-700 mt-5 max-w-2xl mx-auto text-left whitespace-pre-line leading-relaxed">
-            {{ resumo.comentario }}
+            {% if resumo.comentario %}
+            <section class="mt-6 bg-gray-50 rounded-2xl p-5 text-left">
+            <h2 class="text-lg font-bold mb-3" style="color:#0a1a2f;">
+                Estratégia do treino
+            </h2>
+
+            <div class="text-gray-700 text-sm leading-relaxed whitespace-pre-line columns-1 md:columns-2 gap-8">
+                {{ resumo.comentario }}
             </div>
-        {% endif %}
+            </section>
+            {% endif %}
       </div>
 
       {% if resumo.suplementos_utilizados %}
@@ -114,14 +120,52 @@
         </h2>
 
 
-        
-
-
-
-
-
-
-
+                {% set unidades = {
+        "Macronutrientes": {
+            "Carboidrato": "g",
+            "Proteína": "g",
+            "Gordura Saturada": "g",
+            "Fibras Alimentares": "g"
+        },
+        "Eletrólitos": {
+            "Sódio": "mg",
+            "Magnésio": "mg",
+            "Potássio": "mg",
+            "Cálcio": "mg"
+        },
+        "Estimulantes e Compostos": {
+            "Cafeína": "mg",
+            "Taurina": "mg",
+            "Beta-Alanina": "mg",
+            "Citrulina": "mg",
+            "Creatina": "mg",
+            "CoQ10": "mg",
+            "Carnitina": "mg",
+            "Colina": "mg"
+        },
+        "Vitaminas": {
+            "Vitamina B1": "mg",
+            "Vitamina B2": "mg",
+            "Vitamina B3": "mg",
+            "Vitamina B6": "mg",
+            "Vitamina B7": "µg",
+            "Vitamina B9": "µg",
+            "Vitamina B12": "µg",
+            "Vitamina C": "mg",
+            "Vitamina E": "mg",
+            "Ferro": "mg",
+            "Vitamina D": "µg",
+            "Ác. Pantotênico": "mg",
+            "Ác. Fólico": "µg"
+        },
+        "Aminoácidos": {
+            "Leucina": "mg",
+            "Isoleucina": "mg",
+            "Valina": "mg",
+            "Arginina": "mg",
+            "Tirosina": "mg"
+        }
+        } %}
 
 
 
@@ -149,7 +193,12 @@
                     {% if valor|float > 0 %}
                       <li class="flex justify-between gap-4 border-b border-white/60 pb-1">
                         <span>{{ nome }}</span>
-                        <strong>{{ valor|round(1) }}</strong>
+                        <strong>
+                        {{ valor|round(1) }} {{ unidades[categoria].get(nome, '') }}/h
+                        <span class="text-gray-400">
+                            → {{ (valor|float * resumo.tempo_total)|round(1) }} {{ unidades[categoria].get(nome, '') }} total
+                        </span>
+                        </strong>
                       </li>
                     {% endif %}
                   {% endfor %}
