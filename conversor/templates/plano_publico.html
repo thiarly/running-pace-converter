@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Plano Compartilhado</title>
+  <title>Plano Compartilhado | TC Racing</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="icon" href="{{ url_for('static', filename='image/logotc-fiveicon.png') }}">
 </head>
@@ -20,9 +20,11 @@
   <div class="max-w-4xl mx-auto">
 
     <div class="text-center mb-6">
-      <img src="{{ url_for('static', filename='image/logotc-navbar.png') }}"
-           alt="TC Racing"
-           class="h-12 mx-auto mb-4">
+      <a href="https://www.tcracing.com.br/" target="_blank">
+        <img src="{{ url_for('static', filename='image/logotc-navbar.png') }}"
+             alt="TC Racing"
+             class="h-12 mx-auto mb-4">
+      </a>
 
       <p class="text-xs uppercase tracking-widest text-gray-400">
         TC Racing • Plano Compartilhado
@@ -40,15 +42,10 @@
           {{ resumo.data.strftime('%d/%m/%Y') }}
         </p>
 
-        {% if resumo.pessoa %}
-          <p class="text-sm text-gray-600 mt-2">
-            👤 Atleta: <strong>{{ resumo.pessoa.nome }}</strong>
-          </p>
-        {% else %}
-          <p class="text-sm text-gray-600 mt-2">
-            👤 Atleta: <strong>Eu mesmo</strong>
-          </p>
-        {% endif %}
+        <p class="text-sm text-gray-600 mt-2">
+          👤 Atleta:
+          <strong>{{ resumo.pessoa.nome if resumo.pessoa else "Eu mesmo" }}</strong>
+        </p>
 
         {% if resumo.comentario %}
           <p class="text-gray-700 mt-5 max-w-2xl mx-auto">
@@ -151,10 +148,34 @@
         </div>
       </section>
 
+      <section class="mt-10 bg-gray-100 rounded-2xl p-6 text-center">
+        <p class="text-sm text-gray-600 mb-3">
+          Quer calcular ritmos, zonas de treino, conversões e previsões de prova?
+        </p>
+
+        <a href="{{ url_for('ferramentas_calculadora') }}"
+           class="inline-block px-6 py-3 rounded-xl font-semibold text-white"
+           style="background-color:#0a1a2f;">
+          Conhecer ferramentas TC Racing
+        </a>
+      </section>
+
     </div>
 
     <div class="text-center mt-6 text-xs text-gray-400">
-      TC Racing • Only Five • Performance Tools
+      TC Racing • Only Five • Performance Tools •
+      <a href="https://www.tcracing.com.br/" target="_blank" class="underline hover:text-gray-600">
+        tcracing.com.br
+      </a>
+    </div>
+
+
+    <div 
+        class="text-center mt-6 text-xs text-gray-400">
+                      <a href="https://tccavalcante.com" target="_blank"
+               class="underline hover:text-blue-700">
+                Criador do TC Racing
+            </a>
     </div>
 
   </div>
