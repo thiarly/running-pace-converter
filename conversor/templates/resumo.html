@@ -245,45 +245,52 @@ Resumo do Planejamento
 
     <h2 class="text-lg font-semibold mb-4">🗂️ Salvar Resumo </h2>
 
-    <div class="mb-3">
-        <label class="block font-medium text-gray-700 mb-1">
-            Pessoa / Atleta
-        </label>
-        {{ form_salvar.pessoa_id(class="w-full border border-gray-300 rounded px-3 py-2 bg-white") }}
-    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div>
+        <label class="block font-medium text-gray-700 mb-1">Pessoa / Atleta</label>
+        {{ form_salvar.pessoa_id(class="w-full border border-gray-300 rounded px-3 h-[42px] bg-white") }}
+      </div>
 
-    <div class="mb-3">
-      <label class="block font-medium text-gray-700 mb-1">Nome do Treino</label>
-      <input type="text" name="nome_treino" required class="w-full border rounded px-3 py-2">
-    </div>
-    <div class="mb-3">
-      <label class="block font-medium text-gray-700 mb-1">Data</label>
-      <input type="date" name="data" required class="w-full border rounded px-3 py-2" value="{{ current_date }}">
-    </div>
-    <div class="mb-3">
-      <label class="block font-medium text-gray-700 mb-1">Comentário</label>
-      <textarea name="comentario" rows="3" class="w-full border rounded px-3 py-2" placeholder="Ex: Usei esse combo e me senti muito bem."></textarea>
+      <div>
+        <label class="block font-medium text-gray-700 mb-1">Nome do Treino</label>
+        <input type="text" name="nome_treino" required class="w-full border rounded px-3 h-[42px]">
+      </div>
+
+      <div>
+        <label class="block font-medium text-gray-700 mb-1">Data</label>
+        <input type="date" name="data" required class="w-full border rounded px-3 h-[42px]" value="{{ current_date }}">
+      </div>
+
+<div class="md:col-span-2">
+  <label class="block font-medium text-gray-700 mb-1">Comentário</label>
+  <textarea 
+    name="comentario"
+    rows="3"
+    class="w-full border rounded px-3 py-2"
+    placeholder="Ex: Usei esse combo e me senti muito bem."></textarea>
+</div>
     </div>
 
     <input type="hidden" name="resumo_dados" value='{{ resumo | tojson }}'>
-    <div class="text-right">
-      <button type="submit" class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded">Salvar Resumo</button>
-    </div>
+      <div class="text-right mt-4">
+        <button type="submit" class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded">
+          Salvar Resumo
+        </button>
+      </div>
   </form>
   {% endif %}
 </div>
 
-<form method="get" class="max-w-md">
 {% if resumos %}
 
 <hr class="my-10 border-t-2 border-gray-300">
 
-<div class="bg-gray-200 border border-gray-200 rounded-md p-4 mb-6">
+<div class="bg-gray-200 border border-gray-200 rounded-md p-4 mb-6 w-full max-w-7xl mx-auto">
   <h2 class="text-lg font-bold text-gray-800 border-b pb-2 mb-3 flex items-center gap-2">
     <i class="fas fa-folder-open text-blue-600"></i> Resumos Salvos
   </h2>
 
-  <form method="get" class="grid grid-cols-1 md:grid-cols-2 gap-3 max-w-3xl">
+<form method="get" class="grid grid-cols-1 md:grid-cols-2 gap-3 w-full">
   <input type="text" name="search" id="campoBusca"
          value="{{ request.args.get('search', '') }}"
          placeholder="Buscar por título ou comentário 🔎"
