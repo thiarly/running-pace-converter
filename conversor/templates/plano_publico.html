@@ -75,28 +75,34 @@
       {% endif %}
 
       <section class="mb-8 grid grid-cols-1 md:grid-cols-4 gap-4">
-        <div class="bg-gray-100 rounded-2xl p-4">
-          <p class="text-xs text-gray-500 mb-1">Tempo total</p>
-          <p class="font-bold text-lg" style="color:#0a1a2f;">
-            {{ formatar_tempo_decimal(resumo.tempo_total) }}
-          </p>
-        </div>
+            <div class="bg-gray-100 rounded-2xl p-4">
+                <p class="text-xs text-gray-500 mb-1">Tempo total</p>
+                <p class="font-bold text-lg" style="color:#0a1a2f;">
+                {{ formatar_tempo_decimal(resumo.tempo_total) }}
+                </p>
+            </div>
 
-        <div class="bg-gray-100 rounded-2xl p-4">
-          <p class="text-xs text-gray-500 mb-1">Natação</p>
-          <p class="font-semibold">{{ formatar_tempo_decimal(resumo.tempo_natacao) }}</p>
-        </div>
+            {% if resumo.tempo_natacao and resumo.tempo_natacao > 0 %}
+            <div class="bg-gray-100 rounded-2xl p-4">
+                <p class="text-xs text-gray-500 mb-1">Natação</p>
+                <p class="font-semibold">{{ formatar_tempo_decimal(resumo.tempo_natacao) }}</p>
+            </div>
+            {% endif %}
 
-        <div class="bg-gray-100 rounded-2xl p-4">
-          <p class="text-xs text-gray-500 mb-1">Bike</p>
-          <p class="font-semibold">{{ formatar_tempo_decimal(resumo.tempo_bike) }}</p>
-        </div>
+            {% if resumo.tempo_bike and resumo.tempo_bike > 0 %}
+            <div class="bg-gray-100 rounded-2xl p-4">
+                <p class="text-xs text-gray-500 mb-1">Bike</p>
+                <p class="font-semibold">{{ formatar_tempo_decimal(resumo.tempo_bike) }}</p>
+            </div>
+            {% endif %}
 
-        <div class="bg-gray-100 rounded-2xl p-4">
-          <p class="text-xs text-gray-500 mb-1">Corrida</p>
-          <p class="font-semibold">{{ formatar_tempo_decimal(resumo.tempo_corrida) }}</p>
-        </div>
-      </section>
+            {% if resumo.tempo_corrida and resumo.tempo_corrida > 0 %}
+            <div class="bg-gray-100 rounded-2xl p-4">
+                <p class="text-xs text-gray-500 mb-1">Corrida</p>
+                <p class="font-semibold">{{ formatar_tempo_decimal(resumo.tempo_corrida) }}</p>
+            </div>
+            {% endif %}
+        </section>
 
       {% set ordem = ["Macronutrientes", "Eletrólitos", "Estimulantes e Compostos", "Vitaminas", "Aminoácidos"] %}
       {% set icones = {
