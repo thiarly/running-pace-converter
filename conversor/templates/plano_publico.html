@@ -74,7 +74,37 @@
       </section>
       {% endif %}
 
-      <section class="mb-8 grid grid-cols-1 md:grid-cols-4 gap-4">
+      
+      
+      
+      
+{% set total_cards = 1 %}
+{% if resumo.tempo_natacao and resumo.tempo_natacao > 0 %}
+  {% set total_cards = total_cards + 1 %}
+{% endif %}
+{% if resumo.tempo_bike and resumo.tempo_bike > 0 %}
+  {% set total_cards = total_cards + 1 %}
+{% endif %}
+{% if resumo.tempo_corrida and resumo.tempo_corrida > 0 %}
+  {% set total_cards = total_cards + 1 %}
+{% endif %}
+
+<section class="
+  mb-8 grid grid-cols-1 gap-4
+  {% if total_cards == 2 %}
+    md:grid-cols-2 md:max-w-xl md:mx-auto
+  {% elif total_cards == 3 %}
+    md:grid-cols-3
+  {% else %}
+    md:grid-cols-4
+  {% endif %}
+">
+
+
+
+
+
+
             <div class="bg-gray-100 rounded-2xl p-4">
                 <p class="text-xs text-gray-500 mb-1">Tempo total</p>
                 <p class="font-bold text-lg" style="color:#0a1a2f;">
