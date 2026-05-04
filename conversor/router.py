@@ -602,6 +602,7 @@ def mover_baixo(id):
 
 
 
+
 @app.route('/salvar_resumo_livre', methods=['POST'])
 @login_required
 def salvar_resumo_livre():
@@ -612,10 +613,11 @@ def salvar_resumo_livre():
         [f"{item.quantidade}x {item.suplemento.nome}" for item in itens if item.suplemento]
     )
 
-    resumo_dados = agrupar_por_categoria(calcular_totais_planejamento(itens))  # total bruto
+    resumo_dados = agrupar_por_categoria(calcular_totais_planejamento(itens))
 
     novo_resumo = ResumoSalvo(
         user_id=current_user.id,
+        token_publico=secrets.token_urlsafe(16),  # 🔥 AQUI resolve seu problema
         nome_treino=form.nome_treino.data,
         data=form.data.data,
         comentario=form.comentario.data,
@@ -625,12 +627,16 @@ def salvar_resumo_livre():
         tempo_bike=0,
         tempo_corrida=0,
         tempo_total=0,
-        ordem=(database.session.query(database.func.max(ResumoSalvo.ordem))
-               .filter_by(user_id=current_user.id).scalar() or 0) + 1
+        ordem=(
+            database.session.query(database.func.max(ResumoSalvo.ordem))
+            .filter_by(user_id=current_user.id)
+            .scalar() or 0
+        ) + 1
     )
 
     database.session.add(novo_resumo)
     database.session.commit()
+
     flash("Resumo livre salvo com sucesso!", "success")
     return redirect(url_for('resumo_view'))
 
