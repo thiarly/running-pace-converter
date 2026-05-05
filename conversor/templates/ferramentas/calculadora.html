@@ -165,6 +165,7 @@
                     <tr>
                         <th class="px-4 py-3">Distância</th>
                         <th class="px-4 py-3">Tempo alvo</th>
+                        <th class="px-4 py-3">Formato</th> <!-- NOVO -->
                     </tr>
                 </thead>
 
@@ -173,6 +174,7 @@
                         <tr class="border-t border-gray-200">
                             <td class="px-4 py-3 font-semibold title-nave">{{ linha.Distância }}</td>
                             <td class="px-4 py-3">{{ linha.Tempo }}</td>
+                             <td class="px-4 py-3 text-gray-600">{{ linha.Tempo_formatado }}</td> <!-- NOVO -->
                         </tr>
                     {% endfor %}
                 </tbody>
