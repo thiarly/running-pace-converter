@@ -61,6 +61,11 @@
                 class="text-center text-sm px-3 py-2 rounded-lg {% if tipo == 'tabela_pace' %}btn-nave text-white{% else %}bg-blue-100 resumo-nave{% endif %}">
                     Tabela de Pace
             </a>
+
+            <a href="{{ url_for('ferramentas_calculadora', tipo='tabela_pista') }}"
+                class="text-center text-sm px-3 py-2 rounded-lg {% if tipo == 'tabela_pista' %}btn-nave text-white{% else %}bg-blue-100 resumo-nave{% endif %}">
+                    Tabela de Pista
+            </a>
         </div>
 
         
@@ -111,11 +116,12 @@
         {% elif tipo == 'previsao_prova' %}
         {% include 'ferramentas/partials/form_previsao_prova.html' %}
 
+        {% elif tipo == 'tabela_pista' %}
+        {% include 'ferramentas/partials/form_tabela_pista.html' %}
+
         {% else %}
             {% include 'ferramentas/partials/form_ritmo.html' %}
         {% endif %}
-
-
 
 
         {% if error %}
@@ -149,6 +155,29 @@
                     </div>
                 {% endfor %}
             </div>
+        {% endif %}
+
+
+        {% if tabela_pista %}
+        <div class="mt-6 overflow-hidden rounded-xl border border-gray-200">
+            <table class="w-full text-sm text-left text-gray-800">
+                <thead class="bg-gray-100 text-gray-500">
+                    <tr>
+                        <th class="px-4 py-3">Distância</th>
+                        <th class="px-4 py-3">Tempo alvo</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for linha in tabela_pista %}
+                        <tr class="border-t border-gray-200">
+                            <td class="px-4 py-3 font-semibold title-nave">{{ linha.Distância }}</td>
+                            <td class="px-4 py-3">{{ linha.Tempo }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
         {% endif %}
 
 

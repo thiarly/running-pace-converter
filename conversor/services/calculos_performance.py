@@ -321,3 +321,37 @@ def gerar_tabela_pace(pace_inicio, pace_fim, intervalo=10):
         })
 
     return tabela
+
+
+def gerar_tabela_pista(pace, distancia_inicial, distancia_final, intervalo):
+    """
+    Gera parciais de pista com base no pace alvo.
+    pace: string MM:SS por km
+    distâncias em metros
+    """
+
+    min_pace, sec_pace = map(int, pace.split(":"))
+    pace_segundos_km = (min_pace * 60) + sec_pace
+
+    distancia_inicial = int(distancia_inicial)
+    distancia_final = int(distancia_final)
+    intervalo = int(intervalo)
+
+    tabela = []
+
+    for distancia in range(distancia_inicial, distancia_final + 1, intervalo):
+        tempo_segundos = pace_segundos_km * (distancia / 1000)
+
+        minutos = int(tempo_segundos // 60)
+        segundos = int(round(tempo_segundos % 60))
+
+        if segundos == 60:
+            minutos += 1
+            segundos = 0
+
+        tabela.append({
+            "Distância": f"{distancia}m",
+            "Tempo": f"{minutos:02d}:{segundos:02d}"
+        })
+
+    return tabela

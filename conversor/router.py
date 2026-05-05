@@ -703,6 +703,7 @@ def ferramentas_calculadora():
     tabela_pace = None
     zonas_vo2 = None
     previsoes_prova = None
+    tabela_pista = None
     form_data = request.form.to_dict() if request.method == 'POST' else {}
 
     if request.method == 'POST':
@@ -899,6 +900,23 @@ def ferramentas_calculadora():
 
                 previsoes_prova = race_predictions_from_3k(tempo, 3)
                 resultado = None
+            
+            elif tipo == 'tabela_pista':
+                from conversor.services.calculos_performance import gerar_tabela_pista
+
+                pace = request.form.get('pace')
+                distancia_inicial = request.form.get('distancia_inicial')
+                distancia_final = request.form.get('distancia_final')
+                intervalo = request.form.get('intervalo')
+
+                tabela_pista = gerar_tabela_pista(
+                    pace,
+                    distancia_inicial,
+                    distancia_final,
+                    intervalo
+                )
+
+                resultado = None
                     
                     
 
@@ -916,7 +934,8 @@ def ferramentas_calculadora():
         error=error,
         form_data=form_data,
         zonas_vo2=zonas_vo2,
-        previsoes_prova=previsoes_prova
+        previsoes_prova=previsoes_prova,
+        tabela_pista=tabela_pista
     )
 
 
