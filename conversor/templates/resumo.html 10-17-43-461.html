@@ -234,7 +234,7 @@ Resumo do Planejamento
 
   </div>
 
-  <form method="POST" action="{{ url_for('salvar_resumo') }}" class="mt-8 w-full max-w-3xl mx-auto bg-gray-200 p-6 rounded shadow">
+  <form method="POST" action="{{ url_for('salvar_resumo') }}" class="mt-8 max-w-xl mx-auto bg-gray-200 p-4 rounded shadow">
     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
     <input type="hidden" name="tempo_natacao_horas" value="{{ form.tempo_natacao_horas.data }}">
     <input type="hidden" name="tempo_natacao_minutos" value="{{ form.tempo_natacao_minutos.data }}">
@@ -244,72 +244,40 @@ Resumo do Planejamento
     <input type="hidden" name="tempo_corrida_minutos" value="{{ form.tempo_corrida_minutos.data }}">
 
     <h2 class="text-lg font-semibold mb-4">🗂️ Salvar Resumo </h2>
-
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <div>
-        <label class="block font-medium text-gray-700 mb-1">Pessoa / Atleta</label>
-        {{ form_salvar.pessoa_id(class="w-full border border-gray-300 rounded px-3 h-[42px] bg-white") }}
-      </div>
-
-      <div>
-        <label class="block font-medium text-gray-700 mb-1">Nome do Treino</label>
-        <input type="text" name="nome_treino" required class="w-full border rounded px-3 h-[42px]">
-      </div>
-
-      <div>
-        <label class="block font-medium text-gray-700 mb-1">Data</label>
-        <input type="date" name="data" required class="w-full border rounded px-3 h-[42px]" value="{{ current_date }}">
-      </div>
-
-<div class="md:col-span-2">
-  <label class="block font-medium text-gray-700 mb-1">Comentário</label>
-  <textarea 
-    name="comentario"
-    rows="3"
-    class="w-full border rounded px-3 py-2"
-    placeholder="Ex: Usei esse combo e me senti muito bem."></textarea>
-</div>
+    <div class="mb-3">
+      <label class="block font-medium text-gray-700 mb-1">Nome do Treino</label>
+      <input type="text" name="nome_treino" required class="w-full border rounded px-3 py-2">
+    </div>
+    <div class="mb-3">
+      <label class="block font-medium text-gray-700 mb-1">Data</label>
+      <input type="date" name="data" required class="w-full border rounded px-3 py-2" value="{{ current_date }}">
+    </div>
+    <div class="mb-3">
+      <label class="block font-medium text-gray-700 mb-1">Comentário</label>
+      <textarea name="comentario" rows="3" class="w-full border rounded px-3 py-2" placeholder="Ex: Usei esse combo e me senti muito bem."></textarea>
     </div>
 
     <input type="hidden" name="resumo_dados" value='{{ resumo | tojson }}'>
-      <div class="text-right mt-4">
-        <button type="submit" class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded">
-          Salvar Resumo
-        </button>
-      </div>
+    <div class="text-right">
+      <button type="submit" class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded">Salvar Resumo</button>
+    </div>
   </form>
   {% endif %}
 </div>
+
 
 {% if resumos %}
 
 <hr class="my-10 border-t-2 border-gray-300">
 
-<div class="bg-gray-200 border border-gray-200 rounded-md p-4 mb-6 w-full max-w-7xl mx-auto"> 
+<div class="bg-gray-200 border border-gray-200 rounded-md p-4 mb-6">
   <h2 class="text-lg font-bold text-gray-800 border-b pb-2 mb-3 flex items-center gap-2">
     <i class="fas fa-folder-open text-blue-600"></i> Resumos Salvos
   </h2>
-
-<form method="get" class="grid grid-cols-1 md:grid-cols-2 gap-3 w-full">
-  <input type="text" name="search" id="campoBusca"
-         value="{{ request.args.get('search', '') }}"
-         placeholder="Buscar por título ou comentário 🔎"
-         class="w-full px-4 py-2 border rounded shadow-sm">
-
-  <select name="pessoa_filtro"
-          onchange="this.form.submit()"
-          class="w-full px-4 py-2 border rounded shadow-sm bg-white">
-      <option value="">Todos os atletas</option>
-      <option value="eu" {% if pessoa_filtro == 'eu' %}selected{% endif %}>Eu mesmo</option>
-
-      {% for pessoa in pessoas %}
-        <option value="{{ pessoa.id }}" {% if pessoa_filtro == pessoa.id|string %}selected{% endif %}>
-          {{ pessoa.nome }}
-        </option>
-      {% endfor %}
-  </select>
-</form>
-
+  <form method="get" class="max-w-md">
+    <input type="text" id="campoBusca" placeholder="Buscar por título ou comentário 🔎"
+          class="w-full px-4 py-2 border rounded shadow-sm mb-4">
+  </form>
 </div>
   
   <div id="resumosContainer">
@@ -387,12 +355,6 @@ Resumo do Planejamento
       <div class="flex justify-between items-start">
         <div onclick="toggleResumo('resumo-{{ loop.index }}')" class="cursor-pointer w-full">
           <h3 class="text-xl font-semibold title-nave">{{ resumo.nome_treino }}</h3>
-
-          <div class="text-sm text-gray-500 mt-1">
-            👤 {{ resumo.pessoa.nome if resumo.pessoa else "Eu mesmo" }}
-          </div>
-
-
           <div class="text-xs mb-4 mt-2">{{ resumo.data.strftime('%d/%m/%Y') }}</div>
           <div class="text-sm text-gray-600 whitespace-pre-wrap font-sans">{{ resumo.comentario }}</div>
           <div class="flex items-center gap-1 resumo-nave ext-sm mt-4 cursor-pointer detalhes-link" data-id="resumo-{{ loop.index }}">
@@ -429,24 +391,8 @@ Resumo do Planejamento
        <i class="fas fa-print text-gray-500 hover:text-gray-800"></i> Imprimir
      </a>
 
-       <!-- 👇 NOVO -->
-
-        {% if resumo.token_publico %}
-          <a href="{{ url_for('resumo_publico', token=resumo.token_publico) }}"
-            target="_blank"
-            class="flex items-center gap-1 text-sm text-blue-600 hover:underline">
-            🔗 Compartilhar
-          </a>
-
-          <button type="button"
-            data-link="{{ url_for('resumo_publico', token=resumo.token_publico, _external=True) }}"
-            onclick="copiarLink(this)"
-            class="flex items-center gap-1 text-sm text-gray-600 hover:underline">
-            📋 Copiar link
-          </button>
-        {% endif %}
-
       </div>
+
 
       <div id="resumo-{{ loop.index }}" class="mt-4 hidden">
 
@@ -462,23 +408,10 @@ Resumo do Planejamento
         {% endif %}
         
         <div class="text-sm text-gray-700 mb-4">
-          <p><strong>Tempo total:</strong> {{ formatar_tempo_decimal(resumo.tempo_total) }}</p>      
-
-          <p>
-            {% if resumo.tempo_natacao and resumo.tempo_natacao > 0 %}
-              <strong>Natação:</strong> {{ formatar_tempo_decimal(resumo.tempo_natacao) }}
-            {% endif %}
-
-            {% if resumo.tempo_bike and resumo.tempo_bike > 0 %}
-              {% if resumo.tempo_natacao and resumo.tempo_natacao > 0 %} | {% endif %}
-              <strong>Bike:</strong> {{ formatar_tempo_decimal(resumo.tempo_bike) }}
-            {% endif %}
-
-            {% if resumo.tempo_corrida and resumo.tempo_corrida > 0 %}
-              {% if (resumo.tempo_natacao and resumo.tempo_natacao > 0) or (resumo.tempo_bike and resumo.tempo_bike > 0) %} | {% endif %}
-              <strong>Corrida:</strong> {{ formatar_tempo_decimal(resumo.tempo_corrida) }}
-            {% endif %}
-          </p>
+          <p><strong>Tempo total:</strong> {{ formatar_tempo_decimal(resumo.tempo_total) }}</p>
+          <p><strong>Natação:</strong> {{ formatar_tempo_decimal(resumo.tempo_natacao) }} |
+             <strong>Bike:</strong> {{ formatar_tempo_decimal(resumo.tempo_bike) }} |
+             <strong>Corrida:</strong> {{ formatar_tempo_decimal(resumo.tempo_corrida) }}</p>
              
         </div>
 
@@ -567,9 +500,7 @@ Resumo do Planejamento
   input.addEventListener('input', async () => {
     const termo = input.value.trim();
 
-    const pessoaFiltro = document.querySelector('[name="pessoa_filtro"]').value;
-    const res = await fetch(`/buscar_resumos?termo=${encodeURIComponent(termo)}&pessoa_filtro=${pessoaFiltro}`);
-
+    const res = await fetch(`/buscar_resumos?termo=${encodeURIComponent(termo)}`);
     const dados = await res.json();
 
     container.innerHTML = '';
@@ -702,25 +633,4 @@ Resumo do Planejamento
             : `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" />`;        // -
         }
       </script>
-
-      <script>
-      function copiarLink(el) {
-        const link = el.getAttribute("data-link");
-
-        if (navigator.clipboard && window.isSecureContext) {
-          navigator.clipboard.writeText(link).then(() => {
-            alert("Link copiado!");
-          });
-        } else {
-          const input = document.createElement("input");
-          input.value = link;
-          document.body.appendChild(input);
-          input.select();
-          document.execCommand("copy");
-          document.body.removeChild(input);
-          alert("Link copiado!");
-        }
-      }
-      </script>
-
 {% endblock %}
